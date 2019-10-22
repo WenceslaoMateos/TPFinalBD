@@ -29,8 +29,7 @@ CREATE TABLE Arancelada(
     periodo_pago varchar(20) NOT NULL,
     PRIMARY KEY(cod_actividad)
 );
-INSERT INTO Arancelada(cod_actividad,costo,periodo_pago)
-VALUES ('1','200',?)
+
 
 CREATE TABLE Puede_Desarrollarse_En(
     cod_actividad int unsigned NOT NULL,
@@ -165,15 +164,18 @@ CREATE TABLE A_cargo_de(
     FOREIGN KEY(cod_actividad)
 );
 
+_______________________________________________________________________________________________________________________
+
+
 
 INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('454123','matias','suarez','16589236','1978/2/10','tenis');
+VALUES ('454553','matias','suarez','16589236','1978/2/10','tenis');
 
 INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
 VALUES ('478961','juana','lopez','19589274','1983/6/12','edfisica');
 
 INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('785963','marina','fernandez','35587885','1992/9/6','futbol');
+VALUES ('785963','marina','fernandez','35587885','1992/9/16','futbol');
 
 INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
 VALUES ('157896','julio','martinez','42558971','1998/8/10','hockey');
@@ -185,24 +187,26 @@ INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
 VALUES ('147852','fernando','gomez','39174589','1995/2/6','futbol');
 
 INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('454123','luciana','mariani','29885741','1989/3/11','edfisica');
+VALUES ('454123','mateo','mariani','29885741','1989/3/11','edfisica');
+
+INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
+VALUES ('851173','karen','juarez','39887414','1996/12/20','edfisica');
+
+INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
+VALUES ('589633','mirta','hernandez','30188941','1985/7/24','natacion');
+
+INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
+VALUES ('474583','diego','rios','38182236','1980/10/30','natacion');
+______________
 
 
-
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('1','1');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('1','5');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('2','1');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('3','1');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('3','2');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('4','4');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('5','3');
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('1','infantil,'0.15');
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('2','mayor','0.2');
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('3','vitalicio,'0');
+_______________
 
 INSERT INTO Se_Inscribe(nro_socio, id_clase)
 VALUES ('100','1');
@@ -228,13 +232,28 @@ INSERT INTO Se_Inscribe(nro_socio, id_clase)
 VALUES ('106','4');
 INSERT INTO Se_Inscribe(nro_socio, id_clase)
 VALUES ('106','5');
+_______________
 
+INSERT INTO Arancelada(cod_actividad,costo,periodo_pago)
+VALUES ('5','200',?)
+INSERT INTO Arancelada(cod_actividad,costo,periodo_pago)
+VALUES ('4','200',?)
+_______________
 
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('1','infantil,'0.15');
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('2','mayor','0.2');
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('3','vitalicio,'0.3');
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('4','provisorio','0.15');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('1','1');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('1','5');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('2','1');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('3','1');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('3','2');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('4','4');
+INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
+VALUES ('5','3');
+
+______________
+
