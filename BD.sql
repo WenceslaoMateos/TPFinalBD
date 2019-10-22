@@ -14,18 +14,6 @@ CREATE TABLE Categoria(
 );
 
 
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('1','infantil,'0.15');
-
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('2','mayor','0.2');
-
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('3','vitalicio,'0.3');
-
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('4','provisorio','0.15');
-
 CREATE TABLE Se_Inscribe(
     nro_socio int unsigned NOT NULL,
     id_clase int unsigned NOT NULL,
@@ -240,3 +228,13 @@ INSERT INTO Se_Inscribe(nro_socio, id_clase)
 VALUES ('106','4');
 INSERT INTO Se_Inscribe(nro_socio, id_clase)
 VALUES ('106','5');
+
+
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('1','infantil,'0.15');
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('2','mayor','0.2');
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('3','vitalicio,'0.3');
+INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
+VALUES ('4','provisorio','0.15');
