@@ -6,52 +6,6 @@ CREATE DATABASE text_TP;
 /*
  * Creacion de Tablas y sus PK y FK
  */
-CREATE TABLE Categoria(
-    id_categoria int unsigned NOT NULL AUTO_INCREMENT,
-    descripcion varchar(20) NOT NULL,
-    porcentaje float NOT NULL,
-    PRIMARY KEY(id_categoria)
-);
-
-
-CREATE TABLE Se_Inscribe(
-    nro_socio int unsigned NOT NULL,
-    id_clase int unsigned NOT NULL,
-    PRIMARY KEY(nro_socio, id_clase),
-    FOREIGN KEY(nro_socio),
-    FOREIGN KEY(id_clase)
-);
-
-
-CREATE TABLE Arancelada(
-    cod_actividad int unsigned NOT NULL,
-    costo float NOT NULL,
-    periodo_pago varchar(20) NOT NULL,
-    PRIMARY KEY(cod_actividad)
-);
-
-
-CREATE TABLE Puede_Desarrollarse_En(
-    cod_actividad int unsigned NOT NULL,
-    cod_area int unsigned NOT NULL,
-    PRIMARY KEY(cod_actividad, cod_area),
-    FOREIGN KEY(cod_actividad),
-    FOREIGN KEY(cod_area)
-);
-
-
-CREATE TABLE Profesional(
-    legajo int unsigned NOT NULL AUTO_INCREMENT,
-    nombre varchar(20) NOT NULL,
-    apellido varchar(20) NOT NULL,
-    dni varchar(11) NOT NULL,
-    fecha_nac date NOT NULL,
-    especializacion varchar(20) NOT NULL,
-    PRIMARY KEY(legajo)
-);
-
-
-
 CREATE TABLE Titular(
     nro_socio int unsigned NOT NULL AUTO_INCREMENT,
     nombre varchar(20) NOT NULL,
@@ -77,6 +31,60 @@ CREATE TABLE Familiar(
     FOREIGN KEY(nro_socio)
 );
 
+CREATE TABLE Categoria(
+    id_categoria int unsigned NOT NULL AUTO_INCREMENT,
+    descripcion varchar(20) NOT NULL,
+    porcentaje float NOT NULL,
+    PRIMARY KEY(id_categoria)
+);
+
+CREATE TABLE Profesional(
+    legajo int unsigned NOT NULL AUTO_INCREMENT,
+    nombre varchar(20) NOT NULL,
+    apellido varchar(20) NOT NULL,
+    dni varchar(11) NOT NULL,
+    fecha_nac date NOT NULL,
+    especializacion varchar(20) NOT NULL,
+    PRIMARY KEY(legajo)
+);
+
+CREATE TABLE Clase(
+    id_clase int unsigned NOT NULL AUTO_INCREMENT,
+    horario NOT NULL,
+    día Date NOT NULL,
+    cod_actividad int NOT NULL,
+    cod_área int NOT NULL,
+    periodo varchar(20),
+    PRIMARY KEY(id_clase),
+    FOREIGN KEY(cod_actividad),
+    FOREIGN KEY(cod_area)
+);
+
+CREATE TABLE Area(
+    cod_area int unsigned NOT NULL AUTO_INCREMENT,
+    ubicacion varchar(20) NOT NULL,
+    capacidad int NOT NULL,
+    estado varchar(20),
+    PRIMARY KEY(cod_area)
+);
+
+CREATE TABLE Actividad(
+    cod_actividad int unsigned NOT NULL AUTO_INCREMENT,
+    descripción varchar(50),
+    nombre varchar(20) NOT NULL,
+    tipo_costo varchar(20),
+    id_categoría int NOT NULL,
+    PRIMARY KEY(cod_actividad),
+    FOREIGN KEY(id_categoría)
+);
+
+CREATE TABLE Arancelada(
+    cod_actividad int unsigned NOT NULL,
+    costo float NOT NULL,
+    periodo_pago varchar(20) NOT NULL,
+    PRIMARY KEY(cod_actividad)
+);
+
 CREATE TABLE Cuota(
     id_cuota int unsigned NOT NULL AUTO_INCREMENT,
     monto_base float(8),
@@ -97,34 +105,20 @@ CREATE TABLE Pago(
     FOREIGN KEY (nro_socio)
 );
 
-CREATE TABLE Clase(
-    id_clase int unsigned NOT NULL AUTO_INCREMENT,
-    horario NOT NULL,
-    día Date NOT NULL,
-    cod_actividad int NOT NULL,
-    cod_área int NOT NULL,
-    periodo varchar(20),
-    PRIMARY KEY(id_clase),
+CREATE TABLE Se_Inscribe(
+    nro_socio int unsigned NOT NULL,
+    id_clase int unsigned NOT NULL,
+    PRIMARY KEY(nro_socio, id_clase),
+    FOREIGN KEY(nro_socio),
+    FOREIGN KEY(id_clase)
+);
+
+CREATE TABLE Puede_Desarrollarse_En(
+    cod_actividad int unsigned NOT NULL,
+    cod_area int unsigned NOT NULL,
+    PRIMARY KEY(cod_actividad, cod_area),
     FOREIGN KEY(cod_actividad),
     FOREIGN KEY(cod_area)
-);
-
-CREATE TABLE Actividad(
-    cod_actividad int unsigned NOT NULL AUTO_INCREMENT,
-    descripción varchar(50),
-    nombre varchar(20) NOT NULL,
-    tipo_costo varchar(20),
-    id_categoría int NOT NULL,
-    PRIMARY KEY(cod_actividad),
-    FOREIGN KEY(id_categoría)
-);
-
-CREATE TABLE Area(
-    cod_area int unsigned NOT NULL AUTO_INCREMENT,
-    ubicacion varchar(20) NOT NULL,
-    capacidad int NOT NULL,
-    estado varchar(20),
-    PRIMARY KEY(cod_area)
 );
 
 CREATE TABLE Paga_t(
@@ -156,7 +150,7 @@ CREATE TABLE Dirige(
     FOREIGN KEY(id_clase)
 );
 
-CREATE TABLE A_cargo_de(
+CREATE TABLE Capacitado_para(
     cod_actividad int NOT NULL,
     legajo int NOT NULL,
     PRIMARY KEY(cod_actividad, legajo),
@@ -165,95 +159,139 @@ CREATE TABLE A_cargo_de(
 );
 
 _______________________________________________________________________________________________________________________
+INSERT INTO
+    Profesional(
+        legajo,
+        nombre,
+        apellido,
+        dni,
+        fecha_nac,
+        especializacion
+    )
+VALUES
+    (
+        '454553',
+        'matias',
+        'suarez',
+        '16589236',
+        '1978/2/10',
+        'tenis'
+    ),
+    (
+        '478961',
+        'juana',
+        'lopez',
+        '19589274',
+        '1983/6/12',
+        'edfisica'
+    ),
+    (
+        '785963',
+        'marina',
+        'fernandez',
+        '35587885',
+        '1992/9/16',
+        'futbol'
+    ),
+    (
+        '157896',
+        'julio',
+        'martinez',
+        '42558971',
+        '1998/8/10',
+        'hockey'
+    ),
+    (
+        '478163',
+        'guillermina',
+        'villa',
+        '32589657',
+        '1988/5/2',
+        'tenis'
+    ),
+    (
+        '147852',
+        'fernando',
+        'gomez',
+        '39174589',
+        '1995/2/6',
+        'futbol'
+    ),
+    (
+        '454123',
+        'mateo',
+        'mariani',
+        '29885741',
+        '1989/3/11',
+        'edfisica'
+    ),
+    (
+        '851173',
+        'karen',
+        'juarez',
+        '39887414',
+        '1996/12/20',
+        'edfisica'
+    ),
+    (
+        '589633',
+        'mirta',
+        'hernandez',
+        '30188941',
+        '1985/7/24',
+        'natacion'
+    ),
+    (
+        '474583',
+        'diego',
+        'rios',
+        '38182236',
+        '1980/10/30',
+        'natacion'
+    );
 
-
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('454553','matias','suarez','16589236','1978/2/10','tenis');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('478961','juana','lopez','19589274','1983/6/12','edfisica');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('785963','marina','fernandez','35587885','1992/9/16','futbol');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('157896','julio','martinez','42558971','1998/8/10','hockey');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('478163','guillermina','villa','32589657','1988/5/2','tenis');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('147852','fernando','gomez','39174589','1995/2/6','futbol');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('454123','mateo','mariani','29885741','1989/3/11','edfisica');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('851173','karen','juarez','39887414','1996/12/20','edfisica');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('589633','mirta','hernandez','30188941','1985/7/24','natacion');
-
-INSERT INTO Profesional(legajo,nombre,apellido,dni,fecha_nac,especializacion)
-VALUES ('474583','diego','rios','38182236','1980/10/30','natacion');
 ______________
+INSERT INTO
+    Categoria(id_categoria, descripcion, porcentaje)
+VALUES
+    ('1', 'infantil', '0.15'),
+    ('2', 'mayor', '0.2'),
+    ('3', 'vitalicio', '0');
 
-
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('1','infantil,'0.15');
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('2','mayor','0.2');
-INSERT INTO Categoria(id_categoria,descripcion,porcentaje)
-VALUES ('3','vitalicio,'0');
 _______________
+INSERT INTO
+    Se_Inscribe(nro_socio, id_clase)
+VALUES
+    ('100', '1'),
+    ('100', '3'),
+    ('101', '1'),
+    ('102', '1'),
+    ('102', '2'),
+    ('103', '2'),
+    ('104', '1'),
+    ('104', '3'),
+    ('104', '6'),
+    ('105', '5'),
+    ('106', '4'),
+    ('106', '5');
 
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('100','1');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('100','3');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('101','1');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('102','1');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('102','2');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('103','2');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('104','1');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('104','3');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('104','6');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('105','5');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('106','4');
-INSERT INTO Se_Inscribe(nro_socio, id_clase)
-VALUES ('106','5');
 _______________
+INSERT INTO
+    Arancelada(cod_actividad, costo, periodo_pago)
+VALUES
+    ('5', '200', ?),
+    ('4', '200', ?);
 
-INSERT INTO Arancelada(cod_actividad,costo,periodo_pago)
-VALUES ('5','200',?)
-INSERT INTO Arancelada(cod_actividad,costo,periodo_pago)
-VALUES ('4','200',?)
 _______________
-
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('1','1');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('1','5');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('2','1');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('3','1');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('3','2');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('4','4');
-INSERT INTO Puede_Desarrollarse_En(cod_actividad,cod_area)
-VALUES ('5','3');
+INSERT INTO
+    Puede_Desarrollarse_En(cod_actividad, cod_area)
+VALUES
+    ('1', '1'),
+    ('1', '5'),
+    ('2', '1'),
+    ('3', '1'),
+    ('3', '2'),
+    ('4', '4'),
+    ('5', '3');
 
 ______________
-
