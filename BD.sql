@@ -1,7 +1,6 @@
-/*
- * Creacion de la Base de datos
- */
-CREATE DATABASE text_TP;
+DROP DATABASE test_TP;
+CREATE DATABASE test_TP;
+USE test_TP;
 
 /*
  * Creacion de Tablas y sus PK y FK
@@ -18,17 +17,18 @@ CREATE TABLE Titular(
     PRIMARY KEY(nro_socio)
 );
 
+/* hay que tener cuidado por que aca el numero de orden hay que ir aumentandolo a mano*/
 CREATE TABLE Familiar(
     nro_socio int unsigned NOT NULL,
-    nro_orden int unsigned NOT NULL AUTO_INCREMENT,
+    nro_orden int unsigned NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     id_categoria int NOT NULL,
     fecha_nac date NOT NULL,
     email varchar(30) NOT NULL,
-    celular char(11) NOT NULL,
+    celular varchar(11) NOT NULL,
     PRIMARY KEY(nro_socio, nro_orden),
-    FOREIGN KEY(nro_socio)
+    FOREIGN KEY(nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE
 );
 
 CREATE TABLE Categoria(
@@ -48,18 +48,6 @@ CREATE TABLE Profesional(
     PRIMARY KEY(legajo)
 );
 
-CREATE TABLE Clase(
-    id_clase int unsigned NOT NULL AUTO_INCREMENT,
-    horario NOT NULL,
-    día Date NOT NULL,
-    cod_actividad int NOT NULL,
-    cod_área int NOT NULL,
-    periodo varchar(20),
-    PRIMARY KEY(id_clase),
-    FOREIGN KEY(cod_actividad),
-    FOREIGN KEY(cod_area)
-);
-
 CREATE TABLE Area(
     cod_area int unsigned NOT NULL AUTO_INCREMENT,
     ubicacion varchar(20) NOT NULL,
@@ -73,9 +61,20 @@ CREATE TABLE Actividad(
     descripción varchar(50),
     nombre varchar(20) NOT NULL,
     tipo_costo varchar(20),
-    id_categoría int NOT NULL,
+    id_categoria int unsigned NOT NULL,
     PRIMARY KEY(cod_actividad),
-    FOREIGN KEY(id_categoría)
+    FOREIGN KEY(id_categoria) REFERENCES Categoria(id_categoria) ON DELETE CASCADE
+);
+
+CREATE TABLE Clase(
+    id_clase int unsigned NOT NULL AUTO_INCREMENT,
+    dia_y_hora datetime NOT NULL,
+    cod_actividad int unsigned NOT NULL,
+    cod_area int unsigned NOT NULL,
+    periodo varchar(20),
+    PRIMARY KEY(id_clase),
+    FOREIGN KEY(cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE,
+    FOREIGN KEY(cod_area) REFERENCES Area(cod_area) ON DELETE CASCADE
 );
 
 CREATE TABLE Arancelada(
@@ -92,70 +91,80 @@ CREATE TABLE Cuota(
     PRIMARY KEY(id_cuota)
 );
 
+#mismo problema que familiar
 CREATE TABLE Pago(
-    id_cuota int NOT NULL,
-    nro_socio int NOT NULL,
-    nro_pago int unsigned NOT NULL AUTO_INCREMENT,
+    id_cuota int unsigned NOT NULL,
+    nro_socio int unsigned NOT NULL,
+    nro_pago int unsigned NOT NULL,
     monto_abonado float NOT NULL,
     fecha_vencimiento date NOT NULL,
     monto_pagar float NOT NULL,
     fecha_pago date NOT NULL,
     PRIMARY KEY (nro_socio, nro_pago),
-    FOREIGN KEY (id_cuota),
-    FOREIGN KEY (nro_socio)
+    FOREIGN KEY (id_cuota) REFERENCES Cuota(id_cuota) ON DELETE CASCADE,
+    FOREIGN KEY (nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE
 );
 
-CREATE TABLE Se_Inscribe(
+CREATE TABLE Se_Inscribe_t(
     nro_socio int unsigned NOT NULL,
     id_clase int unsigned NOT NULL,
     PRIMARY KEY(nro_socio, id_clase),
-    FOREIGN KEY(nro_socio),
-    FOREIGN KEY(id_clase)
+    FOREIGN KEY(nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE,
+    FOREIGN KEY(id_clase) REFERENCES Clase(id_clase) ON DELETE CASCADE
+);
+
+CREATE TABLE Se_Inscribe_f(
+    nro_socio int unsigned NOT NULL,
+    nro_orden int unsigned NOT NULL,
+    id_clase int unsigned NOT NULL,
+    PRIMARY KEY(nro_socio, id_clase),
+    FOREIGN KEY(nro_socio, nro_orden) REFERENCES Familiar(nro_socio, nro_orden) ON DELETE CASCADE,
+    FOREIGN KEY(id_clase) REFERENCES Clase(id_clase) ON DELETE CASCADE
 );
 
 CREATE TABLE Puede_Desarrollarse_En(
     cod_actividad int unsigned NOT NULL,
     cod_area int unsigned NOT NULL,
     PRIMARY KEY(cod_actividad, cod_area),
-    FOREIGN KEY(cod_actividad),
-    FOREIGN KEY(cod_area)
+    FOREIGN KEY(cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE,
+    FOREIGN KEY(cod_area) REFERENCES Area(cod_area) ON DELETE CASCADE
 );
 
 CREATE TABLE Paga_t(
-    nro_socio int NOT NULL,
-    cod_actividad int NOT NULL,
+    nro_socio int unsigned NOT NULL,
+    cod_actividad int unsigned NOT NULL,
     fecha date NOT NULL,
     monto float NOT NULL,
     PRIMARY KEY (nro_socio, cod_actividad),
-    FOREIGN KEY (cod_actividad),
-    FOREIGN KEY (nro_socio)
+    FOREIGN KEY (cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE,
+    FOREIGN KEY (nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE
 );
 
-CREATE TABLE Paga_F(
-    nro_socio int NOT NULL,
-    nro_orden int NOT NULL,
-    cod_actividad int NOT NULL,
+CREATE TABLE Paga_f(
+    nro_socio int unsigned NOT NULL,
+    nro_orden int unsigned NOT NULL,
+    cod_actividad int unsigned NOT NULL,
     fecha Date NOT NULL,
     monto float(8) NOT NULL,
     PRIMARY KEY (nro_socio, nro_orden, cod_actividad),
-    FOREIGN KEY (cod_actividad),
-    FOREIGN KEY (nro_socio, nro_orden)
+    FOREIGN KEY (cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE,
+    FOREIGN KEY (nro_socio, nro_orden) REFERENCES Familiar(nro_socio, nro_orden) ON DELETE CASCADE
 );
 
 CREATE TABLE Dirige(
-    legajo int NOT NULL,
-    id_clase int NOT NULL,
+    legajo int unsigned NOT NULL,
+    id_clase int unsigned NOT NULL,
     PRIMARY KEY(legajo, id_clase),
-    FOREIGN KEY(legajo),
-    FOREIGN KEY(id_clase)
+    FOREIGN KEY(legajo) REFERENCES Profesional(legajo) ON DELETE CASCADE,
+    FOREIGN KEY(id_clase) REFERENCES Clase(id_clase) ON DELETE CASCADE
 );
 
 CREATE TABLE Capacitado_para(
-    cod_actividad int NOT NULL,
-    legajo int NOT NULL,
+    cod_actividad int unsigned NOT NULL,
+    legajo int unsigned NOT NULL,
     PRIMARY KEY(cod_actividad, legajo),
-    FOREIGN KEY(legajo),
-    FOREIGN KEY(cod_actividad)
+    FOREIGN KEY(legajo) REFERENCES Profesional(legajo) ON DELETE CASCADE,
+    FOREIGN KEY(cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE
 );
 
 _______________________________________________________________________________________________________________________
@@ -258,7 +267,7 @@ VALUES
     ('2', 'mayor', '0.2'),
     ('3', 'vitalicio', '0');
 
-_______________
+_______________ #hay que insertar titulares para que se puedan inscribir en una clase
 INSERT INTO
     Se_Inscribe(nro_socio, id_clase)
 VALUES
