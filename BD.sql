@@ -1,5 +1,7 @@
 DROP DATABASE test_TP;
+
 CREATE DATABASE test_TP;
+
 USE test_TP;
 
 /*
@@ -267,7 +269,8 @@ VALUES
     ('2', 'mayor', '0.2'),
     ('3', 'vitalicio', '0');
 
-_______________ #hay que insertar titulares para que se puedan inscribir en una clase
+#hay que insertar titulares para que se puedan inscribir en una clase
+_______________
 INSERT INTO
     Se_Inscribe(nro_socio, id_clase)
 VALUES
