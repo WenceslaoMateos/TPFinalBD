@@ -9,6 +9,7 @@ USE test_TP;
  */
 CREATE TABLE Titular(
     nro_socio int unsigned NOT NULL AUTO_INCREMENT,
+    id_categoria int unsigned NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     email varchar(30) NOT NULL,
@@ -16,13 +17,15 @@ CREATE TABLE Titular(
     domicilio varchar(20) NOT NULL,
     celular char(11) NOT NULL,
     telefono char(11) NOT NULL,
-    PRIMARY KEY(nro_socio)
+    PRIMARY KEY(nro_socio),
+    FOREIGN KEY(id_categoria) REFERENCES Categoria(id_categoria) ON DELETE CASCADE
 );
 
 /* hay que tener cuidado por que aca el numero de orden hay que ir aumentandolo a mano*/
 CREATE TABLE Familiar(
     nro_socio int unsigned NOT NULL,
     nro_orden int unsigned NOT NULL,
+    id_categoria int unsigned NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     id_categoria int NOT NULL,
@@ -30,7 +33,8 @@ CREATE TABLE Familiar(
     email varchar(30) NOT NULL,
     celular varchar(11) NOT NULL,
     PRIMARY KEY(nro_socio, nro_orden),
-    FOREIGN KEY(nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE
+    FOREIGN KEY(nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE,
+    FOREIGN KEY(id_categoria) REFERENCES Categoria(id_categoria) ON DELETE CASCADE
 );
 
 CREATE TABLE Categoria(
@@ -185,7 +189,7 @@ VALUES
         'matias',
         'suarez',
         '16589236',
-        '1978/2/10',
+        '1978-02-10',
         'tenis'
     ),
     (
@@ -193,7 +197,7 @@ VALUES
         'juana',
         'lopez',
         '19589274',
-        '1983/6/12',
+        '1983-06-12',
         'edfisica'
     ),
     (
@@ -201,7 +205,7 @@ VALUES
         'marina',
         'fernandez',
         '35587885',
-        '1992/9/16',
+        '1992-09-16',
         'futbol'
     ),
     (
@@ -209,7 +213,7 @@ VALUES
         'julio',
         'martinez',
         '42558971',
-        '1998/8/10',
+        '1998-08-10',
         'hockey'
     ),
     (
@@ -217,7 +221,7 @@ VALUES
         'guillermina',
         'villa',
         '32589657',
-        '1988/5/2',
+        '1988-05-02',
         'tenis'
     ),
     (
@@ -225,7 +229,7 @@ VALUES
         'fernando',
         'gomez',
         '39174589',
-        '1995/2/6',
+        '1995-02-06',
         'futbol'
     ),
     (
@@ -233,7 +237,7 @@ VALUES
         'mateo',
         'mariani',
         '29885741',
-        '1989/3/11',
+        '1989-03-11',
         'edfisica'
     ),
     (
@@ -241,7 +245,7 @@ VALUES
         'karen',
         'juarez',
         '39887414',
-        '1996/12/20',
+        '1996-12-20',
         'edfisica'
     ),
     (
@@ -249,7 +253,7 @@ VALUES
         'mirta',
         'hernandez',
         '30188941',
-        '1985/7/24',
+        '1985-07-24',
         'natacion'
     ),
     (
@@ -257,7 +261,7 @@ VALUES
         'diego',
         'rios',
         '38182236',
-        '1980/10/30',
+        '1980-10-30',
         'natacion'
     );
 
@@ -265,45 +269,124 @@ ______________
 INSERT INTO
     Categoria(id_categoria, descripcion, porcentaje)
 VALUES
-    ('1', 'infantil', '0.15'),
-    ('2', 'mayor', '0.2'),
-    ('3', 'vitalicio', '0');
+    ('cat001', 'infantil', '0.15'),
+    ('cat002', 'mayor', '0.2'),
+    ('cat003', 'vitalicio', '0');
 
 #hay que insertar titulares para que se puedan inscribir en una clase
 _______________
 INSERT INTO
-    Se_Inscribe(nro_socio, id_clase)
+    Se_Inscribe_t(nro_socio, id_clase)
 VALUES
-    ('100', '1'),
-    ('100', '3'),
-    ('101', '1'),
-    ('102', '1'),
-    ('102', '2'),
-    ('103', '2'),
-    ('104', '1'),
-    ('104', '3'),
-    ('104', '6'),
-    ('105', '5'),
-    ('106', '4'),
-    ('106', '5');
+    ('soc001', 'cla001'),
+    ('soc002', 'cla003'),
+    ('soc003', 'cla001'),
+    ('soc004', 'cla001'),
+    ('soc005', 'cla002'),
+    ('soc006', 'cla002'),
+    ('soc007', 'cla001'),
+    ('soc008', 'cla003'),
+    ('soc009', 'cla006'),
+    ('soc010', 'cla005'),
+    ('soc011', 'cla004'),
+    ('soc012', 'cla005');
 
 _______________
 INSERT INTO
     Arancelada(cod_actividad, costo, periodo_pago)
 VALUES
-    ('5', '200', ?),
-    ('4', '200', ?);
+    ('act005', '800', 'mensual'),
+    ('act004', '1500', 'trimestral'),
+    ('act007', '650', 'mensual');
 
 _______________
 INSERT INTO
     Puede_Desarrollarse_En(cod_actividad, cod_area)
 VALUES
-    ('1', '1'),
-    ('1', '5'),
-    ('2', '1'),
-    ('3', '1'),
-    ('3', '2'),
-    ('4', '4'),
-    ('5', '3');
+    ('act001', 'area001'),
+    ('act001', 'area005'),
+    ('act002', 'area001'),
+    ('act003', 'area001'),
+    ('act003', 'area002'),
+    ('act004', 'area004'),
+    ('act005', 'area003'),
+    ('act006','area003'),
+    ('act006','area002'),
+    ('act007','area006');
 
+________________
+
+INSERT INTO 
+    Paga_t(nro_socio,cod_actividad,fecha,monto)
+VALUES
+    ('soc001','act004','2019-10-20','1500'),
+    ('soc001','act005','2018-11-28','800'),
+    ('soc002','act004','2018-09-21','1500'),
+    ('soc003','act007','2019-10-10','650'),
+    ('soc004','act007','2018-08-11','150'),
+    ('soc005','act004','2017-07-15','1000'),
+    ('soc005','act005','2017-01-31','800')),
+    ('soc005','act007','2017-01-30','650'),
+    ('soc004','act005','2016-03-02','500')),
+    ('soc006','act004','2018-11-07','1500'),
+    ('soc006','act007','2019-04-06','600'),
+    ('soc007','act005','2019-02-07','800')),
+    ('soc008','act004','2019-02-15','700'),
+    ('soc009','act004','2017-01-17','1100'),
+    ('soc010','act005','2016-10-19','200')),
+    ('soc010','act007','2018-08-27','500'),
+    ('soc011','act007','2018-08-24','650'),
+    ('soc011','act005','2019-09-21','700')),
+    ('soc012','act004','2019-04-14','100'),
+    ('soc012','act007','2018-06-17','300'),
+    ('soc013','act004','2019-07-03','1500');
+    
 ______________
+
+INSERT INTO 
+    Paga_f(nro_socio,nro_orden,cod_actividad,fecha,monto)
+VALUES
+    ('soc001','01','act004','2019-10-20','1500'),
+    ('soc001','02','act005','2018-11-28','800'),
+    ('soc002','01','act004','2018-09-21','1500'),
+    ('soc003','02','act007','2019-10-10','650'),
+    ('soc004','03','act007','2018-08-11','150'),
+    ('soc005','02','act004','2017-07-15','1000'),
+    ('soc005','02','act005','2017-01-31','800')),
+    ('soc005','01','act007','2017-01-30','650'),
+    ('soc004','03','act005','2016-03-02','500')),
+    ('soc006','01','act004','2018-11-07','1500'),
+    ('soc006','02','act007','2019-04-06','600'),
+    ('soc007','03','act005','2019-02-07','800')),
+    ('soc008','01','act004','2019-02-15','700'),
+    ('soc009','01','act004','2017-01-17','1100'),
+    ('soc010','01','act005','2016-10-19','200')),
+    ('soc010','02','act007','2018-08-27','500'),
+    ('soc011','01','act007','2018-08-24','650'),
+    ('soc011','03','act005','2019-09-21','700')),
+    ('soc012','02','act004','2019-04-14','100'),
+    ('soc012','04','act007','2018-06-17','300'),
+    ('soc013','01','act004','2019-07-03','1500');
+
+_____
+
+delimiter //
+CREATE PROCEDURE 'soc_act_gratuitas' (OUT )
+    BEGIN
+        DECLARE Fecha DATE;
+        SELECT CURRENT_DATE() INTO Fecha;
+        SELECT id_categoria, COUNT(*)
+        FROM Titular, Familiar
+        WHERE NOT EXISTS
+        (
+            SELECT *
+            FROM Clase, Actividad
+            WHERE Clase.cod_actividad=Actividad.cod_actividad AND NOT EXISTS 
+
+            (
+                SELECT *
+                FROM Se
+            )
+        )
+
+//
