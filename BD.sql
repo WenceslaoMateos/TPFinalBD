@@ -461,13 +461,6 @@ VALUES
     );
 
 ______________
-INSERT INTO
-    Categoria(id_categoria, descripcion, porcentaje)
-VALUES
-    ('cat001', 'infantil', '0.15'),
-    ('cat002', 'mayor', '0.2'),
-    ('cat003', 'vitalicio', '0');
-
 #hay que insertar titulares para que se puedan inscribir en una clase
 _______________
 INSERT INTO
@@ -485,14 +478,6 @@ VALUES
     ('soc010', 'cla005'),
     ('soc011', 'cla004'),
     ('soc012', 'cla005');
-
-_______________
-INSERT INTO
-    Arancelada(cod_actividad, costo, periodo_pago)
-VALUES
-    ('act005', '800', 'mensual'),
-    ('act004', '1500', 'trimestral'),
-    ('act007', '650', 'mensual');
 
 _______________
 INSERT INTO
