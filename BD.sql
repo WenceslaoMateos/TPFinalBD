@@ -260,7 +260,7 @@ CREATE TRIGGER titular_paga_clase
 BEFORE INSERT ON Paga_t 
 FOR EACH ROW 
 BEGIN 
-    DECLARE dummy varchar(20);
+    DECLARE dummy int;
     SELECT
         count(*)
     INTO
