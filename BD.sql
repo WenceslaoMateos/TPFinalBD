@@ -629,5 +629,9 @@ CREATE PROCEDURE soc_act_gratuitas ()
         GROUP BY id_categoria;
     END//
 
+/*
+ * Los datos del socio titular de grupos familiares que adeuden cuotas sociales del año en
+ * curso, junto con el importe total adeudado, y la cantidad de integrantes del grupo.
+ */
 
 delimiter ;
