@@ -179,9 +179,7 @@ CREATE TABLE Capacitado_para(
  */
 
 /*
- * Dada una instancia de TITULAR, el valor correspondiente a TITULAR.id_categoria que se iguala con 
- * CATEGORIA.id_categoria, esta instancia de CATEGORÍA, el atributo CATEGORÍA.descripción sólo puede los 
- * valores “mayor” o “vitalicio”.
+ * Los titulares deben pertenecer a la categoría “mayores” o “vitalicios”.
  */
 delimiter $$ 
 CREATE TRIGGER titular_categoria 
@@ -224,9 +222,7 @@ BEGIN
 END $$
 
 /*
- * ACTIVIDAD.cod_actividad solo puede estar en CLASE.cod_actividad si para la instancia correspondiente 
- * en PUEDE-DESARROLLARSE-EN, dada por la igualdad entre ACTIVIDAD.cod_actididad y ÁREA.cod_area, los 
- * valores de ÁREA.cod_area y CLASE.cod_area son iguales.
+ * La actividad que se realiza en una clase, debe poder desarrollarse en el área asignada a dicha clase.
  */
 delimiter $$ 
 CREATE TRIGGER clase_en_area 
@@ -252,10 +248,7 @@ BEGIN
 END $$
 
 /*
- * TITULAR.nro_socio sólo puede estar en PAGA_T.nro_socio si para la instancia correspondiente en 
- * SE_INSCRIBE_T, dada por la igualdad entre SE_INSCRIBE_T.id_clase y CLASE.id_clase, y para la instancia 
- * de CLASE, dada por la igualdad entre CLASE.cod_actividad y ACTIVIDAD.cod_actividad, el atributo 
- * ACTIVIDAD.arancelada posee el valor "true"
+ * Los titulares sólo pagan clases correspondientes a actividades aranceladas.
  */
 delimiter $$ 
 CREATE TRIGGER titular_paga_clase 
@@ -281,20 +274,17 @@ BEGIN
 END $$
 
 /*
- * (FAMILIAR.nro_socio, FAMILIAR.nro_orden) sólo puede estar en (PAGA_F.nro_socio, PAGA_F.nro_orden) 
- * si para la instancia correspondiente en SE_INSCRIBE_F, dada por la igualdad entre SE_INSCRIBE_F.id_clase 
- * y CLASE.id_clase, y para la instancia de CLASE, dada por la igualdad entre CLASE.cod_actividad y 
- * ACTIVIDAD.cod_actividad, el atributo ACTIVIDAD.tipo_costo posee el valor “arancelada”
+ * Los familiares sólo pagan clases correspondientes a actividades aranceladas.
  */
 
 /*
- * Dada una instancia de PROFESIONAL.legajo que está en DIRIGE.legajo y además DIRIGE.id_clase en 
- * CLASE.id_clase, y también una instancia de A-CARGO-DE.legajo igual a PROFESIONAL.legajo, 
- * A-CARGO-DE.cod_actividad debe ser igual a CLASE.cod_actividad
+ * Los profesionales que dirigen una clase, deben estar capacitados para la actividad 
+ * correspondiente a la clase.
  */
 
 /*
- * El dominio del atributo ACTIVIDAD.tipo_costo solo puede tomar los valores “arancelada” o “gratuita”
+ * Los titulares sólo se pueden inscribir a clases asociadas a actividades que coincidan 
+ * con la categoría a la que pertenece.
  */
 
 /*
@@ -305,10 +295,8 @@ END $$
  */
 
 /*
- * (FAMILIAR.nro_socio,FAMILIAR.nro_orden) sólo puede estar en (SE-INSCRIBE.nro_socio, 
- * SE-INSCRIBE.nro_orden) si para la instancia correspondiente en SE-INSCRIBE, dada por la igualdad 
- * entre SE-INSCRIBE.id_clase y CLASE.id_clase, y para la instancia de CLASE, dada por la igualdad entre 
- * CLASE.cod_actividad y ACTIVIDAD.cod_actividad, FAMILIAR.id_categoria es igual a ACTIVIDAD.id_categoría
+ * Los familiares sólo se pueden inscribir a clases asociadas a actividades que coincidan con la 
+ * categoría a la que pertenece.
  */
 
 delimiter ;
