@@ -239,7 +239,7 @@ BEGIN
     WHERE
         p.id_cuota = NEW.id_cuota;
     SET dummy = dummy + 1;
-    SET NEW.nro_orden = CONCAT('pago', dummy);
+    SET NEW.nro_pago = CONCAT('pago', dummy);
 END $$
 
 /*
