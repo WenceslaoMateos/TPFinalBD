@@ -575,11 +575,17 @@ VALUES
     ('act006', 'tenis_integral', 'tenis', false, NULL),
     ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL);
 
+/*
+ * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
+ * gratuitas durante el año pasado.
+ */
 delimiter //
-CREATE PROCEDURE 'soc_act_gratuitas' ()
+CREATE PROCEDURE soc_act_gratuitas ()
     BEGIN
-        DECLARE Fecha DATE;
-        SELECT CURRENT_DATE() INTO fechaAux;
+        DECLARE anioAux int;
+        #cambie aca por que el nombre de la variable era diferente a como se usaba y volvia a calcular 
+        #algo innecesario, por eso ahora es entera (solo precisa el año)
+        SELECT YEAR(CURRENT_DATE()) INTO anioAux; 
         
         SELECT id_categoria, SUM(cant)
         FROM
@@ -591,7 +597,7 @@ CREATE PROCEDURE 'soc_act_gratuitas' ()
             (
                 SELECT *
                 FROM Clase c, Actividad a
-                WHERE YEAR(a.fecha_inscrip)=YEAR(fechaAUX) AND (a.id_categoria=t.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
+                WHERE YEAR(a.fecha_inscrip)=anioAux AND (a.id_categoria=t.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
                 NOT EXISTS
                 (
                     SELECT *
@@ -603,14 +609,14 @@ CREATE PROCEDURE 'soc_act_gratuitas' ()
 
             union all
 
-            /* cant socios por categoria */
+            /* cant familiares por categoria */
             SELECT f.id_categoria, COUNT(*) AS cant
             FROM Familiar f
             WHERE NOT EXISTS
             (
                 SELECT *
                 FROM Clase c, Actividad a
-                WHERE YEAR(a.fecha_inscrip)=YEAR(fechaAUX) AND (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
+                WHERE YEAR(a.fecha_inscrip)=anioAux AND (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
                 NOT EXISTS
                 (
                     SELECT *
@@ -619,9 +625,9 @@ CREATE PROCEDURE 'soc_act_gratuitas' ()
                 )
             )
             GROUP BY id_categoria
-        )
+        ) as sociosxcat #es necesario esto por que sino no compila
         GROUP BY id_categoria;
-    END
-//
+    END//
+
 
 delimiter ;
