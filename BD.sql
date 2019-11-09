@@ -194,7 +194,7 @@ BEGIN
     FROM
         Categoria c
     WHERE
-      c.id_categoria = NEW.id_categoria;
+        c.id_categoria = NEW.id_categoria;
     if (dummy <> 'vitalicio') AND (dummy <> 'mayor') then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No se puede insertar un Titular con una categoría que sea distinta de Mayor o Vitalicio';
@@ -216,7 +216,7 @@ BEGIN
     FROM
         Familiar f
     WHERE
-      f.nro_socio = NEW.nro_socio;
+        f.nro_socio = NEW.nro_socio;
     SET dummy = dummy + 1;
     SET NEW.nro_orden = CONCAT('orden', dummy);
 END $$
@@ -238,8 +238,8 @@ BEGIN
         Actividad ac, Puede_Desarrollarse_En pde, Area ar
     WHERE
         NEW.cod_actividad = ac.cod_actividad AND
-      ac.cod_actividad = pde.cod_actividad AND
-      pde.cod_area = ar.cod_area AND
+        ac.cod_actividad = pde.cod_actividad AND
+        pde.cod_area = ar.cod_area AND
         ar.cod_area = NEW.cod_area;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
@@ -264,8 +264,8 @@ BEGIN
         Se_Inscribe_t st, Clase c, Actividad a
     WHERE
         NEW.nro_socio = st.nro_socio AND
-      st.id_clase = c.id_clase AND
-      c.cod_actividad = a.cod_actividad AND
+        st.id_clase = c.id_clase AND
+        c.cod_actividad = a.cod_actividad AND
         a.arancelada = true;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
@@ -276,28 +276,110 @@ END $$
 /*
  * Los familiares sólo pagan clases correspondientes a actividades aranceladas.
  */
+delimiter $$ 
+CREATE TRIGGER familiar_paga_clase 
+BEFORE INSERT ON Paga_f
+FOR EACH ROW 
+BEGIN 
+    DECLARE dummy int;
+    SELECT
+        count(*)
+    INTO
+        dummy
+    FROM
+        Se_Inscribe_f sf, Clase c, Actividad a
+    WHERE
+        NEW.nro_socio = sf.nro_socio AND
+        NEW.nro_orden = sf.nro_orden AND
+        sf.id_clase = c.id_clase AND
+        c.cod_actividad = a.cod_actividad AND
+        a.arancelada = true;
+    if dummy = 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Un familiar no puede pagar una clase que no sea arancelada';
+    end if;
+END $$
 
 /*
  * Los profesionales que dirigen una clase, deben estar capacitados para la actividad 
  * correspondiente a la clase.
  */
+delimiter $$ 
+CREATE TRIGGER profesional_dirige_clase 
+BEFORE INSERT ON Dirige
+FOR EACH ROW 
+BEGIN 
+    DECLARE dummy int;
+    SELECT
+        count(*)
+    INTO
+        dummy
+    FROM
+        Clase c, Capacitado_para cp
+    WHERE
+        NEW.id_clase = c.id_clase AND
+        c.cod_actividad = cp.cod_actividad AND
+        cp.legajo = NEW.legajo;
+    if dummy = 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Un profesional solo puede dirigir clases para las que esta capacitado';
+    end if;
+END $$
 
 /*
  * Los titulares sólo se pueden inscribir a clases asociadas a actividades que coincidan 
  * con la categoría a la que pertenece.
  */
-
-/*
- * TITULAR.nro_socio sólo puede estar en SE-INSCRIBE.nro_socio si para la instancia 
- * correspondiente en SE-INSCRIBE, dada por la igualdad entre SE-INSCRIBE.id_clase y CLASE.id_clase, 
- * y para la instancia de CLASE, dada por la igualdad entre CLASE.cod_actividad y ACTIVIDAD.cod_actividad, 
- * TITULAR.id_categoria es igual a ACTIVIDAD.id_categoría
- */
+delimiter $$ 
+CREATE TRIGGER titular_se_inscribe 
+BEFORE INSERT ON Se_Inscribe_t
+FOR EACH ROW 
+BEGIN 
+    DECLARE dummy int;
+    SELECT
+        count(*)
+    INTO
+        dummy
+    FROM
+        Titular t, Clase c, Actividad a
+    WHERE
+        NEW.nro_socio = t.nro_socio AND
+        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
+        a.cod_actividad = c.cod_actividad AND
+        c.id_clase = NEW.id_clase;
+    if dummy = 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Un titular solo se puede inscribir a una actividad dentro de su categoria';
+    end if;
+END $$
 
 /*
  * Los familiares sólo se pueden inscribir a clases asociadas a actividades que coincidan con la 
  * categoría a la que pertenece.
  */
+delimiter $$ 
+CREATE TRIGGER familiar_se_inscribe 
+BEFORE INSERT ON Se_Inscribe_f
+FOR EACH ROW 
+BEGIN 
+    DECLARE dummy int;
+    SELECT
+        count(*)
+    INTO
+        dummy
+    FROM
+        Familiar f, Clase c, Actividad a
+    WHERE
+        NEW.nro_socio = f.nro_socio AND
+        NEW.nro_orden = f.nro_orden AND
+        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
+        a.cod_actividad = c.cod_actividad AND
+        c.id_clase = NEW.id_clase;
+    if dummy = 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad dentro de su categoria';
+    end if;
+END $$
 
 delimiter ;
 
