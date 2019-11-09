@@ -63,7 +63,7 @@ CREATE TABLE Area(
 
 CREATE TABLE Actividad(
     cod_actividad varchar(15) NOT NULL,
-    descripción varchar(50),
+    descripcion varchar(50),
     nombre varchar(20) NOT NULL,
     arancelada boolean NOT NULL,
     id_categoria varchar(15),
@@ -198,8 +198,8 @@ BEGIN
     WHERE
       c.id_categoria = NEW.id_categoria;
     if (dummy <> 'vitalicio') AND (dummy <> 'mayor') then
-    SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'No se puede insertar un Titular con una categoría que sea distinta de Mayor o Vitalicio';
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se puede insertar un Titular con una categoría que sea distinta de Mayor o Vitalicio';
     end if;
 END $$
 
@@ -219,7 +219,7 @@ BEGIN
         Familiar f
     WHERE
       f.nro_socio = NEW.nro_socio;
-    SET dummy = dummy+1;
+    SET dummy = dummy + 1;
     SET NEW.nro_orden = CONCAT('orden', dummy);
 END $$
 
@@ -246,8 +246,8 @@ BEGIN
       pde.cod_area = ar.cod_area AND
       ar.cod_area = c.cod_area;
     if dummy = 0 then
-    SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
     end if;
 END $$
 
@@ -262,7 +262,7 @@ CREATE TRIGGER titular_paga_clase
 BEFORE INSERT ON Paga_t 
 FOR EACH ROW 
 BEGIN 
-    DECLARE dummy varchar(20);
+    DECLARE dummy int;
     SELECT
         count(*)
     INTO
@@ -275,8 +275,8 @@ BEGIN
       c.cod_actividad = a.cod_actividad AND
       a.tipo_costo = true;
     if dummy = 0 then
-    SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
     end if;
 END $$
 
@@ -324,75 +324,61 @@ VALUES
     ('cat003', 'vitalicio', '0');
 
 INSERT INTO 
-    Titular(
-      nro_socio,id_categoria,nombre,apellido,fecha_nac,email,celular,telefono,domicilio)
+    Titular(nro_socio, id_categoria, nombre, apellido, fecha_nac, email, celular, telefono, domicilio)
 VALUES
-    ('soc001','cat002','Martin','Belcic','1996-11-01','martin.belcic@gmail.com','2236888888','4723339','Alberti 2565');
-    ('soc002','cat003','Martina','Alcalde','1996-06-05','martinaalc@gmail.com','2235808313','4653831','Roca 671');
-    ('soc003','cat003','Susana','Vega','1975-11-15','holasusana@gmail.com','2234999555','4787952','Rivas 4019');
-    ('soc004','cat002','Eugenia','Flores','1989-02-26','floreeuge@gmail.com','2235424143','4512968','San Lorenzo 1549');
-    ('soc005','cat002','Franco','Rosso','1986-01-01','francorosso@gmail.com','2236889898','4942536','San Luis 689');
-    ('soc006','cat003','Juan Ignacio','Aguila','1993-12-08','juanignacioaguila@gmail.com','2234512152','4724745','Almafuerte 1770');
-    ('soc007','cat003','Julio','Ely','1990-05-05','julioely@gmail.com','2235232629','4642128','Tres Arroyos 2820');
-    ('soc008','cat002','Fatima','Carreras','1996-09-01','faticarreras@gmail.com','2234789632','4642055','Avellaneda 652');
-    ('soc009','cat003','Manuela','Onofri','1997-08-06','manuelaonofri@gmail.com','2235252526','4789632','Alberti 1485');
-    ('soc010','cat002','Blas','Lopez','1980-02-18','elblas@gmail.com','2235484523','4512326','Junin 3698');
-    ('soc011','cat002','Rosario','Iturria','1966-07-17','rositurria@gmail.com','2236787796','4518982','San Juan 4000');
-    ('soc012','cat003','Hugo','Ferraris','1968-05-10','hugoferraris@gmail.com','2236124569','4511826','Peña 265');
-    ('soc013','cat002','Marcos','Piña','1996-03-14','marcospiña@gmail.com','2236789632','4547879','Genova 2590');
+    ('soc001', 'cat002', 'Martin','Belcic','1996-11-01','martin.belcic@gmail.com','2236888888','4723339','Alberti 2565'),
+    ('soc002', 'cat003', 'Martina','Alcalde','1996-06-05','martinaalc@gmail.com','2235808313','4653831','Roca 671'),
+    ('soc003', 'cat003', 'Susana','Vega','1975-11-15','holasusana@gmail.com','2234999555','4787952','Rivas 4019'),
+    ('soc004', 'cat002', 'Eugenia','Flores','1989-02-26','floreeuge@gmail.com','2235424143','4512968','San Lorenzo 1549'),
+    ('soc005', 'cat002', 'Franco','Rosso','1986-01-01','francorosso@gmail.com','2236889898','4942536','San Luis 689'),
+    ('soc006', 'cat003', 'Juan Ignacio','Aguila','1993-12-08','juanignacioaguila@gmail.com','2234512152','4724745','Almafuerte 1770'),
+    ('soc007', 'cat003', 'Julio','Ely','1990-05-05','julioely@gmail.com','2235232629','4642128','Tres Arroyos 2820'),
+    ('soc008', 'cat002', 'Fatima','Carreras','1996-09-01','faticarreras@gmail.com','2234789632','4642055','Avellaneda 652'),
+    ('soc009', 'cat003', 'Manuela','Onofri','1997-08-06','manuelaonofri@gmail.com','2235252526','4789632','Alberti 1485'),
+    ('soc010', 'cat002', 'Blas','Lopez','1980-02-18','elblas@gmail.com','2235484523','4512326','Junin 3698'),
+    ('soc011', 'cat002', 'Rosario','Iturria','1966-07-17','rositurria@gmail.com','2236787796','4518982','San Juan 4000'),
+    ('soc012', 'cat003', 'Hugo','Ferraris','1968-05-10','hugoferraris@gmail.com','2236124569','4511826','Peña 265'),
+    ('soc013', 'cat002', 'Marcos','Piña','1996-03-14','marcospiña@gmail.com','2236789632','4547879','Genova 2590');
 
-
-
-INSERT INTO Familiar(nro_socio, nro_orden,id_categoria,nombre,apellido,fecha_nac,email,celular)
+INSERT INTO Familiar(nro_socio, id_categoria,nombre,apellido,fecha_nac,email,celular)
 VALUES
-('soc001', '01','cat002', 'Martin', 'Belcic', '1998-10-02', 'juanbelcic@gmail.com', '2236089852'),
-('soc001', '02','cat002', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
-('soc002', '01','cat002', 'Amado', 'Benigno', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
-('soc003', '02','cat001', 'Bernabe', 'Gutierre', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
-('soc004', '03','cat001', 'Carla', 'Vito', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
-('soc004', '03','cat001', 'Emiliano', 'Alfredo', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
-('soc005', '02','cat002', 'Federico', 'Hugo', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
-('soc005', '02','cat002', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
-('soc005', '01','cat002', 'Rogelio', 'Mireia', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
-('soc006', '01','cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
-('soc006', '02','cat002', 'Clarissa', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
-('soc007', '03','cat002', 'Jose', 'Xochitl', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
-('soc008', '01','cat001', 'Luz', 'Alfredo', '2014-02-20', 'lualfredo@hotmail.com', '2239592945'),
-('soc009', '01','cat002', 'Pilar', 'Reyes', '1964-02-18', 'pilireyesc@gmail.com', '2238512564'),
-('soc010', '01','cat002', 'Maria', 'Natalia', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
-('soc010', '02','cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
-('soc011', '01','cat002', 'Samuel', 'Lucía', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
-('soc011', '03','cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
-('soc012', '02','cat001', 'Oscar', 'Vasco', '2011-04-30', 'oscivasco11@gmail.com', '2237898469'),
-('soc012', '04','cat001', 'Oscar', 'De Niro', '2000-12-21', 'oacarDeNir00@hotmail.com', '2238681295'),
-('soc013', '01','cat001', 'Emiliano', 'Constanza', '2005-03-12', 'emilconstanza05@gmail.com', '2236915380');
+    ('soc001', 'cat002', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
+    ('soc002', 'cat002', 'Amado', 'Benigno', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
+    ('soc003', 'cat001', 'Bernabe', 'Gutierre', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
+    ('soc004', 'cat001', 'Carla', 'Vito', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
+    ('soc004', 'cat001', 'Emiliano', 'Alfredo', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
+    ('soc005', 'cat002', 'Federico', 'Hugo', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
+    ('soc005', 'cat002', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
+    ('soc005', 'cat002', 'Rogelio', 'Mireia', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
+    ('soc006', 'cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
+    ('soc006', 'cat002', 'Clarissa', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
+    ('soc007', 'cat002', 'Jose', 'Xochitl', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
+    ('soc008', 'cat001', 'Luz', 'Alfredo', '2014-02-20', 'lualfredo@hotmail.com', '2239592945'),
+    ('soc009', 'cat002', 'Pilar', 'Reyes', '1964-02-18', 'pilireyesc@gmail.com', '2238512564'),
+    ('soc010', 'cat002', 'Maria', 'Natalia', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
+    ('soc010', 'cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
+    ('soc011', 'cat002', 'Samuel', 'Lucía', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
+    ('soc011', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
+    ('soc012', 'cat001', 'Oscar', 'Vasco', '2011-04-30', 'oscivasco11@gmail.com', '2237898469'),
+    ('soc012', 'cat001', 'Oscar', 'De Niro', '2000-12-21', 'oacarDeNir00@hotmail.com', '2238681295'),
+    ('soc013', 'cat001', 'Emiliano', 'Constanza', '2005-03-12', 'emilconstanza05@gmail.com', '2236915380');
 
-
-
-_______________________________________________________________________________________________________________________
 INSERT INTO
-    Profesional(
-        legajo,
-        nombre,
-        apellido,
-        dni,
-        fecha_nac,
-        especializacion
-    )
+    Profesional(legajo, nombre, apellido, dni, fecha_nac, especializacion)
 VALUES
-    ('454553','Matias','Suarez','16589236','1978-02-10','tenis'),
-    ('478961','Juana','Lopez','19589274','1983-06-12','edfisica'),
-    ('785963','Marina','Fernandez','35587885','1992-09-16','futbol'),
-    ('157896','Julio','Martinez','42558971','1998-08-10','hockey'),
-    ('478163','Guillermina','Villa','32589657','1988-05-02','tenis'),
-    ('147852','Fernando','Gomez','39174589','1995-02-06','futbol'),
-    ('454123','Mateo','Mariani','29885741','1989-03-11','edfisica'),
-    ('851173','Karen','Juarez','39887414','1996-12-20','edfisica'),
-    ('589633','Mirta','Hernandez','30188941','1985-07-24','natacion'),
-    ('474583','Diego','Rios','38182236','1980-10-30','natacion');
-______________
+    ('prof454553','Matias','Suarez','16589236','1978-02-10','tenis'),
+    ('prof478961','Juana','Lopez','19589274','1983-06-12','edfisica'),
+    ('prof785963','Marina','Fernandez','35587885','1992-09-16','futbol'),
+    ('prof157896','Julio','Martinez','42558971','1998-08-10','hockey'),
+    ('prof478163','Guillermina','Villa','32589657','1988-05-02','tenis'),
+    ('prof147852','Fernando','Gomez','39174589','1995-02-06','futbol'),
+    ('prof454123','Mateo','Mariani','29885741','1989-03-11','edfisica'),
+    ('prof851173','Karen','Juarez','39887414','1996-12-20','edfisica'),
+    ('prof589633','Mirta','Hernandez','30188941','1985-07-24','natacion'),
+    ('prof474583','Diego','Rios','38182236','1980-10-30','natacion');
+
+/*
 #hay que insertar titulares para que se puedan inscribir en una clase
-_______________
 INSERT INTO
     Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
 VALUES
@@ -408,7 +394,9 @@ VALUES
     ('soc010', 'cla005','2017-01-02'),
     ('soc011', 'cla004','2018-04-05'),
     ('soc012', 'cla005','2019-01-04');
-_______________
+*/
+
+/*
 INSERT INTO
     Puede_Desarrollarse_En(cod_actividad, cod_area)
 VALUES
@@ -419,81 +407,81 @@ VALUES
     ('act004', 'area004'),
     ('act005', 'area003'),
     ('act006', 'area006'),
-    ('act007', 'area003');
-________________
+    ('act007', 'area003');*/
+
+/*esta mal, paga_t no referencia a cod_actividad, referencia a una clse
 INSERT INTO 
   Paga_t(nro_socio, cod_actividad, fecha, monto)
 VALUES
-  ('soc001', 'act004', '2019-10-20', '1500'),
-  ('soc001', 'act005', '2018-11-28', '800'),
-  ('soc002', 'act004', '2018-09-21', '1500'),
-  ('soc003', 'act007', '2019-10-10', '650'),
-  ('soc004', 'act007', '2018-08-11', '150'),
-  ('soc005', 'act004', '2017-07-15', '1000'),
-  ('soc005', 'act005', '2017-01-31', '800'),
-  ('soc005', 'act007', '2017-01-30', '650'),
-  ('soc004', 'act005', '2016-03-02', '500'),
-  ('soc006', 'act004', '2018-11-07', '1500'),
-  ('soc006', 'act007', '2019-04-06', '600'),
-  ('soc007', 'act005', '2019-02-07', '800'),
-  ('soc008', 'act004', '2019-02-15', '700'),
-  ('soc009', 'act004', '2017-01-17', '1100'),
-  ('soc010', 'act005', '2016-10-19', '200'),
-  ('soc010', 'act007', '2018-08-27', '500'),
-  ('soc011', 'act007', '2018-08-24', '650'),
-  ('soc011', 'act005', '2019-09-21', '700'),
-  ('soc012', 'act004', '2019-04-14', '100'),
-  ('soc012', 'act007', '2018-06-17', '300'),
-  ('soc013', 'act004', '2019-07-03', '1500');
+    ('soc001', 'act004', '2019-10-20', '1500'),
+    ('soc001', 'act005', '2018-11-28', '800'),
+    ('soc002', 'act004', '2018-09-21', '1500'),
+    ('soc003', 'act007', '2019-10-10', '650'),
+    ('soc004', 'act007', '2018-08-11', '150'),
+    ('soc005', 'act004', '2017-07-15', '1000'),
+    ('soc005', 'act005', '2017-01-31', '800'),
+    ('soc005', 'act007', '2017-01-30', '650'),
+    ('soc004', 'act005', '2016-03-02', '500'),
+    ('soc006', 'act004', '2018-11-07', '1500'),
+    ('soc006', 'act007', '2019-04-06', '600'),
+    ('soc007', 'act005', '2019-02-07', '800'),
+    ('soc008', 'act004', '2019-02-15', '700'),
+    ('soc009', 'act004', '2017-01-17', '1100'),
+    ('soc010', 'act005', '2016-10-19', '200'),
+    ('soc010', 'act007', '2018-08-27', '500'),
+    ('soc011', 'act007', '2018-08-24', '650'),
+    ('soc011', 'act005', '2019-09-21', '700'),
+    ('soc012', 'act004', '2019-04-14', '100'),
+    ('soc012', 'act007', '2018-06-17', '300'),
+    ('soc013', 'act004', '2019-07-03', '1500');*/
     
-______________
+    /*
 INSERT INTO 
-  Paga_f(nro_socio,nro_orden,cod_actividad,fecha,monto)
+  Paga_f(nro_socio, nro_orden, cod_actividad, fecha, monto)
 VALUES
-  ('soc001', '01', 'act004', '2019-10-20', '1500'),
-  ('soc001', '02', 'act005', '2018-11-28', '800'),
-  ('soc002', '01', 'act004', '2018-09-21', '1500'),
-  ('soc003', '02', 'act007', '2019-10-10', '650'),
-  ('soc004', '03', 'act007', '2018-08-11', '150'),
-  ('soc005', '02', 'act004', '2017-07-15', '1000'),
-  ('soc005', '02', 'act005', '2017-01-31', '800'),
-  ('soc005', '01', 'act007', '2017-01-30', '650'),
-  ('soc004', '03', 'act005', '2016-03-02', '500'),
-  ('soc006', '01', 'act004', '2018-11-07', '1500'),
-  ('soc006', '02', 'act007', '2019-04-06', '600'),
-  ('soc007', '03', 'act005', '2019-02-07', '800'),
-  ('soc008', '01', 'act004', '2019-02-15', '700'),
-  ('soc009', '01', 'act004', '2017-01-17', '1100'),
-  ('soc010', '01', 'act005', '2016-10-19', '200'),
-  ('soc010', '02', 'act007', '2018-08-27', '500'),
-  ('soc011', '01', 'act007', '2018-08-24', '650'),
-  ('soc011', '03', 'act005', '2019-09-21', '700'),
-  ('soc012', '02', 'act004', '2019-04-14', '100'),
-  ('soc012', '04', 'act007', '2018-06-17', '300'),
-  ('soc013', '01', 'act004', '2019-07-03', '1500');
+    ('soc001', 'orden1', 'act004', '2019-10-20', '1500'),
+    ('soc001', 'orden2', 'act005', '2018-11-28', '800'),
+    ('soc002', 'orden1', 'act004', '2018-09-21', '1500'),
+    ('soc003', 'orden2', 'act007', '2019-10-10', '650'),
+    ('soc004', 'orden3', 'act007', '2018-08-11', '150'),
+    ('soc005', 'orden2', 'act004', '2017-07-15', '1000'),
+    ('soc005', 'orden2', 'act005', '2017-01-31', '800'),
+    ('soc005', 'orden1', 'act007', '2017-01-30', '650'),
+    ('soc004', 'orden3', 'act005', '2016-03-02', '500'),
+    ('soc006', 'orden1', 'act004', '2018-11-07', '1500'),
+    ('soc006', 'orden2', 'act007', '2019-04-06', '600'),
+    ('soc007', 'orden3', 'act005', '2019-02-07', '800'),
+    ('soc008', 'orden1', 'act004', '2019-02-15', '700'),
+    ('soc009', 'orden1', 'act004', '2017-01-17', '1100'),
+    ('soc010', 'orden1', 'act005', '2016-10-19', '200'),
+    ('soc010', 'orden2', 'act007', '2018-08-27', '500'),
+    ('soc011', 'orden1', 'act007', '2018-08-24', '650'),
+    ('soc011', 'orden3', 'act005', '2019-09-21', '700'),
+    ('soc012', 'orden2', 'act004', '2019-04-14', '100'),
+    ('soc012', 'orden4', 'act007', '2018-06-17', '300'),
+    ('soc013', 'orden1', 'act004', '2019-07-03', '1500');*/
 
-_____
 INSERT INTO 
-Area(cod_area,ubicacion,capacidad,estado)
+    Area(cod_area, ubicacion, capacidad, estado)
 VALUES 
-('area006','cancha_de_tenis','20','apta'),
-('area002','pileta','40','apta'),
-('area003','cancha_de_hockey','40','apta'),
-('area004','cancha_de_futbol','40','apta'),
-('area005','gimnasio_1','60','apta'),
-('area001','gimnasio_2','40','en_reparacion');
+    ('area006', 'cancha_de_tenis', '20', 'apta'),
+    ('area002', 'pileta', '40', 'apta'),
+    ('area003', 'cancha_de_hockey', '40', 'apta'),
+    ('area004', 'cancha_de_futbol', '40', 'apta'),
+    ('area005', 'gimnasio_1', '60', 'apta'),
+    ('area001', 'gimnasio_2', '40', 'en_reparacion');
 
-
+# 4,5 y 7 aranceladas
 INSERT INTO
-Actividad(cod_actividad,descripcion,nombre,arancelada,id_categoria)
-VALUES 4,5 y 7 aranceladas
-('act001','clase_de_gimnasia_integral','gimnasia','false',NULL),
-('act002','clase_de_edfisica_infantil','ed_fisica','false','cat001'),
-('act003','clase_de_pileta_infantil','pileta_infantil','false','cat001'),
-('act004','futbol_integral','futbol','true',NULL),
-('act005','hockey_femenino_integral','hockey_femenino','true',NULL),
-('act006','tenis_integral','tenis','false',NULL),
-('act007','hockey_masculino_integral','hockey_masculino','true',NULL);
+    Actividad(cod_actividad, descripcion, nombre, arancelada, id_categoria)
+VALUES 
+    ('act001', 'clase_de_gimnasia_integral', 'gimnasia', false, NULL),
+    ('act002', 'clase_de_edfisica_infantil', 'ed_fisica', false, 'cat001'),
+    ('act003', 'clase_de_pileta_infantil', 'pileta_infantil', false, 'cat001'),
+    ('act004', 'futbol_integral', 'futbol', true, NULL),
+    ('act005', 'hockey_femenino_integral', 'hockey_femenino', true, NULL),
+    ('act006', 'tenis_integral', 'tenis', false, NULL),
+    ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL);
 
 delimiter //
 CREATE PROCEDURE 'soc_act_gratuitas' ()
@@ -542,5 +530,6 @@ CREATE PROCEDURE 'soc_act_gratuitas' ()
         )
         GROUP BY id_categoria;
     END
-
 //
+
+delimiter ;
