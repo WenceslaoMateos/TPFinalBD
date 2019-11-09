@@ -431,7 +431,8 @@ VALUES
     ('soc012', 'cat003', 'Hugo','Ferraris','1968-05-10','hugoferraris@gmail.com','2236124569','4511826','Peña 265'),
     ('soc013', 'cat002', 'Marcos','Piña','1996-03-14','marcospiña@gmail.com','2236789632','4547879','Genova 2590');
 
-INSERT INTO Familiar(nro_socio, id_categoria,nombre,apellido,fecha_nac,email,celular)
+INSERT INTO 
+    Familiar(nro_socio, id_categoria,nombre,apellido,fecha_nac,email,celular)
 VALUES
     ('soc001', 'cat002', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
     ('soc002', 'cat002', 'Amado', 'Benigno', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
