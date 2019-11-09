@@ -28,7 +28,6 @@ CREATE TABLE Titular(
     FOREIGN KEY(id_categoria) REFERENCES Categoria(id_categoria) ON DELETE CASCADE
 );
 
-/* hay que tener cuidado por que aca el numero de orden hay que ir aumentandolo a mano*/
 CREATE TABLE Familiar(
     nro_socio varchar(15) NOT NULL,
     nro_orden varchar(15) NOT NULL,
@@ -56,11 +55,12 @@ CREATE TABLE Profesional(
 CREATE TABLE Area(
     cod_area varchar(15) NOT NULL,
     ubicacion varchar(20) NOT NULL,
-    capacidad int NOT NULL,
+    capacidad int unsigned NOT NULL,
     estado varchar(20),
     PRIMARY KEY(cod_area)
 );
 
+#una categoria nula se considera general
 CREATE TABLE Actividad(
     cod_actividad varchar(15) NOT NULL,
     descripcion varchar(50),
@@ -82,28 +82,29 @@ CREATE TABLE Clase(
     FOREIGN KEY(cod_area) REFERENCES Area(cod_area) ON DELETE CASCADE
 );
 
+#tendriamos que los periodos acorde a que tipo son calcular los valores?
 CREATE TABLE Arancelada(
     cod_actividad varchar(15) NOT NULL,
-    costo float NOT NULL,
+    costo float unsigned NOT NULL,
     periodo_pago varchar(20) NOT NULL,
     PRIMARY KEY(cod_actividad)
 );
 
+#tendriamos que los periodos acorde a que tipo son calcular los valores?
 CREATE TABLE Cuota(
     id_cuota varchar(15) NOT NULL,
-    monto_base float(8),
+    monto_base float unsigned,
     periodo varchar(20) NOT NULL,
     PRIMARY KEY(id_cuota)
 );
 
-#mismo problema que familiar
 CREATE TABLE Pago(
     id_cuota varchar(15) NOT NULL,
     nro_socio varchar(15) NOT NULL,
     nro_pago varchar(15) NOT NULL,
-    monto_abonado float NOT NULL,
+    monto_abonado float unsigned NOT NULL,
+    monto_pagar float unsigned NOT NULL,
     fecha_vencimiento date NOT NULL,
-    monto_pagar float NOT NULL,
     fecha_pago date NOT NULL,
     PRIMARY KEY (nro_socio, nro_pago),
     FOREIGN KEY (id_cuota) REFERENCES Cuota(id_cuota) ON DELETE CASCADE,
@@ -141,7 +142,7 @@ CREATE TABLE Paga_t(
     nro_socio varchar(15) NOT NULL,
     id_clase varchar(15) NOT NULL,
     fecha date NOT NULL,
-    monto float NOT NULL,
+    monto float unsigned NOT NULL,
     PRIMARY KEY (nro_socio, id_clase),
     FOREIGN KEY (id_clase) REFERENCES Clase(id_clase) ON DELETE CASCADE,
     FOREIGN KEY (nro_socio) REFERENCES Titular(nro_socio) ON DELETE CASCADE
@@ -152,7 +153,7 @@ CREATE TABLE Paga_f(
     nro_orden varchar(15) NOT NULL,
     id_clase varchar(15) NOT NULL,
     fecha Date NOT NULL,
-    monto float(8) NOT NULL,
+    monto float unsigned NOT NULL,
     PRIMARY KEY (nro_socio, nro_orden, id_clase),
     FOREIGN KEY (id_clase) REFERENCES Clase(id_clase) ON DELETE CASCADE,
     FOREIGN KEY (nro_socio, nro_orden) REFERENCES Familiar(nro_socio, nro_orden) ON DELETE CASCADE
@@ -202,7 +203,7 @@ BEGIN
 END $$
 
 /*
- * Creacion del id del familiar cuando se agrega
+ * Creacion del nro de orden del familiar cuando se agrega
  */
 CREATE TRIGGER familiar_nro_orden 
 BEFORE INSERT ON Familiar 
@@ -219,6 +220,26 @@ BEGIN
         f.nro_socio = NEW.nro_socio;
     SET dummy = dummy + 1;
     SET NEW.nro_orden = CONCAT('orden', dummy);
+END $$
+
+/*
+ * Creacion del numero de pago cuando se agrega
+ */
+CREATE TRIGGER nuevo_pago 
+BEFORE INSERT ON Pago 
+FOR EACH ROW 
+BEGIN 
+    DECLARE dummy int;
+    SELECT
+        count(p.nro_pago)
+    INTO
+        dummy
+    FROM
+        Pago p
+    WHERE
+        p.id_cuota = NEW.id_cuota;
+    SET dummy = dummy + 1;
+    SET NEW.nro_orden = CONCAT('pago', dummy);
 END $$
 
 /*
