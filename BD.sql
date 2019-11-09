@@ -124,7 +124,7 @@ CREATE TABLE Se_Inscribe_f(
     nro_orden varchar(15) NOT NULL,
     id_clase varchar(15) NOT NULL,
     fecha_inscrip date NOT NULL,
-    PRIMARY KEY(nro_socio, id_clase),
+    PRIMARY KEY(nro_socio, nro_orden, id_clase),
     FOREIGN KEY(nro_socio, nro_orden) REFERENCES Familiar(nro_socio, nro_orden) ON DELETE CASCADE,
     FOREIGN KEY(id_clase) REFERENCES Clase(id_clase) ON DELETE CASCADE
 );
@@ -239,12 +239,12 @@ BEGIN
     INTO
         dummy
     FROM
-        Clase c, Actividad ac, Puede_Desarrollarse_En pde, Area ar
+        Actividad ac, Puede_Desarrollarse_En pde, Area ar
     WHERE
-      c.cod_actividad = ac.cod_actividad AND
+        NEW.cod_actividad = ac.cod_actividad AND
       ac.cod_actividad = pde.cod_actividad AND
       pde.cod_area = ar.cod_area AND
-      ar.cod_area = c.cod_area;
+        ar.cod_area = NEW.cod_area;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
@@ -268,15 +268,15 @@ BEGIN
     INTO
         dummy
     FROM
-        Titular t, Se_Inscribe_t st, Clase c, Actividad a
+        Se_Inscribe_t st, Clase c, Actividad a
     WHERE
-      t.nro_socio = st.nro_socio AND
+        NEW.nro_socio = st.nro_socio AND
       st.id_clase = c.id_clase AND
       c.cod_actividad = a.cod_actividad AND
-      a.tipo_costo = true;
+        a.arancelada = true;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
+        SET MESSAGE_TEXT = 'Un titular no puede pagar una clase que no sea arancelada';
     end if;
 END $$
 
