@@ -726,7 +726,7 @@ CREATE PROCEDURE 'soc_deudores' ()
         DECLARE anioAux int;
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
-        SELECT t.*, SUM(deuda), cant_Familiares(t.nro_socio) AS fam
+        SELECT t.*, SUM(deuda), exec cant_Familiares(t.nro_socio) AS fam
         FROM Titular t, Pago p, Cuota c
         WHERE p.nro_socio=t.nro_socio AND p.id_cuota=c.id_cuota AND YEAR(c.fecha_cuota)=anioAux AND p.fecha_pago < p.fecha_vencimiento
         GROUP BY t.*, c.id_cuota
