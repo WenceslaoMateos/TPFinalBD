@@ -703,7 +703,7 @@ CREATE PROCEDURE soc_act_gratuitas ()
             (
                 SELECT *
                 FROM Clase c, Actividad a
-                WHERE YEAR(a.fecha_inscrip)=anioAux AND (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
+                WHERE YEAR(a.fecha_inscrip)=anioAux AND (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND a.arancelada=false AND c.cod_actividad=a.cod_actividad AND
                 NOT EXISTS
                 (
                     SELECT *
