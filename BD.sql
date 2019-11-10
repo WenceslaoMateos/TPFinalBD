@@ -720,5 +720,26 @@ CREATE PROCEDURE soc_act_gratuitas ()
  * Los datos del socio titular de grupos familiares que adeuden cuotas sociales del año en
  * curso, junto con el importe total adeudado, y la cantidad de integrantes del grupo.
  */
+delimiter //
+CREATE PROCEDURE 'soc_deudores' ()
+    BEGIN
+        DECLARE anioAux int;
+        SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
+        SELECT t.*, SUM(deuda), cant_Familiares(t.nro_socio) AS fam
+        FROM Titular t, Pago p, Cuota c
+        WHERE p.nro_socio=t.nro_socio AND p.id_cuota=c.id_cuota AND YEAR(c.fecha_cuota)=anioAux AND p.fecha_pago < p.fecha_vencimiento
+        GROUP BY t.*, c.id_cuota
+        HAVING SUM(p.monto_abonado)<p.monto_pagar AND (p.monto_pagar - SUM(p.monto_abonado)) AS deuda
+    END
+//
+                                                                           
+delimiter //
+CREATE PROCEDURE 'cant_Familiares' (IN nroSoc varchar)
+    BEGIN
+        SELECT COUNT(*) 
+        FROM Titular t, Familiar f
+        WHERE t.nro_socio=nroSoc AND t.nro_socio=f.nro_socio;
+    END 
+//
 delimiter ;
