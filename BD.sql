@@ -458,37 +458,18 @@ VALUES
 INSERT INTO
     Profesional(legajo, nombre, apellido, dni, fecha_nac, especializacion)
 VALUES
-    ('prof454553','Matias','Suarez','16589236','1978-02-10','tenis'),
-    ('prof478961','Juana','Lopez','19589274','1983-06-12','edfisica'),
-    ('prof785963','Marina','Fernandez','35587885','1992-09-16','futbol'),
-    ('prof157896','Julio','Martinez','42558971','1998-08-10','hockey'),
-    ('prof478163','Guillermina','Villa','32589657','1988-05-02','tenis'),
-    ('prof147852','Fernando','Gomez','39174589','1995-02-06','futbol'),
-    ('prof454123','Mateo','Mariani','29885741','1989-03-11','edfisica'),
-    ('prof851173','Karen','Juarez','39887414','1996-12-20','edfisica'),
-    ('prof589633','Mirta','Hernandez','30188941','1985-07-24','natacion'),
-    ('prof474583','Diego','Rios','38182236','1980-10-30','natacion');
+    ('454553','Matias','Suarez','16589236','1978-02-10','tenis'),
+    ('478961','Juana','Lopez','19589274','1983-06-12','edfisica'),
+    ('785963','Marina','Fernandez','35587885','1992-09-16','futbol'),
+    ('157896','Julio','Martinez','42558971','1998-08-10','hockey'),
+    ('478163','Guillermina','Villa','32589657','1988-05-02','tenis'),
+    ('147852','Fernando','Gomez','39174589','1995-02-06','futbol'),
+    ('454123','Mateo','Mariani','29885741','1989-03-11','edfisica'),
+    ('851173','Karen','Juarez','39887414','1996-12-20','edfisica'),
+    ('589633','Mirta','Hernandez','30188941','1985-07-24','natacion'),
+    ('474583','Diego','Rios','38182236','1980-10-30','natacion');
 
-/*
-#hay que insertar titulares para que se puedan inscribir en una clase
-INSERT INTO
-    Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
-VALUES
-    ('soc001', 'cla001','2019-10-10'),
-    ('soc002', 'cla003','2018-12-12'),
-    ('soc003', 'cla001','2019-11-01'),
-    ('soc004', 'cla001','2019-06-01'),
-    ('soc005', 'cla002','2019-01-02'),
-    ('soc006', 'cla002','2019-07-01'),
-    ('soc007', 'cla001','2018-06-03'),
-    ('soc008', 'cla003','2018-11-02'),
-    ('soc009', 'cla006','2019-05-15'),
-    ('soc010', 'cla005','2017-01-02'),
-    ('soc011', 'cla004','2018-04-05'),
-    ('soc012', 'cla005','2019-01-04');
-*/
 
-/*
 INSERT INTO
     Puede_Desarrollarse_En(cod_actividad, cod_area)
 VALUES
@@ -499,59 +480,94 @@ VALUES
     ('act004', 'area004'),
     ('act005', 'area003'),
     ('act006', 'area006'),
-    ('act007', 'area003');*/
+    ('act007', 'area003');
 
-/*esta mal, paga_t no referencia a cod_actividad, referencia a una clse
-INSERT INTO 
-  Paga_t(nro_socio, cod_actividad, fecha, monto)
+
+INSERT INTO
+    Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
 VALUES
-    ('soc001', 'act004', '2019-10-20', '1500'),
-    ('soc001', 'act005', '2018-11-28', '800'),
-    ('soc002', 'act004', '2018-09-21', '1500'),
-    ('soc003', 'act007', '2019-10-10', '650'),
-    ('soc004', 'act007', '2018-08-11', '150'),
-    ('soc005', 'act004', '2017-07-15', '1000'),
-    ('soc005', 'act005', '2017-01-31', '800'),
-    ('soc005', 'act007', '2017-01-30', '650'),
-    ('soc004', 'act005', '2016-03-02', '500'),
-    ('soc006', 'act004', '2018-11-07', '1500'),
-    ('soc006', 'act007', '2019-04-06', '600'),
-    ('soc007', 'act005', '2019-02-07', '800'),
-    ('soc008', 'act004', '2019-02-15', '700'),
-    ('soc009', 'act004', '2017-01-17', '1100'),
-    ('soc010', 'act005', '2016-10-19', '200'),
-    ('soc010', 'act007', '2018-08-27', '500'),
-    ('soc011', 'act007', '2018-08-24', '650'),
-    ('soc011', 'act005', '2019-09-21', '700'),
-    ('soc012', 'act004', '2019-04-14', '100'),
-    ('soc012', 'act007', '2018-06-17', '300'),
-    ('soc013', 'act004', '2019-07-03', '1500');*/
+    ('soc001', 'cla001','2019-10-10'),
+    ('soc002', 'cla003','2018-12-12'),
+    ('soc003', 'cla001','2019-11-01'),
+    ('soc003', 'cla003','2019-11-01'),
+    ('soc001', 'cla004','2019-10-10'),
+    ('soc002', 'cla005','2018-12-12'),
+    ('soc003', 'cla004','2019-11-01'),
+    ('soc003', 'cla005','2019-11-01'),
+    ('soc004', 'cla006','2019-06-01'),
+    ('soc005', 'cla002','2019-01-02'),
+    ('soc006', 'cla002','2019-07-01'),
+    ('soc007', 'cla007','2018-06-03'),
+    ('soc008', 'cla003','2018-11-02'),
+    ('soc009', 'cla006','2019-05-15'),
+    ('soc010', 'cla005','2017-01-02'),
+    ('soc011', 'cla004','2018-04-05'),
+    ('soc012', 'cla005','2019-01-04');
+    ('soc012', 'cla007','2019-01-04');
+
+
+
+INSERT INTO 
+  Paga_t(nro_socio, id_clase, fecha, monto)
+VALUES
+    ('soc001', 'cla004','2019-10-10','1500'),
+    ('soc002', 'cla005','2018-12-12','800'),
+    ('soc003', 'cla004','2019-11-01','1000'),
+    ('soc003', 'cla005','2019-11-01','700'),
+    ('soc010', 'cla005', '2016-10-19','200'),
+    ('soc011', 'cla004', '2018-08-24','1050'),
+    ('soc012', 'cla005', '2019-04-14','800');
     
-    /*
-INSERT INTO 
-  Paga_f(nro_socio, nro_orden, cod_actividad, fecha, monto)
+
+INSERT INTO
+    Se_Inscribe_f(nro_socio,nro_orden, id_clase,fecha_inscrip)
 VALUES
-    ('soc001', 'orden1', 'act004', '2019-10-20', '1500'),
-    ('soc001', 'orden2', 'act005', '2018-11-28', '800'),
-    ('soc002', 'orden1', 'act004', '2018-09-21', '1500'),
-    ('soc003', 'orden2', 'act007', '2019-10-10', '650'),
-    ('soc004', 'orden3', 'act007', '2018-08-11', '150'),
-    ('soc005', 'orden2', 'act004', '2017-07-15', '1000'),
-    ('soc005', 'orden2', 'act005', '2017-01-31', '800'),
-    ('soc005', 'orden1', 'act007', '2017-01-30', '650'),
-    ('soc004', 'orden3', 'act005', '2016-03-02', '500'),
-    ('soc006', 'orden1', 'act004', '2018-11-07', '1500'),
-    ('soc006', 'orden2', 'act007', '2019-04-06', '600'),
-    ('soc007', 'orden3', 'act005', '2019-02-07', '800'),
-    ('soc008', 'orden1', 'act004', '2019-02-15', '700'),
-    ('soc009', 'orden1', 'act004', '2017-01-17', '1100'),
-    ('soc010', 'orden1', 'act005', '2016-10-19', '200'),
-    ('soc010', 'orden2', 'act007', '2018-08-27', '500'),
-    ('soc011', 'orden1', 'act007', '2018-08-24', '650'),
-    ('soc011', 'orden3', 'act005', '2019-09-21', '700'),
-    ('soc012', 'orden2', 'act004', '2019-04-14', '100'),
-    ('soc012', 'orden4', 'act007', '2018-06-17', '300'),
-    ('soc013', 'orden1', 'act004', '2019-07-03', '1500');*/
+    ('soc001','01', 'cla004','2019-10-10'),
+    ('soc001','02', 'cla005','2019-09-10'),
+    ('soc002','01', 'cla004','2018-12-12'),
+    ('soc003','02', 'cla007','2019-11-01'),
+    ('soc003','03', 'cla001','2019-11-01'),
+    ('soc003','03', 'cla008','2019-11-01'),
+    ('soc004','03', 'cla007','2018-06-01'),
+    ('soc004','01', 'cla002','2018-10-21'),
+    ('soc004','01', 'cla003','2018-06-29'),
+    ('soc005','02', 'cla004','2017-07-15'),
+    ('soc005','01', 'cla007','2017-01-20'),
+    ('soc005','02', 'cla002','2019-01-02'),
+    ('soc006','01', 'cla004','2019-07-01'),
+    ('soc007','03', 'cla005','2019-02-07'),
+    ('soc007','02', 'cla001','2019-02-27'),
+    ('soc007','01', 'cla003','2018-09-06'),
+    ('soc008','02', 'cla003','2018-11-02'),
+    ('soc008','01', 'cla004','2019-02-15'),
+    ('soc009','01', 'cla002','2019-05-28'),
+    ('soc009','02', 'cla009','2019-05-07'),
+    ('soc010','01', 'cla005','2016-10-19'),
+    ('soc010','02', 'cla007','2018-08-27'),
+    ('soc011','01', 'cla001','2018-04-05'),
+    ('soc011','01', 'cla007','2018-08-24'),
+    ('soc011','03', 'cla005','2019-09-21'),
+    ('soc012','01', 'cla006','2019-01-04'),
+    ('soc012','02', 'cla006','2019-01-04'),
+    ('soc012','02', 'cla004','2019-04-14'),
+    ('soc012','04', 'cla007','2018-06-17'),
+    ('soc013','01', 'cla009','2018-06-17'),
+    ('soc013','02', 'cla008','2019-06-17');
+
+INSERT INTO 
+  Paga_f(nro_socio, nro_orden, id_clase, fecha, monto)
+VALUES
+    ('soc001', '01', 'cla004', '2019-10-20', '1500'),
+    ('soc001', '02', 'cla005', '2019-11-28', '800'),
+    ('soc002', '01', 'cla004', '2018-12-21', '1500'),
+    ('soc005', '02', 'cla004', '2017-07-15', '1000'),
+    ('soc006', '01', 'cla004', '2019-07-07', '1500'),
+    ('soc007', '03', 'cla005', '2019-02-07', '800'),
+    ('soc008', '01', 'cla004', '2019-02-15', '700'),
+    ('soc010', '01', 'cla005', '2016-10-19', '200'),
+    ('soc011', '03', 'cla005', '2019-09-21', '700'),
+    ('soc012', '02', 'cla004', '2019-04-14', '100'),
+   
 
 INSERT INTO 
     Area(cod_area, ubicacion, capacidad, estado)
@@ -574,6 +590,63 @@ VALUES
     ('act005', 'hockey_femenino_integral', 'hockey_femenino', true, NULL),
     ('act006', 'tenis_integral', 'tenis', false, NULL),
     ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL);
+
+
+#periodo que nose bien a que se refiere y definir lo de dia y hora
+INSERT INTO 
+    Clase(id_clase,dia_y_hora,cod_actividad,cod_area,periodo)
+VALUES
+    ('cla001','martes y jueves 18-20','act001','area005','tarde'),
+    ('cla002','lunes y miercoles 18-20','act002','area005','tarde'),
+    ('cla003','viernes 18-20','act003','area002','tarde'),
+    ('cla004','lunes y jueves 16-17','act004','area004','tarde'),
+    ('cla005','martes y jueves 14-16','act005','area003','tarde'),
+    ('cla006','lunes y miercoles 09-11','act006','area006','maniana'),
+    ('cla007','martes y viernes 09-11','act001','area005','maniana'),
+    ('cla008','sabado 09-12','act001','area005','maniana'),
+    ('cla009','miercoles y jueves 09-12','act003','area002','maniana');
+    
+
+INSERT INTO
+    Arancelada(cod_actividad,costo,periodo_pago)
+VALUES 
+    ('act004','1500','trimestral'),
+    ('act005','800','mensual'),
+    ('act007','650','mensual'),;
+
+
+INSERT INTO
+    Dirige(legajo,id_clase)
+VALUES
+    ('478961','cla001'),
+    ('454123','cla002'),
+    ('589633','cla003'),
+    ('785963','cla004'),
+    ('157896','cla005'),
+    ('478163','cla006'),
+    ('478961','cla007'),
+    ('851173','cla008'),
+    ('589633','cla009');
+
+
+INSERT INTO
+    Capacitado_para(cod_actividad,legajo)
+VALUES
+    ('act001','478961'),
+    ('act002','478961'),
+    ('act001','454123'),
+    ('act002','454123'),
+    ('act001','851173'),
+    ('act002','851173'),
+    ('act003','589633'),
+    ('act003','474583'),
+    ('act004','147852'),
+    ('act004','785963'),
+    ('act005','157896'),
+    ('act006','454553'),
+    ('act006','478163'),
+    ('act007','157896');
+
 
 /*
  * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
