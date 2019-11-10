@@ -73,7 +73,7 @@ CREATE TABLE Actividad(
 
 CREATE TABLE Clase(
     id_clase varchar(15) NOT NULL,
-    dia_y_hora datetime NOT NULL,
+    dia_y_hora varchar(50) NOT NULL,
     cod_actividad varchar(15) NOT NULL,
     cod_area varchar(15) NOT NULL,
     periodo varchar(20),
@@ -87,7 +87,8 @@ CREATE TABLE Arancelada(
     cod_actividad varchar(15) NOT NULL,
     costo float unsigned NOT NULL,
     periodo_pago varchar(20) NOT NULL,
-    PRIMARY KEY(cod_actividad)
+    PRIMARY KEY(cod_actividad),
+    FOREIGN KEY(cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE
 );
 
 #tendriamos que los periodos acorde a que tipo son calcular los valores?
@@ -199,6 +200,30 @@ BEGIN
     if (dummy <> 'vitalicio') AND (dummy <> 'mayor') then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No se puede insertar un Titular con una categoría que sea distinta de Mayor o Vitalicio';
+    end if;
+END $$
+
+/*
+ * Actividad solo puede ser arancelada si el boolean de arancelada es true
+ */
+delimiter $$ 
+CREATE TRIGGER arancelada_en_actividad 
+BEFORE INSERT ON Arancelada 
+FOR EACH ROW 
+BEGIN 
+    DECLARE dummy int;
+    SELECT
+        count(a.descripcion)
+    INTO
+        dummy
+    FROM
+        Actividad a
+    WHERE
+        a.cod_actividad = NEW.cod_actividad AND
+        a.arancelada = true;
+    if dummy = 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Una arancelada no puede existir si su actividad no es arancelada';
     end if;
 END $$
 
@@ -469,6 +494,27 @@ VALUES
     ('589633','Mirta','Hernandez','30188941','1985-07-24','natacion'),
     ('474583','Diego','Rios','38182236','1980-10-30','natacion');
 
+INSERT INTO 
+    Area(cod_area, ubicacion, capacidad, estado)
+VALUES 
+    ('area006', 'cancha_de_tenis', '20', 'apta'),
+    ('area002', 'pileta', '40', 'apta'),
+    ('area003', 'cancha_de_hockey', '40', 'apta'),
+    ('area004', 'cancha_de_futbol', '40', 'apta'),
+    ('area005', 'gimnasio_1', '60', 'apta'),
+    ('area001', 'gimnasio_2', '40', 'en_reparacion');
+
+# 4,5 y 7 aranceladas
+INSERT INTO
+    Actividad(cod_actividad, descripcion, nombre, arancelada, id_categoria)
+VALUES 
+    ('act001', 'clase_de_gimnasia_integral', 'gimnasia', false, NULL),
+    ('act002', 'clase_de_edfisica_infantil', 'ed_fisica', false, 'cat001'),
+    ('act003', 'clase_de_pileta_infantil', 'pileta_infantil', false, 'cat001'),
+    ('act004', 'futbol_integral', 'futbol', true, NULL),
+    ('act005', 'hockey_femenino_integral', 'hockey_femenino', true, NULL),
+    ('act006', 'tenis_integral', 'tenis', false, NULL),
+    ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL);
 
 INSERT INTO
     Puede_Desarrollarse_En(cod_actividad, cod_area)
@@ -482,6 +528,57 @@ VALUES
     ('act006', 'area006'),
     ('act007', 'area003');
 
+#periodo que nose bien a que se refiere y definir lo de dia y hora
+INSERT INTO 
+    Clase(id_clase, dia_y_hora, cod_actividad, cod_area, periodo)
+VALUES
+    ('cla001', 'martes y jueves 18-20', 'act001', 'area005', 'tarde'),
+    ('cla002', 'lunes y miercoles 18-20', 'act002', 'area001', 'tarde'),
+    ('cla003', 'viernes 18-20', 'act003', 'area002' ,'tarde'), 
+    ('cla004', 'lunes y jueves 16-17', 'act004', 'area004', 'tarde'),
+    ('cla005', 'martes y jueves 14-16', 'act005', 'area003', 'tarde'),
+    ('cla006', 'lunes y miercoles 09-11', 'act006', 'area006', 'maniana'),
+    ('cla007', 'martes y viernes 09-11', 'act001', 'area005', 'maniana'),
+    ('cla008', 'sabado 09-12', 'act001', 'area005' ,'maniana'),
+    ('cla009', 'miercoles y jueves 09-12', 'act003', 'area002', 'maniana');
+  
+INSERT INTO
+    Arancelada(cod_actividad, costo, periodo_pago)
+VALUES 
+    ('act004', 1500.0, 'trimestral'),
+    ('act005', 800.0, 'mensual'),
+    ('act007', 650.0, 'mensual');
+
+INSERT INTO
+    Capacitado_para(cod_actividad,legajo)
+VALUES
+    ('act001','478961'),
+    ('act002','478961'),
+    ('act001','454123'),
+    ('act002','454123'),
+    ('act001','851173'),
+    ('act002','851173'),
+    ('act003','589633'),
+    ('act003','474583'),
+    ('act004','147852'),
+    ('act004','785963'),
+    ('act005','157896'),
+    ('act006','454553'),
+    ('act006','478163'),
+    ('act007','157896');
+
+INSERT INTO
+    Dirige(legajo,id_clase)
+VALUES
+    ('478961','cla001'),
+    ('454123','cla002'),
+    ('589633','cla003'),
+    ('785963','cla004'),
+    ('157896','cla005'),
+    ('478163','cla006'),
+    ('478961','cla007'),
+    ('851173','cla008'),
+    ('589633','cla009');
 
 INSERT INTO
     Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
@@ -505,8 +602,6 @@ VALUES
     ('soc012', 'cla005','2019-01-04');
     ('soc012', 'cla007','2019-01-04');
 
-
-
 INSERT INTO 
   Paga_t(nro_socio, id_clase, fecha, monto)
 VALUES
@@ -517,7 +612,6 @@ VALUES
     ('soc010', 'cla005', '2016-10-19','200'),
     ('soc011', 'cla004', '2018-08-24','1050'),
     ('soc012', 'cla005', '2019-04-14','800');
-    
 
 INSERT INTO
     Se_Inscribe_f(nro_socio,nro_orden, id_clase,fecha_inscrip)
@@ -567,87 +661,7 @@ VALUES
     ('soc010', '01', 'cla005', '2016-10-19', '200'),
     ('soc011', '03', 'cla005', '2019-09-21', '700'),
     ('soc012', '02', 'cla004', '2019-04-14', '100'),
-   
-
-INSERT INTO 
-    Area(cod_area, ubicacion, capacidad, estado)
-VALUES 
-    ('area006', 'cancha_de_tenis', '20', 'apta'),
-    ('area002', 'pileta', '40', 'apta'),
-    ('area003', 'cancha_de_hockey', '40', 'apta'),
-    ('area004', 'cancha_de_futbol', '40', 'apta'),
-    ('area005', 'gimnasio_1', '60', 'apta'),
-    ('area001', 'gimnasio_2', '40', 'en_reparacion');
-
-# 4,5 y 7 aranceladas
-INSERT INTO
-    Actividad(cod_actividad, descripcion, nombre, arancelada, id_categoria)
-VALUES 
-    ('act001', 'clase_de_gimnasia_integral', 'gimnasia', false, NULL),
-    ('act002', 'clase_de_edfisica_infantil', 'ed_fisica', false, 'cat001'),
-    ('act003', 'clase_de_pileta_infantil', 'pileta_infantil', false, 'cat001'),
-    ('act004', 'futbol_integral', 'futbol', true, NULL),
-    ('act005', 'hockey_femenino_integral', 'hockey_femenino', true, NULL),
-    ('act006', 'tenis_integral', 'tenis', false, NULL),
-    ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL);
-
-
-#periodo que nose bien a que se refiere y definir lo de dia y hora
-INSERT INTO 
-    Clase(id_clase,dia_y_hora,cod_actividad,cod_area,periodo)
-VALUES
-    ('cla001','martes y jueves 18-20','act001','area005','tarde'),
-    ('cla002','lunes y miercoles 18-20','act002','area005','tarde'),
-    ('cla003','viernes 18-20','act003','area002','tarde'),
-    ('cla004','lunes y jueves 16-17','act004','area004','tarde'),
-    ('cla005','martes y jueves 14-16','act005','area003','tarde'),
-    ('cla006','lunes y miercoles 09-11','act006','area006','maniana'),
-    ('cla007','martes y viernes 09-11','act001','area005','maniana'),
-    ('cla008','sabado 09-12','act001','area005','maniana'),
-    ('cla009','miercoles y jueves 09-12','act003','area002','maniana');
-    
-
-INSERT INTO
-    Arancelada(cod_actividad,costo,periodo_pago)
-VALUES 
-    ('act004','1500','trimestral'),
-    ('act005','800','mensual'),
-    ('act007','650','mensual'),;
-
-
-INSERT INTO
-    Dirige(legajo,id_clase)
-VALUES
-    ('478961','cla001'),
-    ('454123','cla002'),
-    ('589633','cla003'),
-    ('785963','cla004'),
-    ('157896','cla005'),
-    ('478163','cla006'),
-    ('478961','cla007'),
-    ('851173','cla008'),
-    ('589633','cla009');
-
-
-INSERT INTO
-    Capacitado_para(cod_actividad,legajo)
-VALUES
-    ('act001','478961'),
-    ('act002','478961'),
-    ('act001','454123'),
-    ('act002','454123'),
-    ('act001','851173'),
-    ('act002','851173'),
-    ('act003','589633'),
-    ('act003','474583'),
-    ('act004','147852'),
-    ('act004','785963'),
-    ('act005','157896'),
-    ('act006','454553'),
-    ('act006','478163'),
-    ('act007','157896');
-
-
+ 
 /*
  * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
  * gratuitas durante el año pasado.
