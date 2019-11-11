@@ -457,28 +457,44 @@ VALUES
     ('soc013', 'cat002', 'Marcos','Piña','1996-03-14','marcospiña@gmail.com','2236789632','4547879','Genova 2590');
 
 INSERT INTO 
-    Familiar(nro_socio, id_categoria,nombre,apellido,fecha_nac,email,celular)
-VALUES
-    ('soc001', 'cat002', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
-    ('soc002', 'cat002', 'Amado', 'Benigno', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
-    ('soc003', 'cat001', 'Bernabe', 'Gutierre', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
-    ('soc004', 'cat001', 'Carla', 'Vito', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
-    ('soc004', 'cat001', 'Emiliano', 'Alfredo', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
-    ('soc005', 'cat002', 'Federico', 'Hugo', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
-    ('soc005', 'cat002', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
-    ('soc005', 'cat002', 'Rogelio', 'Mireia', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
-    ('soc006', 'cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
-    ('soc006', 'cat002', 'Clarissa', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
-    ('soc007', 'cat002', 'Jose', 'Xochitl', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
-    ('soc008', 'cat001', 'Luz', 'Alfredo', '2014-02-20', 'lualfredo@hotmail.com', '2239592945'),
-    ('soc009', 'cat002', 'Pilar', 'Reyes', '1964-02-18', 'pilireyesc@gmail.com', '2238512564'),
-    ('soc010', 'cat002', 'Maria', 'Natalia', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
-    ('soc010', 'cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
-    ('soc011', 'cat002', 'Samuel', 'Lucía', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
-    ('soc011', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
-    ('soc012', 'cat001', 'Oscar', 'Vasco', '2011-04-30', 'oscivasco11@gmail.com', '2237898469'),
-    ('soc012', 'cat001', 'Oscar', 'De Niro', '2000-12-21', 'oacarDeNir00@hotmail.com', '2238681295'),
-    ('soc013', 'cat001', 'Emiliano', 'Constanza', '2005-03-12', 'emilconstanza05@gmail.com', '2236915380');
+    Familiar(nro_socio, nro_orden, id_categoria,nombre,apellido,fecha_nac,email,celular)
+VALUES  
+    ('soc001','01', 'cat002', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
+    ('soc001','02', 'cat002', 'Ximena', 'Darryl', '1987-03-23', 'ximeDarl@gmail.com', '2230345201'),
+    ('soc002','01', 'cat002', 'Amado', 'Benigno', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
+    ('soc003','01', 'cat001', 'Esteban', 'Gutierre', '2000-07-12', 'estebangutierre@hotmail.com', '2237905215'),
+    ('soc003','02', 'cat001', 'Bernabe', 'Gutierre', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
+    ('soc003','03', 'cat001', 'Amelia', 'Mercy', '2005-07-20', 'mercyame@gmail.com', '2237937215'),
+    ('soc003','03', 'cat001', 'Natalia', 'Nélida', '2008-03-12', 'natinelida@gmail.com', '2237994915'),
+    ('soc004','03', 'cat001', 'Carla', 'Vito', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
+    ('soc004','01', 'cat001', 'Emiliano', 'Alfredo', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
+    ('soc004','01', 'cat002', 'Víctor', 'Brannon', '1999-09-09', 'vicbrannon@gmail.com', '2234064671'),
+    ('soc004','02', 'cat002', 'Fermín', 'Alfredo', '1987-04-11', 'ferminalf2@gmail.com', '2234002871'),
+    ('soc005','01', 'cat002', 'Federico', 'Hugo', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
+    ('soc005','02', 'cat001', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
+    ('soc005','02', 'cat001', 'Rogelio', 'Mireia', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
+    ('soc006','01', 'cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
+    ('soc006','02', 'cat002', 'Clarissa', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
+    ('soc007','01', 'cat001', 'Jose', 'Marlin', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
+    ('soc007','02', 'cat002', 'Francisco', 'Hazel', '1989-11-13', 'francishaz@hotmail.com', '2239524903'),
+    ('soc007','03', 'cat002', 'Candelaria', 'Marlin', '1992-05-18', 'candemarlin92@hotmail.com', '2237062903'),
+    ('soc008','01', 'cat001', 'Luz', 'Alfredo', '2014-02-20', 'lualfredo@hotmail.com', '2239592945'),
+    ('soc008','02', 'cat001', 'Alan', 'Lillie', '2003-04-18', 'alanlill03@hotmail.com', '2239590385'),
+    ('soc009','01', 'cat001', 'Pilar', 'Reyes', '1964-02-18', 'pilireyesc@gmail.com', '2238512564'),
+    ('soc009','02', 'cat001', 'Owen', 'Virgilio', '1992-03-27', 'owenvirgi92@gmail.com', '2238529364'),
+    ('soc010','01', 'cat002', 'Maria', 'Fidel', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
+    ('soc010','02', 'cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
+    ('soc011','01', 'cat002', 'Samuel', 'Wilfredo', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
+    ('soc011','01', 'cat002', 'Hernan', 'Wilfredo', '1994-05-20', 'hermanwil@gmail.com', '2235726272'),
+    ('soc011','02', 'cat001', 'Lucas', 'Wilfredo', '2004-05-20', 'lucas04wilfredo@gmail.com', '2235720252'),
+    ('soc011','03', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
+    ('soc012','01', 'cat001', 'Oscar', 'De Niro', '1997-07-17', 'oacarDeNir00@hotmail.com', '2238681295'),
+    ('soc012','02', 'cat001', 'Valentina', 'Reese', '2011-04-30', 'valenr@gmail.com', '2237937469'),
+    ('soc012','02', 'cat001', 'Oscar', 'Vasco', '2009-03-27', 'oscivasco11@gmail.com', '2237898469'),
+    ('soc012','03', 'cat002', 'Lujan', 'Vasco', '1989-06-19', 'luvasco@gmail.com', '2237802669'),
+    ('soc012','04', 'cat001', 'Ramiro', 'De Niro', '2000-12-21', 'ramaDeNir00@hotmail.com', '2238039295'),
+    ('soc013','01', 'cat001', 'Emiliano', 'Mortimer', '2005-03-12', 'emilmortimer05@gmail.com', '2236915380'),
+    ('soc013','02', 'cat001', 'Juan', 'Mortimer', '1998-09-12', 'mortijuan1998@gmail.com', '2236029380');
 
 INSERT INTO
     Profesional(legajo, nombre, apellido, dni, fecha_nac, especializacion)
