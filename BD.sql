@@ -96,6 +96,7 @@ CREATE TABLE Cuota(
     id_cuota varchar(15) NOT NULL,
     monto_base float unsigned,
     periodo varchar(20) NOT NULL,
+    fecha_cuota date NOT NULL,
     PRIMARY KEY(id_cuota)
 );
 
@@ -435,9 +436,9 @@ delimiter ;
 INSERT INTO
     Categoria(id_categoria, descripcion, porcentaje)
 VALUES
-    ('cat001', 'infantil', '0.15'),
-    ('cat002', 'mayor', '0.2'),
-    ('cat003', 'vitalicio', '0');
+    ('cat001', 'infantil', 0.15),
+    ('cat002', 'mayor', 0.2),
+    ('cat003', 'vitalicio', 0);
 
 INSERT INTO 
     Titular(nro_socio, id_categoria, nombre, apellido, fecha_nac, email, celular, telefono, domicilio)
@@ -683,6 +684,29 @@ VALUES
  * gratuitas durante el año pasado.
  */
 delimiter //
+
+INSERT INTO
+    Cuota(id_cuota, monto_base, periodo, fecha_cuota)
+VALUES
+    ('cuo001',2729,'2018-05','2018-06-08'),
+    ('cuo001',2729,'2018-06','2019-07-10'),
+    ('cuo001',2999,'2018-07','2019-08-12'),
+    ('cuo001',2729,'2018-08','2019-09-11'),
+    ('cuo001',2729,'2018-09','2019-10-13'),
+    ('cuo001',2874,'2018-10','2019-11-16'),
+    ('cuo001',3300,'2018-11','2019-12-08'),
+    ('cuo001',3893,'2018-12','2019-01-12'),
+    ('cuo001',3467,'2019-01','2019-02-14'),
+    ('cuo001',3467,'2019-02','2019-03-13'),
+    ('cuo001',3467,'2019-03','2019-04-08'),
+    ('cuo001',3217,'2019-04','2019-05-09'),
+    ('cuo001',3217,'2019-05','2019-06-20'),
+    ('cuo001',3217,'2019-06','2019-07-15'),
+    ('cuo001',3415,'2019-07','2019-08-11'),
+    ('cuo001',3217,'2019-08','2019-09-10'),
+    ('cuo001',3345,'2019-09','2019-10-14'),
+    ('cuo001',3345,'2019-10','2019-11-11');
+
 CREATE PROCEDURE soc_act_gratuitas ()
     BEGIN
         DECLARE anioAux int;
