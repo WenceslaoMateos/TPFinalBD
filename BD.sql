@@ -466,14 +466,14 @@ VALUES
     ('soc003','01', 'cat001', 'Esteban', 'Gutierre', '2000-07-12', 'estebangutierre@hotmail.com', '2237905215'),
     ('soc003','02', 'cat001', 'Bernabe', 'Gutierre', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
     ('soc003','03', 'cat001', 'Amelia', 'Mercy', '2005-07-20', 'mercyame@gmail.com', '2237937215'),
-    ('soc003','03', 'cat001', 'Natalia', 'Nélida', '2008-03-12', 'natinelida@gmail.com', '2237994915'),
+    ('soc003','04', 'cat001', 'Natalia', 'Nélida', '2008-03-12', 'natinelida@gmail.com', '2237994915'),
     ('soc004','03', 'cat001', 'Carla', 'Vito', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
     ('soc004','01', 'cat001', 'Emiliano', 'Alfredo', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
-    ('soc004','01', 'cat002', 'Víctor', 'Brannon', '1999-09-09', 'vicbrannon@gmail.com', '2234064671'),
-    ('soc004','02', 'cat002', 'Fermín', 'Alfredo', '1987-04-11', 'ferminalf2@gmail.com', '2234002871'),
+    ('soc004','02', 'cat002', 'Víctor', 'Brannon', '1999-09-09', 'vicbrannon@gmail.com', '2234064671'),
+    ('soc004','04', 'cat002', 'Fermín', 'Alfredo', '1987-04-11', 'ferminalf2@gmail.com', '2234002871'),
     ('soc005','01', 'cat002', 'Federico', 'Hugo', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
     ('soc005','02', 'cat001', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
-    ('soc005','02', 'cat001', 'Rogelio', 'Mireia', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
+    ('soc005','03', 'cat001', 'Rogelio', 'Mireia', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
     ('soc006','01', 'cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
     ('soc006','02', 'cat002', 'Clarissa', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
     ('soc007','01', 'cat001', 'Jose', 'Marlin', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
@@ -486,14 +486,14 @@ VALUES
     ('soc010','01', 'cat002', 'Maria', 'Fidel', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
     ('soc010','02', 'cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
     ('soc011','01', 'cat002', 'Samuel', 'Wilfredo', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
-    ('soc011','01', 'cat002', 'Hernan', 'Wilfredo', '1994-05-20', 'hermanwil@gmail.com', '2235726272'),
+    ('soc011','03', 'cat002', 'Hernan', 'Wilfredo', '1994-05-20', 'hermanwil@gmail.com', '2235726272'),
     ('soc011','02', 'cat001', 'Lucas', 'Wilfredo', '2004-05-20', 'lucas04wilfredo@gmail.com', '2235720252'),
-    ('soc011','03', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
+    ('soc011','04', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
     ('soc012','01', 'cat001', 'Oscar', 'De Niro', '1997-07-17', 'oacarDeNir00@hotmail.com', '2238681295'),
     ('soc012','02', 'cat001', 'Valentina', 'Reese', '2011-04-30', 'valenr@gmail.com', '2237937469'),
-    ('soc012','02', 'cat001', 'Oscar', 'Vasco', '2009-03-27', 'oscivasco11@gmail.com', '2237898469'),
+    ('soc012','04', 'cat001', 'Oscar', 'Vasco', '2009-03-27', 'oscivasco11@gmail.com', '2237898469'),
     ('soc012','03', 'cat002', 'Lujan', 'Vasco', '1989-06-19', 'luvasco@gmail.com', '2237802669'),
-    ('soc012','04', 'cat001', 'Ramiro', 'De Niro', '2000-12-21', 'ramaDeNir00@hotmail.com', '2238039295'),
+    ('soc012','05', 'cat001', 'Ramiro', 'De Niro', '2000-12-21', 'ramaDeNir00@hotmail.com', '2238039295'),
     ('soc013','01', 'cat001', 'Emiliano', 'Mortimer', '2005-03-12', 'emilmortimer05@gmail.com', '2236915380'),
     ('soc013','02', 'cat001', 'Juan', 'Mortimer', '1998-09-12', 'mortijuan1998@gmail.com', '2236029380');
 
@@ -514,12 +514,12 @@ VALUES
 INSERT INTO 
     Area(cod_area, ubicacion, capacidad, estado)
 VALUES 
-    ('area006', 'cancha_de_tenis', '20', 'apta'),
+    ('area001', 'gimnasio_2', '40', 'en_reparacion'),
     ('area002', 'pileta', '40', 'apta'),
     ('area003', 'cancha_de_hockey', '40', 'apta'),
     ('area004', 'cancha_de_futbol', '40', 'apta'),
     ('area005', 'gimnasio_1', '60', 'apta'),
-    ('area001', 'gimnasio_2', '40', 'en_reparacion');
+    ('area006', 'cancha_de_tenis', '20', 'apta');
 
 # 4,5 y 7 aranceladas
 INSERT INTO
@@ -601,18 +601,18 @@ INSERT INTO
     Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
 VALUES
     ('soc001', 'cla001','2019-10-10'),
-    ('soc002', 'cla003','2018-12-12'),
+    ('soc002', 'cla006','2018-12-12'),
     ('soc003', 'cla001','2019-11-01'),
-    ('soc003', 'cla003','2019-11-01'),
+    ('soc003', 'cla008','2019-11-01'),
     ('soc001', 'cla004','2019-10-10'),
     ('soc002', 'cla005','2018-12-12'),
     ('soc003', 'cla004','2019-11-01'),
     ('soc003', 'cla005','2019-11-01'),
     ('soc004', 'cla006','2019-06-01'),
-    ('soc005', 'cla002','2019-01-02'),
-    ('soc006', 'cla002','2019-07-01'),
+    ('soc005', 'cla008','2019-01-02'),
+    ('soc006', 'cla007','2019-07-01'),
     ('soc007', 'cla007','2018-06-03'),
-    ('soc008', 'cla003','2018-11-02'),
+    ('soc008', 'cla001','2018-11-02'),
     ('soc009', 'cla006','2019-05-15'),
     ('soc010', 'cla005','2017-01-02'),
     ('soc011', 'cla004','2018-04-05'),
