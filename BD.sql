@@ -798,6 +798,11 @@ VALUES
     ('cuo013', 'soc012', 1, 12811.35,'2019-11-22',12811.35,'2019-11-18'),
     ('cuo013', 'soc013', 1, 8128.35,'2019-11-22',8128.35,'2019-11-20');
 
+/*
+ * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
+ * gratuitas durante el año pasado.
+ */
+delimiter //
 CREATE PROCEDURE soc_act_gratuitas ()
     BEGIN
         DECLARE anioAux int;
