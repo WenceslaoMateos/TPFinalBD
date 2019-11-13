@@ -692,7 +692,7 @@ VALUES
     ('soc010', '1', 'cla005', '2016-10-19', '200'),
     ('soc011', '3', 'cla005', '2019-09-21', '700'),
     ('soc012', '2', 'cla004', '2019-04-14', '100');
-
+ 
 INSERT INTO
     Cuota(id_cuota, monto_base, periodo, fecha_cuota)
 VALUES
