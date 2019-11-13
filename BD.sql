@@ -247,7 +247,7 @@ BEGIN
     WHERE
         f.nro_socio = NEW.nro_socio;
     SET dummy = dummy + 1;
-    SET NEW.nro_orden = CONCAT('orden', dummy);
+    SET NEW.nro_orden = dummy;
 END $$
 
 /*
@@ -312,10 +312,9 @@ BEGIN
     FROM
         Se_Inscribe_t st, Clase c, Actividad a
     WHERE
-        NEW.nro_socio = st.nro_socio AND
-        st.id_clase = c.id_clase AND
+        NEW.id_clase = c.id_clase AND
         c.cod_actividad = a.cod_actividad AND
-        a.arancelada = true;
+        a.arancelada;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Un titular no puede pagar una clase que no sea arancelada';
@@ -338,11 +337,9 @@ BEGIN
     FROM
         Se_Inscribe_f sf, Clase c, Actividad a
     WHERE
-        NEW.nro_socio = sf.nro_socio AND
-        NEW.nro_orden = sf.nro_orden AND
-        sf.id_clase = c.id_clase AND
+        NEW.id_clase = c.id_clase AND
         c.cod_actividad = a.cod_actividad AND
-        a.arancelada = true;
+        a.arancelada;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Un familiar no puede pagar una clase que no sea arancelada';
@@ -392,13 +389,13 @@ BEGIN
     FROM
         Titular t, Clase c, Actividad a
     WHERE
+        NEW.id_clase = c.id_clase AND
+        c.cod_actividad = a.cod_actividad AND
         NEW.nro_socio = t.nro_socio AND
-        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
-        a.cod_actividad = c.cod_actividad AND
-        c.id_clase = NEW.id_clase;
+        (a.id_categoria IS NULL OR t.id_categoria = a.id_categoria);
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Un titular solo se puede inscribir a una actividad dentro de su categoria';
+        SET MESSAGE_TEXT = 'Un titular solo se puede inscribir a una actividad general o dentro de su categoria';
     end if;
 END $$
 
@@ -421,12 +418,12 @@ BEGIN
     WHERE
         NEW.nro_socio = f.nro_socio AND
         NEW.nro_orden = f.nro_orden AND
-        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
+        (f.id_categoria = a.id_categoria OR a.id_categoria IS NULL) AND
         a.cod_actividad = c.cod_actividad AND
         c.id_clase = NEW.id_clase;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad dentro de su categoria';
+        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad general o dentro de su categoria';
     end if;
 END $$
 
