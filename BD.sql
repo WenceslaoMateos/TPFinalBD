@@ -73,7 +73,9 @@ CREATE TABLE Actividad(
 
 CREATE TABLE Clase(
     id_clase varchar(15) NOT NULL,
-    dia_y_hora varchar(50) NOT NULL,
+    dia varchar(50) NOT NULL,
+    hora TIME NOT NULL,
+    duracion TIME NOT NULL,
     cod_actividad varchar(15) NOT NULL,
     cod_area varchar(15) NOT NULL,
     periodo varchar(20),
@@ -547,7 +549,7 @@ VALUES
 
 #periodo que nose bien a que se refiere y definir lo de dia y hora
 INSERT INTO 
-    Clase(id_clase, dia_y_hora, cod_actividad, cod_area, periodo)
+    Clase(id_clase, dia, hora, duracion, cod_actividad, cod_area, periodo)
 VALUES
     ('cla001', 'martes y jueves 18-20', 'act001', 'area005', 'tarde'),
     ('cla002', 'lunes y miercoles 18-20', 'act002', 'area001', 'tarde'),
