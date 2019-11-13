@@ -73,9 +73,10 @@ CREATE TABLE Actividad(
 
 CREATE TABLE Clase(
     id_clase varchar(15) NOT NULL,
-    dia varchar(50) NOT NULL,
-    hora TIME NOT NULL,
-    duracion TIME NOT NULL,
+    dia char(9) NOT NULL,
+    hora char(5) NOT NULL,
+    duracion int unsigned NOT NULL,
+    dia_y_hora varchar(50) NOT NULL,
     cod_actividad varchar(15) NOT NULL,
     cod_area varchar(15) NOT NULL,
     periodo varchar(20),
@@ -247,7 +248,7 @@ BEGIN
     WHERE
         f.nro_socio = NEW.nro_socio;
     SET dummy = dummy + 1;
-    SET NEW.nro_orden = dummy;
+    SET NEW.nro_orden = CONCAT('orden', dummy);
 END $$
 
 /*
@@ -272,7 +273,6 @@ END $$
 
 /*
  * La actividad que se realiza en una clase, debe poder desarrollarse en el área asignada a dicha clase.
- * Tambien verifica que no existan dos clases simultaneas
  */
 delimiter $$ 
 CREATE TRIGGER clase_en_area 
@@ -295,20 +295,6 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
     end if;
-    SELECT
-        count(*)
-    INTO
-        dummy
-    FROM
-        Actividad ac, Area ar, Clase c
-    WHERE
-        NEW.dia = c.dia AND
-        NEW.hora = c.hora AND
-        NEW.cod_area = c.cod_area;
-    if dummy = 0 then
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'No se pueden superponer dos clases distintas en el mismo area';
-    end if;    
 END $$
 
 /*
@@ -327,9 +313,10 @@ BEGIN
     FROM
         Se_Inscribe_t st, Clase c, Actividad a
     WHERE
-        NEW.id_clase = c.id_clase AND
+        NEW.nro_socio = st.nro_socio AND
+        st.id_clase = c.id_clase AND
         c.cod_actividad = a.cod_actividad AND
-        a.arancelada;
+        a.arancelada = true;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Un titular no puede pagar una clase que no sea arancelada';
@@ -352,9 +339,11 @@ BEGIN
     FROM
         Se_Inscribe_f sf, Clase c, Actividad a
     WHERE
-        NEW.id_clase = c.id_clase AND
+        NEW.nro_socio = sf.nro_socio AND
+        NEW.nro_orden = sf.nro_orden AND
+        sf.id_clase = c.id_clase AND
         c.cod_actividad = a.cod_actividad AND
-        a.arancelada;
+        a.arancelada = true;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Un familiar no puede pagar una clase que no sea arancelada';
@@ -404,13 +393,13 @@ BEGIN
     FROM
         Titular t, Clase c, Actividad a
     WHERE
-        NEW.id_clase = c.id_clase AND
-        c.cod_actividad = a.cod_actividad AND
         NEW.nro_socio = t.nro_socio AND
-        (a.id_categoria IS NULL OR t.id_categoria = a.id_categoria);
+        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
+        a.cod_actividad = c.cod_actividad AND
+        c.id_clase = NEW.id_clase;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Un titular solo se puede inscribir a una actividad general o dentro de su categoria';
+        SET MESSAGE_TEXT = 'Un titular solo se puede inscribir a una actividad dentro de su categoria';
     end if;
 END $$
 
@@ -433,12 +422,12 @@ BEGIN
     WHERE
         NEW.nro_socio = f.nro_socio AND
         NEW.nro_orden = f.nro_orden AND
-        (f.id_categoria = a.id_categoria OR a.id_categoria IS NULL) AND
+        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
         a.cod_actividad = c.cod_actividad AND
         c.id_clase = NEW.id_clase;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad general o dentro de su categoria';
+        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad dentro de su categoria';
     end if;
 END $$
 
@@ -563,15 +552,22 @@ VALUES
 INSERT INTO 
     Clase(id_clase, dia, hora, duracion, cod_actividad, cod_area, periodo)
 VALUES
-    ('cla001', 'martes y jueves 18-20', 'act001', 'area005', 'tarde'),
-    ('cla002', 'lunes y miercoles 18-20', 'act002', 'area001', 'tarde'),
-    ('cla003', 'viernes 18-20', 'act003', 'area002' ,'tarde'), 
-    ('cla004', 'lunes y jueves 16-17', 'act004', 'area004', 'tarde'),
-    ('cla005', 'martes y jueves 14-16', 'act005', 'area003', 'tarde'),
-    ('cla006', 'lunes y miercoles 09-11', 'act006', 'area006', 'maniana'),
-    ('cla007', 'martes y viernes 09-11', 'act001', 'area005', 'maniana'),
-    ('cla008', 'sabado 09-12', 'act001', 'area005' ,'maniana'),
-    ('cla009', 'miercoles y jueves 09-12', 'act003', 'area002', 'maniana');
+    ('cla001', 'martes','18:00',120, 'act001', 'area005', 'tarde'),
+    ('cla002', 'jueves','18:00',120, 'act001', 'area005', 'tarde'),
+    ('cla003', 'lunes', '18:00',120, 'act002', 'area001', 'tarde'),
+    ('cla004', 'miercoles','20:00',120, 'act002', 'area001', 'tarde'),
+    ('cla005', 'viernes','18:00',120, 'act003', 'area002' ,'tarde'), 
+    ('cla006', 'lunes', '16:00',60, 'act004', 'area004', 'tarde'),
+    ('cla007', 'jueves','16:00',60, 'act004', 'area004', 'tarde'),
+    ('cla008', 'martes','14:00',120, 'act005', 'area003', 'tarde'),
+    ('cla009', 'jueves', '14:00',120, 'act005', 'area003', 'tarde'),
+    ('cla010', 'lunes','09:00',120, 'act006', 'area006', 'maniana'),
+    ('cla011', 'miercoles','09:00',120, 'act006', 'area006', 'maniana'),
+    ('cla012', 'martes','09:00',120, 'act001', 'area005', 'maniana'),
+    ('cla013', 'viernes','09:00',120, 'act001', 'area005', 'maniana'),
+    ('cla014', 'sabado','09:00',180, 'act001', 'area005' ,'maniana'),
+    ('cla015', 'miercoles','09:00',180, 'act003', 'area002', 'maniana'),
+    ('cla016', 'jueves','09:00',180,'act003', 'area002', 'maniana');
   
 INSERT INTO
     Arancelada(cod_actividad, costo, periodo_pago)
@@ -615,84 +611,90 @@ INSERT INTO
     Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
 VALUES
     ('soc001', 'cla001','2019-10-10'),
-    #('soc002', 'cla003','2018-12-12'),
+    ('soc002', 'cla003','2018-12-12'),
     ('soc003', 'cla001','2019-11-01'),
-    #('soc003', 'cla003','2019-11-01'),
+    ('soc003', 'cla003','2019-11-01'),
     ('soc001', 'cla004','2019-10-10'),
     ('soc002', 'cla005','2018-12-12'),
     ('soc003', 'cla004','2019-11-01'),
     ('soc003', 'cla005','2019-11-01'),
     ('soc004', 'cla006','2019-06-01'),
-    #('soc005', 'cla002','2019-01-02'),
-    #('soc006', 'cla002','2019-07-01');
+    ('soc005', 'cla002','2019-01-02'),
+    ('soc006', 'cla002','2019-07-01'),
     ('soc007', 'cla007','2018-06-03'),
-    #('soc008', 'cla003','2018-11-02'),
+    ('soc008', 'cla003','2018-11-02'),
     ('soc009', 'cla006','2019-05-15'),
     ('soc010', 'cla005','2017-01-02'),
     ('soc011', 'cla004','2018-04-05'),
-    #('soc012', 'cla005','2019-01-04'),
+    ('soc012', 'cla005','2019-01-04'),
     ('soc012', 'cla007','2019-01-04');
 
 INSERT INTO 
   Paga_t(nro_socio, id_clase, fecha, monto)
 VALUES
-    ('soc001', 'cla004', '2019-10-10', '1500'),
-    ('soc002', 'cla005', '2018-12-12', '800'),
-    ('soc003', 'cla004', '2019-11-01', '1000'),
-    ('soc003', 'cla005', '2019-11-01', '700'),
-    ('soc010', 'cla005', '2016-10-19', '200'),
-    ('soc011', 'cla004', '2018-08-24', '1050'),
-    ('soc012', 'cla005', '2019-04-14', '800');
+    ('soc001', 'cla004','2019-10-10','1500'),
+    ('soc002', 'cla005','2018-12-12','800'),
+    ('soc003', 'cla004','2019-11-01','1000'),
+    ('soc003', 'cla005','2019-11-01','700'),
+    ('soc010', 'cla005', '2016-10-19','200'),
+    ('soc011', 'cla004', '2018-08-24','1050'),
+    ('soc012', 'cla005', '2019-04-14','800');
 
 INSERT INTO
-    Se_Inscribe_f(nro_socio, nro_orden, id_clase, fecha_inscrip)
+    Se_Inscribe_f(nro_socio,nro_orden, id_clase,fecha_inscrip)
 VALUES
-    ('soc001', '1', 'cla004', '2019-10-10'),
-    ('soc001', '2', 'cla005', '2019-09-10'),
-    ('soc002', '1', 'cla004', '2018-12-12'),
-    ('soc003', '2', 'cla007', '2019-11-01'),
-    ('soc003', '3', 'cla001', '2019-11-01'),
-    ('soc003', '3', 'cla008', '2019-11-01'),
-    ('soc004', '3', 'cla007', '2018-06-01'),
-    ('soc004', '1', 'cla002', '2018-10-21'),
-    ('soc004', '1', 'cla003', '2018-06-29'),
-    ('soc005', '2', 'cla004', '2017-07-15'),
-    ('soc005', '1', 'cla007', '2017-01-20'),
-    ('soc005', '2', 'cla002', '2019-01-02'),
-    ('soc006', '1', 'cla004', '2019-07-01'),
-    ('soc007', '3', 'cla005', '2019-02-07'),
-    ('soc007', '2', 'cla001', '2019-02-27'),
-    ('soc007', '1', 'cla003', '2018-09-06'),
-    ('soc008', '2', 'cla003', '2018-11-02'),
-    ('soc008', '1', 'cla004', '2019-02-15'),
-    ('soc009', '1', 'cla002', '2019-05-28'),
-    ('soc009', '2', 'cla009', '2019-05-07'),
-    ('soc010', '1', 'cla005', '2016-10-19'),
-    ('soc010', '2', 'cla007', '2018-08-27'),
-    ('soc011', '1', 'cla001', '2018-04-05'),
-    ('soc011', '1', 'cla007', '2018-08-24'),
-    ('soc011', '3', 'cla005', '2019-09-21'),
-    ('soc012', '1', 'cla006', '2019-01-04'),
-    ('soc012', '2', 'cla006', '2019-01-04'),
-    ('soc012', '2', 'cla004', '2019-04-14'),
-    ('soc012', '4', 'cla007', '2018-06-17'),
-    ('soc013', '1', 'cla009', '2018-06-17'),
-    ('soc013', '2', 'cla008', '2019-06-17');
+    ('soc001','01', 'cla004','2019-10-10'),
+    ('soc001','02', 'cla005','2019-09-10'),
+    ('soc002','01', 'cla004','2018-12-12'),
+    ('soc003','02', 'cla007','2019-11-01'),
+    ('soc003','03', 'cla001','2019-11-01'),
+    ('soc003','03', 'cla008','2019-11-01'),
+    ('soc004','03', 'cla007','2018-06-01'),
+    ('soc004','01', 'cla002','2018-10-21'),
+    ('soc004','01', 'cla003','2018-06-29'),
+    ('soc005','02', 'cla004','2017-07-15'),
+    ('soc005','01', 'cla007','2017-01-20'),
+    ('soc005','02', 'cla002','2019-01-02'),
+    ('soc006','01', 'cla004','2019-07-01'),
+    ('soc007','03', 'cla005','2019-02-07'),
+    ('soc007','02', 'cla001','2019-02-27'),
+    ('soc007','01', 'cla003','2018-09-06'),
+    ('soc008','02', 'cla003','2018-11-02'),
+    ('soc008','01', 'cla004','2019-02-15'),
+    ('soc009','01', 'cla002','2019-05-28'),
+    ('soc009','02', 'cla009','2019-05-07'),
+    ('soc010','01', 'cla005','2016-10-19'),
+    ('soc010','02', 'cla007','2018-08-27'),
+    ('soc011','01', 'cla001','2018-04-05'),
+    ('soc011','01', 'cla007','2018-08-24'),
+    ('soc011','03', 'cla005','2019-09-21'),
+    ('soc012','01', 'cla006','2019-01-04'),
+    ('soc012','02', 'cla006','2019-01-04'),
+    ('soc012','02', 'cla004','2019-04-14'),
+    ('soc012','04', 'cla007','2018-06-17'),
+    ('soc013','01', 'cla009','2018-06-17'),
+    ('soc013','02', 'cla008','2019-06-17');
 
 INSERT INTO 
   Paga_f(nro_socio, nro_orden, id_clase, fecha, monto)
 VALUES
-    ('soc001', '1', 'cla004', '2019-10-20', '1500'),
-    ('soc001', '2', 'cla005', '2019-11-28', '800'),
-    ('soc002', '1', 'cla004', '2018-12-21', '1500'),
-    ('soc005', '2', 'cla004', '2017-07-15', '1000'),
-    ('soc006', '1', 'cla004', '2019-07-07', '1500'),
-    ('soc007', '3', 'cla005', '2019-02-07', '800'),
-    ('soc008', '1', 'cla004', '2019-02-15', '700'),
-    ('soc010', '1', 'cla005', '2016-10-19', '200'),
-    ('soc011', '3', 'cla005', '2019-09-21', '700'),
-    ('soc012', '2', 'cla004', '2019-04-14', '100');
+    ('soc001', '01', 'cla004', '2019-10-20', '1500'),
+    ('soc001', '02', 'cla005', '2019-11-28', '800'),
+    ('soc002', '01', 'cla004', '2018-12-21', '1500'),
+    ('soc005', '02', 'cla004', '2017-07-15', '1000'),
+    ('soc006', '01', 'cla004', '2019-07-07', '1500'),
+    ('soc007', '03', 'cla005', '2019-02-07', '800'),
+    ('soc008', '01', 'cla004', '2019-02-15', '700'),
+    ('soc010', '01', 'cla005', '2016-10-19', '200'),
+    ('soc011', '03', 'cla005', '2019-09-21', '700'),
+    ('soc012', '02', 'cla004', '2019-04-14', '100'),
  
+/*
+ * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
+ * gratuitas durante el año pasado.
+ */
+delimiter //
+
 INSERT INTO
     Cuota(id_cuota, monto_base, periodo, fecha_cuota)
 VALUES
@@ -774,7 +776,7 @@ VALUES
     ('cuo011', 'soc004', 6, 15602.45,'2019-09-22',15602.45,'2019-09-20'),
     ('cuo011', 'soc005', 4, 12224.6,'2019-09-22',12224.6,'2019-09-11'),
     ('cuo011', 'soc006', 4, 6755.7,'2019-09-22',6755.7,'2019-09-13'),
-    ('cuo011', 'soc007', 3, 9490.15,'2019-09-22', 9490.15,'2019-09-10'),
+    ('cuo011', 'soc007', 3, ‭9490.15‬,'2019-09-22', 9490.15,'2019-09-10'),
     ('cuo011', 'soc008', 2, 8846.75,'2019-09-22',8846.75,'2019-09-11'),
     ('cuo011', 'soc009', 2, 3218.7,'2019-09-22',3218.7,'2019-09-15'),
     ('cuo011', 'soc010', 1, 10133.55,'2019-09-22',10133.55,'2019-09-18'),
@@ -785,7 +787,7 @@ VALUES
     ('cuo012', 'soc004', 7, 15019.05,'2019-10-26',15019.05,'2019-10-15'),
     ('cuo012', 'soc005', 5, 11573.7,'2019-10-26',11573.7,'2019-10-15'),
     ('cuo012', 'soc006', 5, 6890.7,'2019-10-26',6890.7,'2019-10-18'),
-    ('cuo012', 'soc007', 4, 9232.2,'2019-10-26',9232.2,'2019-10-21'),
+    ('cuo012', 'soc007', 4, ‭9232.2,'2019-10-26',9232.2,'2019-10-21'),
     ('cuo012', 'soc008', 3, 8128.35,'2019-10-26',8128.35,'2019-10-18'),
     ('cuo012', 'soc009', 3, 4683,'2019-10-26',4683,'2019-10-20'),
     ('cuo012', 'soc010', 2, 10336.05,'2019-10-26',10336.05,'2019-10-21'),
@@ -807,11 +809,6 @@ VALUES
     ('cuo013', 'soc012', 2, 12811.35,'2019-11-22',12811.35,'2019-11-18'),
     ('cuo013', 'soc013', 2, 8128.35,'2019-11-22',8128.35,'2019-11-20');
 
-/*
- * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
- * gratuitas durante el año pasado.
- */
-delimiter //
 CREATE PROCEDURE soc_act_gratuitas ()
     BEGIN
         DECLARE anioAux int;
