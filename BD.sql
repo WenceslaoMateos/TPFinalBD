@@ -436,8 +436,8 @@ delimiter ;
 INSERT INTO
     Categoria(id_categoria, descripcion, porcentaje)
 VALUES
-    ('cat001', 'infantil', 15),
-    ('cat002', 'mayor', 5),
+    ('cat001', 'infantil', -30),
+    ('cat002', 'mayor', 3),
     ('cat003', 'vitalicio', -100);
 
 INSERT INTO 
