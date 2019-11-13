@@ -183,7 +183,7 @@ CREATE TABLE Capacitado_para(
 /* 
  * Seccion de triggers para modelar restricciones
  */
- /*
+/*
  * Los profesionales no pueden dirigir mas de una clase el mismo dia a la misma hora.
  */
 delimiter $$ 
@@ -191,18 +191,22 @@ CREATE TRIGGER profesional_dirige_unica_clase
 BEFORE INSERT ON Dirige 
 FOR EACH ROW 
 BEGIN 
-    DECLARE dummy varchar(20);
+    DECLARE dummy int
     SELECT
-        c.descripcion
+        COUNT(*)
     INTO
         dummy
     FROM
-        Categoria c
+        Dirige d, Profesional p, Clase c
     WHERE
-        c.id_categoria = NEW.id_categoria;
+        New.legajo=d.legajo AND
+        d.id_clase=c.id_clase AND
+        c.dia = ANY (SELECT c.dia FROM Clase c1
+        WHERE New.id_clase=c1.id_clase) AND
+        c.hora = ANY (SELECT c.hora FROM Clase c2
+        WHERE New.id_clase=c2.id_clase)
 
-
-    if (dummy <> 'vitalicio') AND (dummy <> 'mayor') then
+    if (dummy>0) then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No se puede asignar un Profesional a una clase, si este ya dirige otra clase en el mismo dia y horario';
     end if;
