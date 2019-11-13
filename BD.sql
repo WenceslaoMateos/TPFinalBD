@@ -766,7 +766,7 @@ CREATE PROCEDURE 'soc_deudores' ()
         DECLARE anioAux int;
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
-        SELECT t.*, SUM(deuda), exec cant_Familiares(t.nro_socio) AS fam
+        SELECT t.*, SUM(deuda), cant_Familiares(t.nro_socio) AS fam
         FROM Titular t, Pago p, Cuota c
         WHERE p.nro_socio=t.nro_socio AND p.id_cuota=c.id_cuota AND YEAR(c.fecha_cuota)=anioAux AND p.fecha_pago < p.fecha_vencimiento
         GROUP BY t.*, c.id_cuota
@@ -774,12 +774,15 @@ CREATE PROCEDURE 'soc_deudores' ()
     END
 //
                                                                            
-delimiter //
-CREATE PROCEDURE 'cant_Familiares' (IN nroSoc varchar)
+delimiter ff
+CREATE FUNCTION 'cant_Familiares' (IN nroSoc varchar)
+    RETURNS int
     BEGIN
-        SELECT COUNT(*) 
+        DECLARE cant int;
+        SELECT COUNT(*) INTO cant
         FROM Titular t, Familiar f
         WHERE t.nro_socio=nroSoc AND t.nro_socio=f.nro_socio;
+        RETURNS cant;
     END 
-//
+ff
 delimiter ;
