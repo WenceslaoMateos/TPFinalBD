@@ -272,6 +272,7 @@ END $$
 
 /*
  * La actividad que se realiza en una clase, debe poder desarrollarse en el área asignada a dicha clase.
+ * Tambien verifica que no existan dos clases simultaneas
  */
 delimiter $$ 
 CREATE TRIGGER clase_en_area 
@@ -294,6 +295,20 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
     end if;
+    SELECT
+        count(*)
+    INTO
+        dummy
+    FROM
+        Actividad ac, Area ar, Clase c
+    WHERE
+        NEW.dia = c.dia AND
+        NEW.hora = c.hora AND
+        NEW.cod_area = c.cod_area;
+    if dummy = 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se pueden superponer dos clases distintas en el mismo area';
+    end if;    
 END $$
 
 /*
