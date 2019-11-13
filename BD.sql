@@ -816,7 +816,7 @@ CREATE PROCEDURE soc_act_gratuitas ()
         #algo innecesario, por eso ahora es entera (solo precisa el año)
         SELECT YEAR(CURRENT_DATE()) INTO anioAux; 
         
-        SELECT id_categoria, SUM(cant)
+        SELECT id_categoria, SUM(cant) AS cantSocios
         FROM
         (
             /* cant titutales por categoria */
@@ -826,12 +826,12 @@ CREATE PROCEDURE soc_act_gratuitas ()
             (
                 SELECT *
                 FROM Clase c, Actividad a
-                WHERE YEAR(a.fecha_inscrip)=anioAux AND (a.id_categoria=t.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
+                WHERE (a.id_categoria=t.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
                 NOT EXISTS
                 (
                     SELECT *
                     FROM Se_Inscribe_t st
-                    WHERE st.nro_socio=t.nro_socio AND st.id_clase=c.id_clase
+                    WHERE st.nro_socio=t.nro_socio AND st.id_clase=c.id_clase AND YEAR(st.fecha_inscrip)=anioAux
                 )
             )
             GROUP BY id_categoria
@@ -845,12 +845,12 @@ CREATE PROCEDURE soc_act_gratuitas ()
             (
                 SELECT *
                 FROM Clase c, Actividad a
-                WHERE YEAR(a.fecha_inscrip)=anioAux AND (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND a.arancelada=false AND c.cod_actividad=a.cod_actividad AND
+                WHERE (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND a.arancelada=false AND c.cod_actividad=a.cod_actividad AND
                 NOT EXISTS
                 (
                     SELECT *
                     FROM Se_Inscribe_f sf
-                    WHERE sf.nro_socio=f.nro_socio AND sf.nro_orden=f.nro_orden AND sf.id_clase=c.id_clase
+                    WHERE sf.nro_socio=f.nro_socio AND sf.nro_orden=f.nro_orden AND sf.id_clase=c.id_clase AND YEAR(sf.fecha_inscrip)=anioAux
                 )
             )
             GROUP BY id_categoria
@@ -868,7 +868,7 @@ CREATE PROCEDURE 'soc_deudores' ()
         DECLARE anioAux int;
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
-        SELECT t.*, SUM(deuda), exec cant_Familiares(t.nro_socio) AS fam
+        SELECT t.*, SUM(deuda), cant_Familiares(t.nro_socio) AS fam
         FROM Titular t, Pago p, Cuota c
         WHERE p.nro_socio=t.nro_socio AND p.id_cuota=c.id_cuota AND YEAR(c.fecha_cuota)=anioAux AND p.fecha_pago < p.fecha_vencimiento
         GROUP BY t.*, c.id_cuota
