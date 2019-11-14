@@ -76,7 +76,6 @@ CREATE TABLE Clase(
     dia char(9) NOT NULL,
     hora char(5) NOT NULL,
     duracion int unsigned NOT NULL,
-    dia_y_hora varchar(50) NOT NULL,
     cod_actividad varchar(15) NOT NULL,
     cod_area varchar(15) NOT NULL,
     periodo varchar(20),
@@ -191,22 +190,19 @@ CREATE TRIGGER profesional_dirige_unica_clase
 BEFORE INSERT ON Dirige 
 FOR EACH ROW 
 BEGIN 
-    DECLARE dummy int
+    DECLARE dummy int;
     SELECT
-        COUNT(*)
+        count(hora)
     INTO
         dummy
     FROM
-        Dirige d, Profesional p, Clase c
+        Dirige d, Clase c
     WHERE
-        New.legajo=d.legajo AND
-        d.id_clase=c.id_clase AND
-        c.dia = ANY (SELECT c.dia FROM Clase c1
-        WHERE New.id_clase=c1.id_clase) AND
-        c.hora = ANY (SELECT c.hora FROM Clase c2
-        WHERE New.id_clase=c2.id_clase)
-
-    if (dummy>0) then
+        NEW.legajo = d.legajo AND
+        d.id_clase = c.id_clase
+    GROUP BY 
+        c.dia, c.hora;
+    if dummy > 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No se puede asignar un Profesional a una clase, si este ya dirige otra clase en el mismo dia y horario';
     end if;
@@ -217,7 +213,6 @@ END $$
 /*
  * Los titulares deben pertenecer a la categoría “mayores” o “vitalicios”.
  */
-delimiter $$ 
 CREATE TRIGGER titular_categoria 
 BEFORE INSERT ON Titular 
 FOR EACH ROW 
@@ -240,7 +235,6 @@ END $$
 /*
  * Actividad solo puede ser arancelada si el boolean de arancelada es true
  */
-delimiter $$ 
 CREATE TRIGGER arancelada_en_actividad 
 BEFORE INSERT ON Arancelada 
 FOR EACH ROW 
@@ -278,7 +272,7 @@ BEGIN
     WHERE
         f.nro_socio = NEW.nro_socio;
     SET dummy = dummy + 1;
-    SET NEW.nro_orden = CONCAT('orden', dummy);
+    SET NEW.nro_orden = dummy;
 END $$
 
 /*
@@ -303,8 +297,8 @@ END $$
 
 /*
  * La actividad que se realiza en una clase, debe poder desarrollarse en el área asignada a dicha clase.
+ * Tambien verifica que no existan dos clases simultaneas
  */
-delimiter $$ 
 CREATE TRIGGER clase_en_area 
 BEFORE INSERT ON Clase 
 FOR EACH ROW 
@@ -325,12 +319,25 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'No puede existir una clase con una actividad que no se pueda desarrollar en ese area';
     end if;
+    SELECT
+        count(*)
+    INTO
+        dummy
+    FROM
+        Actividad ac, Area ar, Clase c
+    WHERE
+        NEW.dia = c.dia AND
+        NEW.hora = c.hora AND
+        NEW.cod_area = c.cod_area;
+    if dummy > 0 then
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se pueden superponer dos clases distintas en el mismo area';
+    end if;    
 END $$
 
 /*
  * Los titulares sólo pagan clases correspondientes a actividades aranceladas.
  */
-delimiter $$ 
 CREATE TRIGGER titular_paga_clase 
 BEFORE INSERT ON Paga_t 
 FOR EACH ROW 
@@ -343,10 +350,9 @@ BEGIN
     FROM
         Se_Inscribe_t st, Clase c, Actividad a
     WHERE
-        NEW.nro_socio = st.nro_socio AND
-        st.id_clase = c.id_clase AND
+        NEW.id_clase = c.id_clase AND
         c.cod_actividad = a.cod_actividad AND
-        a.arancelada = true;
+        a.arancelada;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Un titular no puede pagar una clase que no sea arancelada';
@@ -356,7 +362,6 @@ END $$
 /*
  * Los familiares sólo pagan clases correspondientes a actividades aranceladas.
  */
-delimiter $$ 
 CREATE TRIGGER familiar_paga_clase 
 BEFORE INSERT ON Paga_f
 FOR EACH ROW 
@@ -369,14 +374,13 @@ BEGIN
     FROM
         Se_Inscribe_f sf, Clase c, Actividad a
     WHERE
-        NEW.nro_socio = sf.nro_socio AND
-        NEW.nro_orden = sf.nro_orden AND
-        sf.id_clase = c.id_clase AND
+        NEW.id_clase = c.id_clase AND
         c.cod_actividad = a.cod_actividad AND
-        a.arancelada = true;
+        NEW.nro_socio = t.nro_socio AND
+        (a.id_categoria IS NULL OR t.id_categoria = a.id_categoria);
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Un familiar no puede pagar una clase que no sea arancelada';
+        SET MESSAGE_TEXT = 'Un titular solo se puede inscribir a una actividad general o dentro de su categoria';
     end if;
 END $$
 
@@ -384,7 +388,6 @@ END $$
  * Los profesionales que dirigen una clase, deben estar capacitados para la actividad 
  * correspondiente a la clase.
  */
-delimiter $$ 
 CREATE TRIGGER profesional_dirige_clase 
 BEFORE INSERT ON Dirige
 FOR EACH ROW 
@@ -410,7 +413,6 @@ END $$
  * Los titulares sólo se pueden inscribir a clases asociadas a actividades que coincidan 
  * con la categoría a la que pertenece.
  */
-delimiter $$ 
 CREATE TRIGGER titular_se_inscribe 
 BEFORE INSERT ON Se_Inscribe_t
 FOR EACH ROW 
@@ -437,7 +439,6 @@ END $$
  * Los familiares sólo se pueden inscribir a clases asociadas a actividades que coincidan con la 
  * categoría a la que pertenece.
  */
-delimiter $$ 
 CREATE TRIGGER familiar_se_inscribe 
 BEFORE INSERT ON Se_Inscribe_f
 FOR EACH ROW 
@@ -452,12 +453,12 @@ BEGIN
     WHERE
         NEW.nro_socio = f.nro_socio AND
         NEW.nro_orden = f.nro_orden AND
-        (t.id_categoria = a.id_categoria OR a.id_categoria = NULL) AND
+        (f.id_categoria = a.id_categoria OR a.id_categoria IS NULL) AND
         a.cod_actividad = c.cod_actividad AND
         c.id_clase = NEW.id_clase;
     if dummy = 0 then
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad dentro de su categoria';
+        SET MESSAGE_TEXT = 'Un familiar solo se puede inscribir a una actividad general o dentro de su categoria';
     end if;
 END $$
 
@@ -578,7 +579,6 @@ VALUES
     ('act006', 'area006'),
     ('act007', 'area003');
 
-#periodo que nose bien a que se refiere y definir lo de dia y hora
 INSERT INTO 
     Clase(id_clase, dia, hora, duracion, cod_actividad, cod_area, periodo)
 VALUES
@@ -602,69 +602,69 @@ VALUES
 INSERT INTO
     Capacitado_para(cod_actividad,legajo)
 VALUES
-    ('act001','478961'),
-    ('act002','478961'),
-    ('act001','454123'),
-    ('act002','454123'),
-    ('act001','851173'),
-    ('act002','851173'),
-    ('act003','589633'),
-    ('act003','474583'),
-    ('act004','147852'),
-    ('act004','785963'),
-    ('act005','157896'),
-    ('act006','454553'),
-    ('act006','478163'),
-    ('act007','157896');
+    ('act001', '478961'),
+    ('act002', '478961'),
+    ('act001', '454123'),
+    ('act002', '454123'),
+    ('act001', '851173'),
+    ('act002', '851173'),
+    ('act003', '589633'),
+    ('act003', '474583'),
+    ('act004', '147852'),
+    ('act004', '785963'),
+    ('act005', '157896'),
+    ('act006', '454553'),
+    ('act006', '478163'),
+    ('act007', '157896');
 
 INSERT INTO
     Dirige(legajo,id_clase)
 VALUES
-    ('478961','cla001'),
-    ('454123','cla002'),
-    ('589633','cla003'),
-    ('785963','cla004'),
-    ('157896','cla005'),
-    ('478163','cla006'),
-    ('478961','cla007'),
-    ('851173','cla008'),
-    ('589633','cla009');
+    #('478961', 'cla001'),
+    ('454123', 'cla002'),
+    #('589633', 'cla003'),
+    ('785963', 'cla004'),
+    ('157896', 'cla005'),
+    ('478163', 'cla006'),
+    ('478961', 'cla007'),
+    ('851173', 'cla008'),
+    ('589633', 'cla009');
 
 INSERT INTO
     Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
 VALUES
-    ('soc001', 'cla001','2019-10-10'),
-    ('soc002', 'cla006','2018-12-12'),
-    ('soc003', 'cla001','2019-11-01'),
-    ('soc003', 'cla008','2019-11-01'),
-    ('soc001', 'cla004','2019-10-10'),
-    ('soc002', 'cla005','2018-12-12'),
-    ('soc003', 'cla004','2019-11-01'),
-    ('soc003', 'cla005','2019-11-01'),
-    ('soc004', 'cla006','2019-06-01'),
-    ('soc005', 'cla008','2019-01-02'),
-    ('soc006', 'cla007','2019-07-01'),
-    ('soc007', 'cla007','2018-06-03'),
-    ('soc008', 'cla001','2018-11-02'),
-    ('soc009', 'cla006','2019-05-15'),
-    ('soc010', 'cla005','2017-01-02'),
-    ('soc011', 'cla004','2018-04-05'),
-    ('soc012', 'cla005','2019-01-04');
-    ('soc012', 'cla007','2019-01-04');
+    ('soc001', 'cla001', '2019-10-10'),
+    ('soc002', 'cla006', '2018-12-12'),
+    ('soc003', 'cla001', '2019-11-01'),
+    ('soc003', 'cla008', '2019-11-01'),
+    ('soc001', 'cla004', '2019-10-10'),
+    ('soc002', 'cla005', '2018-12-12'),
+    ('soc003', 'cla004', '2019-11-01'),
+    ('soc003', 'cla005', '2019-11-01'),
+    ('soc004', 'cla006', '2019-06-01'),
+    ('soc005', 'cla008', '2019-01-02'),
+    ('soc006', 'cla007', '2019-07-01'),
+    ('soc007', 'cla007', '2018-06-03'),
+    ('soc008', 'cla001', '2018-11-02'),
+    ('soc009', 'cla006', '2019-05-15'),
+    ('soc010', 'cla005', '2017-01-02'),
+    ('soc011', 'cla004', '2018-04-05'),
+    ('soc012', 'cla005', '2019-01-04');
+    ('soc012', 'cla007', '2019-01-04');
 
 INSERT INTO 
   Paga_t(nro_socio, id_clase, fecha, monto)
 VALUES
-    ('soc001', 'cla004','2019-10-10','1500'),
-    ('soc002', 'cla005','2018-12-12','800'),
-    ('soc003', 'cla004','2019-11-01','1000'),
-    ('soc003', 'cla005','2019-11-01','700'),
-    ('soc010', 'cla005', '2016-10-19','200'),
-    ('soc011', 'cla004', '2018-08-24','1050'),
-    ('soc012', 'cla005', '2019-04-14','800');
+    ('soc001', 'cla004', '2019-10-10', '1500'),
+    ('soc002', 'cla005', '2018-12-12', '800'),
+    ('soc003', 'cla004', '2019-11-01', '1000'),
+    ('soc003', 'cla005', '2019-11-01', '700'),
+    ('soc010', 'cla005', '2016-10-19', '200'),
+    ('soc011', 'cla004', '2018-08-24', '1050'),
+    ('soc012', 'cla005', '2019-04-14', '800');
 
 INSERT INTO
-    Se_Inscribe_f(nro_socio,nro_orden, id_clase,fecha_inscrip)
+    Se_Inscribe_f(nro_socio, nro_orden, id_clase,f echa_inscrip)
 VALUES
     ('soc001','01', 'cla004','2019-10-10'),
     ('soc001','02', 'cla005','2019-09-10'),
@@ -711,12 +711,6 @@ VALUES
     ('soc010', '01', 'cla005', '2016-10-19', '200'),
     ('soc011', '03', 'cla005', '2019-09-21', '700'),
     ('soc012', '02', 'cla004', '2019-04-14', '100'),
- 
-/*
- * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
- * gratuitas durante el año pasado.
- */
-delimiter //
 
 INSERT INTO
     Cuota(id_cuota, monto_base, periodo, fecha_cuota)
@@ -832,6 +826,11 @@ VALUES
     ('cuo013', 'soc012', 2, 12811.35,'2019-11-22',12811.35,'2019-11-18'),
     ('cuo013', 'soc013', 2, 8128.35,'2019-11-22',8128.35,'2019-11-20');
 
+/*
+ * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
+ * gratuitas durante el año pasado.
+ */
+delimiter //
 CREATE PROCEDURE soc_act_gratuitas ()
     BEGIN
         DECLARE anioAux int;
@@ -885,7 +884,6 @@ CREATE PROCEDURE soc_act_gratuitas ()
  * Los datos del socio titular de grupos familiares que adeuden cuotas sociales del año en
  * curso, junto con el importe total adeudado, y la cantidad de integrantes del grupo.
  */
-delimiter //
 CREATE PROCEDURE 'soc_deudores' ()
     BEGIN
         DECLARE anioAux int;
@@ -896,10 +894,8 @@ CREATE PROCEDURE 'soc_deudores' ()
         WHERE p.nro_socio=t.nro_socio AND p.id_cuota=c.id_cuota AND YEAR(c.fecha_cuota)=anioAux AND p.fecha_pago < p.fecha_vencimiento
         GROUP BY t.*, c.id_cuota
         HAVING SUM(p.monto_abonado)<p.monto_pagar AND (p.monto_pagar - SUM(p.monto_abonado)) AS deuda
-    END
-//
+    END//
                                                                            
-delimiter ff
 CREATE FUNCTION 'cant_Familiares' (IN nroSoc varchar)
     RETURNS int
     BEGIN
@@ -908,6 +904,5 @@ CREATE FUNCTION 'cant_Familiares' (IN nroSoc varchar)
         FROM Titular t, Familiar f
         WHERE t.nro_socio=nroSoc AND t.nro_socio=f.nro_socio;
         RETURNS cant;
-    END 
-ff
+    END//
 delimiter ;
