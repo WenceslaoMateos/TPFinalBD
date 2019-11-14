@@ -84,7 +84,6 @@ CREATE TABLE Clase(
     FOREIGN KEY(cod_area) REFERENCES Area(cod_area) ON DELETE CASCADE
 );
 
-#tendriamos que los periodos acorde a que tipo son calcular los valores?
 CREATE TABLE Arancelada(
     cod_actividad varchar(15) NOT NULL,
     costo float unsigned NOT NULL,
@@ -93,7 +92,6 @@ CREATE TABLE Arancelada(
     FOREIGN KEY(cod_actividad) REFERENCES Actividad(cod_actividad) ON DELETE CASCADE
 );
 
-#tendriamos que los periodos acorde a que tipo son calcular los valores?
 CREATE TABLE Cuota(
     id_cuota varchar(15) NOT NULL,
     monto_base float unsigned,
@@ -476,73 +474,74 @@ VALUES
 INSERT INTO 
     Titular(nro_socio, id_categoria, nombre, apellido, fecha_nac, email, celular, telefono, domicilio)
 VALUES
-    ('soc001', 'cat002', 'Martin','Belcic','1996-11-01','martin.belcic@gmail.com','2236888888','4723339','Alberti 2565'),
-    ('soc002', 'cat003', 'Martina','Alcalde','1996-06-05','martinaalc@gmail.com','2235808313','4653831','Roca 671'),
-    ('soc003', 'cat003', 'Susana','Vega','1975-11-15','holasusana@gmail.com','2234999555','4787952','Rivas 4019'),
-    ('soc004', 'cat002', 'Eugenia','Flores','1989-02-26','floreeuge@gmail.com','2235424143','4512968','San Lorenzo 1549'),
-    ('soc005', 'cat002', 'Franco','Rosso','1986-01-01','francorosso@gmail.com','2236889898','4942536','San Luis 689'),
-    ('soc006', 'cat003', 'Juan Ignacio','Aguila','1993-12-08','juanignacioaguila@gmail.com','2234512152','4724745','Almafuerte 1770'),
-    ('soc007', 'cat003', 'Julio','Ely','1990-05-05','julioely@gmail.com','2235232629','4642128','Tres Arroyos 2820'),
-    ('soc008', 'cat002', 'Fatima','Carreras','1996-09-01','faticarreras@gmail.com','2234789632','4642055','Avellaneda 652'),
-    ('soc009', 'cat003', 'Manuela','Onofri','1997-08-06','manuelaonofri@gmail.com','2235252526','4789632','Alberti 1485'),
-    ('soc010', 'cat002', 'Blas','Lopez','1980-02-18','elblas@gmail.com','2235484523','4512326','Junin 3698'),
-    ('soc011', 'cat002', 'Rosario','Iturria','1966-07-17','rositurria@gmail.com','2236787796','4518982','San Juan 4000'),
-    ('soc012', 'cat003', 'Hugo','Ferraris','1968-05-10','hugoferraris@gmail.com','2236124569','4511826','Peña 265'),
-    ('soc013', 'cat002', 'Marcos','Piña','1996-03-14','marcospiña@gmail.com','2236789632','4547879','Genova 2590');
+    ('soc001', 'cat002', 'Martin', 'Belcic', '1996-11-01', 'martin.belcic@gmail.com', '2236888888', '4723339', 'Alberti 2565'),
+    ('soc002', 'cat003', 'Martina', 'Alcalde', '1996-06-05', 'martinaalc@gmail.com', '2235808313', '4653831', 'Roca 671'),
+    ('soc003', 'cat003', 'Susana', 'Vega', '1975-11-15', 'holasusana@gmail.com', '2234999555', '4787952', 'Rivas 4019'),
+    ('soc004', 'cat002', 'Eugenia', 'Flores', '1989-02-26', 'floreeuge@gmail.com', '2235424143', '4512968', 'San Lorenzo 1549'),
+    ('soc005', 'cat002', 'Franco', 'Rosso', '1986-01-01', 'francorosso@gmail.com', '2236889898', '4942536', 'San Luis 689'),
+    ('soc006', 'cat003', 'Juan Ignacio', 'Aguila', '1993-12-08', 'juanignacioaguila@gmail.com', '2234512152', '4724745', 'Almafuerte 1770'),
+    ('soc007', 'cat003', 'Julio', 'Ely', '1990-05-05', 'julioely@gmail.com', '2235232629', '4642128', 'Tres Arroyos 2820'),
+    ('soc008', 'cat002', 'Fatima', 'Carreras', '1996-09-01', 'faticarreras@gmail.com', '2234789632', '4642055', 'Avellaneda 652'),
+    ('soc009', 'cat003', 'Manuela', 'Onofri', '1997-08-06', 'manuelaonofri@gmail.com', '2235252526', '4789632', 'Alberti 1485'),
+    ('soc010', 'cat002', 'Blas', 'Lopez', '1980-02-18', 'elblas@gmail.com', '2235484523', '4512326', 'Junin 3698'),
+    ('soc011', 'cat002', 'Rosario', 'Iturria', '1966-07-17', 'rositurria@gmail.com', '2236787796', '4518982', 'San Juan 4000'),
+    ('soc012', 'cat003', 'Hugo', 'Ferraris', '1968-05-10', 'hugoferraris@gmail.com', '2236124569', '4511826', 'Peña 265'),
+    ('soc013', 'cat002', 'Marcos', 'Piña', '1996-03-14', 'marcospiña@gmail.com', '2236789632', '4547879', 'Genova 2590');
 
 INSERT INTO 
     Familiar(nro_socio, nro_orden, id_categoria,nombre,apellido,fecha_nac,email,celular)
 VALUES  
-    ('soc001','01', 'cat002', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
-    ('soc001','02', 'cat002', 'Ximena', 'Belcic', '1987-03-23', 'ximeDarl@gmail.com', '2230345201'),
-    ('soc002','01', 'cat002', 'Amado', 'Alcalde', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
-    ('soc003','01', 'cat001', 'Esteban', 'Vega', '2000-07-12', 'estebangutierre@hotmail.com', '2237905215'),
-    ('soc003','02', 'cat001', 'Bernabe', 'Vega', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
-    ('soc003','03', 'cat001', 'Amelia', 'Vega', '2005-07-20', 'mercyame@gmail.com', '2237937215'),
-    ('soc003','04', 'cat001', 'Natalia', 'Vega', '2008-03-12', 'natinelida@gmail.com', '2237994915'),
-    ('soc004','01', 'cat001', 'Carla', 'Flores', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
-    ('soc004','02', 'cat001', 'Emiliano', 'Flores', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
-    ('soc004','03', 'cat002', 'Víctor', 'Brannon', '1999-09-09', 'vicbrannon@gmail.com', '2234064671'),
-    ('soc004','04', 'cat002', 'Fermín', 'Flores', '1987-04-11', 'ferminalf2@gmail.com', '2234002871'),
-    ('soc005','01', 'cat002', 'Federico', 'Rosso', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
-    ('soc005','02', 'cat001', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
-    ('soc005','03', 'cat001', 'Rogelio', 'Rosso', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
-    ('soc006','01', 'cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
-    ('soc006','02', 'cat002', 'Aguila', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
-    ('soc007','01', 'cat001', 'Jose', 'Ely', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
-    ('soc007','02', 'cat002', 'Francisco', 'Ely', '1989-11-13', 'francishaz@hotmail.com', '2239524903'),
-    ('soc007','03', 'cat002', 'Candelaria', 'Ely', '1992-05-18', 'candemarlin92@hotmail.com', '2237062903'),
-    ('soc008','01', 'cat001', 'Luz', 'Carreras', '2014-02-20', 'lualfredo@hotmail.com', '2239592945'),
-    ('soc008','02', 'cat001', 'Alan', 'Carreras', '2003-04-18', 'alanlill03@hotmail.com', '2239590385'),
-    ('soc009','01', 'cat001', 'Pilar', 'Onofri', '1964-02-18', 'pilireyesc@gmail.com', '2238512564'),
-    ('soc009','02', 'cat001', 'Owen', 'Onofri', '1992-03-27', 'owenvirgi92@gmail.com', '2238529364'),
-    ('soc010','01', 'cat002', 'Maria', 'Lopez', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
-    ('soc010','02', 'cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
-    ('soc011','01', 'cat002', 'Samuel', 'Iturria', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
-    ('soc011','02', 'cat002', 'Hernan', 'Iturria', '1994-05-20', 'hermanwil@gmail.com', '2235726272'),
-    ('soc011','03', 'cat001', 'Lucas', 'Iturria', '2004-05-20', 'lucas04wilfredo@gmail.com', '2235720252'),
-    ('soc011','04', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
-    ('soc012','01', 'cat001', 'Oscar', 'Ferraris', '1997-07-17', 'oacarDeNir00@hotmail.com', '2238681295'),
-    ('soc012','02', 'cat001', 'Valentina', 'Ferraris', '2011-04-30', 'valenr@gmail.com', '2237937469'),
-    ('soc012','02', 'cat001', 'Oscar', 'Ferraris', '2009-03-27', 'oscivasco11@gmail.com', '2237898469'),
-    ('soc012','03', 'cat002', 'Lujan', 'Vasco', '1989-06-19', 'luvasco@gmail.com', '2237802669'),
-    ('soc012','04', 'cat001', 'Ramiro', 'Vasco', '2000-12-21', 'ramaDeNir00@hotmail.com', '2238039295'),
-    ('soc013','01', 'cat001', 'Emiliano', 'Piña', '2005-03-12', 'emilmortimer05@gmail.com', '2236915380'),
-    ('soc013','02', 'cat001', 'Juan', 'Piña', '1998-09-12', 'mortijuan1998@gmail.com', '2236029380');
+    ('soc001', '01', 'cat001', 'Trinidad', 'Buenaventura', '1982-06-30', 'tri.buena@gmail.com', '2230392014'),
+    ('soc001', '02', 'cat002', 'Ximena', 'Belcic', '1987-03-23', 'ximeDarl@gmail.com', '2230345201'),
+    ('soc002', '01', 'cat002', 'Amado', 'Alcalde', '1977-03-28', 'Amado77Benigno@hotmail.com', '2235659297'),
+    ('soc003', '01', 'cat001', 'Esteban', 'Vega', '2000-07-12', 'estebangutierre@hotmail.com', '2237905215'),
+    ('soc003', '02', 'cat001', 'Bernabe', 'Vega', '2005-12-12', 'bernigutierre@gmail.com', '2237905215'),
+    ('soc003', '03', 'cat001', 'Amelia', 'Vega', '2005-07-20', 'mercyame@gmail.com', '2237937215'),
+    ('soc003', '04', 'cat001', 'Natalia', 'Vega', '2008-03-12', 'natinelida@gmail.com', '2237994915'),
+    ('soc004', '01', 'cat001', 'Carla', 'Flores', '2008-05-04', 'carlavito08@hotmail.com', '2230832559'),
+    ('soc004', '02', 'cat001', 'Emiliano', 'Flores', '2002-10-06', 'emialfred2@gmail.com', '2234064671'),
+    ('soc004', '03', 'cat002', 'Víctor', 'Brannon', '1999-09-09', 'vicbrannon@gmail.com', '2234064671'),
+    ('soc004', '04', 'cat002', 'Fermín', 'Flores', '1987-04-11', 'ferminalf2@gmail.com', '2234002871'),
+    ('soc005', '01', 'cat002', 'Federico', 'Rosso', '1943-01-20', 'hugofederico@hotmail.com', '2235718125'),
+    ('soc005', '02', 'cat001', 'Angela', 'Rosalinda', '1960-11-21', 'angelarosalinda1960@gmail.com', '2239403084'),
+    ('soc005', '03', 'cat001', 'Rogelio', 'Rosso', '1932-01-13', 'mirerogelio32@hotmail.com', '2232229909'),
+    ('soc006', '01', 'cat002', 'Marita', 'Ariel', '1946-05-20', 'maritariel.46@gmail.com', '2235023156'),
+    ('soc006', '02', 'cat002', 'Aguila', 'Modesta', '1970-03-11', 'clarimodesta1970@hotmail.com', '2238045242'),
+    ('soc007', '01', 'cat001', 'Jose', 'Ely', '1983-10-25', 'josexochi83@hotmail.com', '2237334903'),
+    ('soc007', '02', 'cat002', 'Francisco', 'Ely', '1989-11-13', 'francishaz@hotmail.com', '2239524903'),
+    ('soc007', '03', 'cat002', 'Candelaria', 'Ely', '1992-05-18', 'candemarlin92@hotmail.com', '2237062903'),
+    ('soc008', '01', 'cat001', 'Luz', 'Carreras', '2014-02-20', 'lualfredo@hotmail.com', '2239592945'),
+    ('soc008', '02', 'cat001', 'Alan', 'Carreras', '2003-04-18', 'alanlill03@hotmail.com', '2239590385'),
+    ('soc009', '01', 'cat001', 'Pilar', 'Onofri', '1964-02-18', 'pilireyesc@gmail.com', '2238512564'),
+    ('soc009', '02', 'cat001', 'Owen', 'Onofri', '1992-03-27', 'owenvirgi92@gmail.com', '2238529364'),
+    ('soc010', '01', 'cat002', 'Maria', 'Lopez', '1943-11-14', 'fati1943nat@hotmail.com', '2234345698'),
+    ('soc010', '02', 'cat002', 'Aaron', 'Fidel', '1984-03-23', 'aaronfi84@hotmail.com', '2236730748'),
+    ('soc011', '01', 'cat002', 'Samuel', 'Iturria', '1991-01-29', 'samuellucia@gmail.com', '2235726272'),
+    ('soc011', '02', 'cat002', 'Hernan', 'Iturria', '1994-05-20', 'hermanwil@gmail.com', '2235726272'),
+    ('soc011', '03', 'cat001', 'Lucas', 'Iturria', '2004-05-20', 'lucas04wilfredo@gmail.com', '2235720252'),
+    ('soc011', '04', 'cat002', 'Melisa', 'Soledad', '1968-02-11', 'melisasole68@hotmail.com', '2230195125'),
+    ('soc012', '01', 'cat001', 'Oscar', 'Ferraris', '1997-07-17', 'oacarDeNir00@hotmail.com', '2238681295'),
+    ('soc012', '02', 'cat001', 'Valentina', 'Ferraris', '2011-04-30', 'valenr@gmail.com', '2237937469'),
+    ('soc012', '02', 'cat001', 'Oscar', 'Ferraris', '2009-03-27', 'oscivasco11@gmail.com', '2237898469'),
+    ('soc012', '03', 'cat002', 'Lujan', 'Vasco', '1989-06-19', 'luvasco@gmail.com', '2237802669'),
+    ('soc012', '04', 'cat001', 'Ramiro', 'Vasco', '2000-12-21', 'ramaDeNir00@hotmail.com', '2238039295'),
+    ('soc013', '01', 'cat001', 'Emiliano', 'Piña', '2005-03-12', 'emilmortimer05@gmail.com', '2236915380'),
+    ('soc013', '02', 'cat001', 'Juan', 'Piña', '1998-09-12', 'mortijuan1998@gmail.com', '2236029380');
 
 INSERT INTO
     Profesional(legajo, nombre, apellido, dni, fecha_nac, especializacion)
 VALUES
-    ('454553','Matias','Suarez','16589236','1978-02-10','tenis'),
-    ('478961','Juana','Lopez','19589274','1983-06-12','edfisica'),
-    ('785963','Marina','Fernandez','35587885','1992-09-16','futbol'),
-    ('157896','Julio','Martinez','42558971','1998-08-10','hockey'),
-    ('478163','Guillermina','Villa','32589657','1988-05-02','tenis'),
-    ('147852','Fernando','Gomez','39174589','1995-02-06','futbol'),
-    ('454123','Mateo','Mariani','29885741','1989-03-11','edfisica'),
-    ('851173','Karen','Juarez','39887414','1996-12-20','edfisica'),
-    ('589633','Mirta','Hernandez','30188941','1985-07-24','natacion'),
-    ('474583','Diego','Rios','38182236','1980-10-30','natacion');
+    ('454553', 'Matias', 'Suarez', '16589236', '1978-02-10', 'tenis'),
+    ('478961', 'Juana', 'Lopez', '19589274', '1983-06-12', 'edfisica'),
+    ('785963', 'Marina', 'Fernandez', '35587885', '1992-09-16', 'futbol'),
+    ('157896', 'Julio', 'Martinez', '42558971', '1998-08-10', 'hockey'),
+    ('478163', 'Guillermina', 'Villa', '32589657', '1988-05-02', 'tenis'),
+    ('147852', 'Fernando', 'Gomez', '39174589', '1995-02-06', 'futbol'),
+    ('454123', 'Mateo', 'Mariani', '29885741', '1989-03-11', 'edfisica'),
+    ('851173', 'Karen', 'Juarez', '39887414', '1996-12-20', 'edfisica'),
+    ('589633', 'Mirta', 'Hernandez', '30188941', '1985-07-24', 'natacion'),
+    ('474583', 'Diego', 'Rios', '38182236', '1980-10-30', 'natacion'),
+    ('569876', 'Cesar', 'Colavolpe', '39101290', '1994-10-30', 'voley');
 
 INSERT INTO 
     Area(cod_area, ubicacion, capacidad, estado)
@@ -552,7 +551,8 @@ VALUES
     ('area003', 'cancha_de_hockey', '40', 'apta'),
     ('area004', 'cancha_de_futbol', '40', 'apta'),
     ('area005', 'gimnasio_1', '60', 'apta'),
-    ('area001', 'gimnasio_2', '40', 'en_reparacion');
+    ('area001', 'gimnasio_2', '40', 'en_reparacion'),
+    ('area007', 'cancha_de_voley', '27', 'apta');
 
 # 4,5 y 7 aranceladas
 INSERT INTO
@@ -564,7 +564,9 @@ VALUES
     ('act004', 'futbol_integral', 'futbol', true, NULL),
     ('act005', 'hockey_femenino_integral', 'hockey_femenino', true, NULL),
     ('act006', 'tenis_integral', 'tenis', false, NULL),
-    ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL);
+    ('act007', 'hockey_masculino_integral', 'hockey_masculino', true, NULL),
+    ('act008', 'voley', 'voley_masculino', false, 'cat003'),
+    ('act009', 'clase_de_pileta_vitalicios', 'pileta_vitalicio', false, 'cat003');
 
 INSERT INTO
     Puede_Desarrollarse_En(cod_actividad, cod_area)
@@ -576,20 +578,24 @@ VALUES
     ('act004', 'area004'),
     ('act005', 'area003'),
     ('act006', 'area006'),
-    ('act007', 'area003');
+    ('act007', 'area003'),
+    ('act008', 'area007'),
+    ('act009', 'area002');
 
 INSERT INTO 
     Clase(id_clase, dia, hora, duracion, cod_actividad, cod_area, periodo)
 VALUES
-    ('cla001', 'martes','18:00',120, 'act001', 'area005', 'tarde'),
-    ('cla002', 'jueves','18:00',120, 'act002', 'area001', 'tarde'),
+    ('cla001', 'martes', '18:00',120, 'act001', 'area005', 'tarde'),
+    ('cla002', 'jueves', '18:00',120, 'act002', 'area001', 'tarde'),
     ('cla003', 'lunes', '18:00',120, 'act003', 'area002', 'tarde'),
-    ('cla004', 'miercoles','20:00',120, 'act004', 'area004', 'tarde'),
-    ('cla005', 'viernes','18:00',120, 'act005', 'area003' ,'tarde'), 
+    ('cla004', 'miercoles', '20:00',120, 'act004', 'area004', 'tarde'),
+    ('cla005', 'viernes', '18:00',120, 'act005', 'area003' , 'tarde'), 
     ('cla006', 'lunes', '16:00',60, 'act006', 'area006', 'tarde'),
-    ('cla007', 'jueves','16:00',60, 'act001', 'area005', 'tarde'),
-    ('cla008', 'martes','14:00',120, 'act001', 'area005', 'tarde'),
-    ('cla009', 'jueves', '14:00',120, 'act003', 'area002', 'tarde');
+    ('cla007', 'jueves', '16:00',60, 'act001', 'area005', 'tarde'),
+    ('cla008', 'martes', '14:00',120, 'act001', 'area005', 'tarde'),
+    ('cla009', 'jueves', '14:00',120, 'act003', 'area002', 'tarde'),
+    ('cla010','viernes','18:30',90,'act008','area007','tarde'),
+    ('cla011','sabado','20:00',60,'act002','area007','tarde');
   
 INSERT INTO
     Arancelada(cod_actividad, costo, periodo_pago)
@@ -599,7 +605,7 @@ VALUES
     ('act007', 650.0, 'mensual');
 
 INSERT INTO
-    Capacitado_para(cod_actividad,legajo)
+    Capacitado_para(cod_actividad, legajo)
 VALUES
     ('act001', '478961'),
     ('act002', '478961'),
@@ -614,10 +620,12 @@ VALUES
     ('act005', '157896'),
     ('act006', '454553'),
     ('act006', '478163'),
-    ('act007', '157896');
+    ('act007', '157896'),
+    ('act008', '569876'),
+    ('act009', '474583');
 
 INSERT INTO
-    Dirige(legajo,id_clase)
+    Dirige(legajo, id_clase)
 VALUES
     ('478961', 'cla001'),
     ('454123', 'cla002'),
@@ -630,7 +638,7 @@ VALUES
     ('589633', 'cla009');
 
 INSERT INTO
-    Se_Inscribe_t(nro_socio, id_clase,fecha_inscrip)
+    Se_Inscribe_t(nro_socio, id_clase, fecha_inscrip)
 VALUES
     ('soc001', 'cla001', '2019-10-10'),
     ('soc002', 'cla006', '2018-12-12'),
@@ -665,37 +673,41 @@ VALUES
 INSERT INTO
     Se_Inscribe_f(nro_socio, nro_orden, id_clase, fecha_inscrip)
 VALUES
-    ('soc001','1', 'cla004','2019-10-10'),
-    ('soc001','2', 'cla005','2019-09-10'),
-    ('soc002','1', 'cla004','2018-12-12'),
-    ('soc003','2', 'cla007','2019-11-01'),
-    ('soc003','3', 'cla001','2019-11-01'),
-    ('soc003','3', 'cla008','2019-11-01'),
-    ('soc004','3', 'cla007','2018-06-01'),
-    ('soc004','1', 'cla002','2018-10-21'),
-    ('soc004','1', 'cla003','2018-06-29'),
-    ('soc005','2', 'cla004','2017-07-15'),
-    ('soc005','1', 'cla007','2017-01-20'),
-    ('soc005','2', 'cla002','2019-01-02'),
-    ('soc006','1', 'cla004','2019-07-01'),
-    ('soc007','3', 'cla005','2019-02-07'),
-    ('soc007','2', 'cla001','2019-02-27'),
-    ('soc007','1', 'cla003','2018-09-06'),
-    ('soc008','2', 'cla003','2018-11-02'),
-    ('soc008','1', 'cla004','2019-02-15'),
-    ('soc009','1', 'cla002','2019-05-28'),
-    ('soc009','2', 'cla009','2019-05-07'),
-    ('soc010','1', 'cla005','2016-10-19'),
-    ('soc010','2', 'cla007','2018-08-27'),
-    ('soc011','1', 'cla001','2018-04-05'),
-    ('soc011','1', 'cla007','2018-08-24'),
-    ('soc011','3', 'cla005','2019-09-21'),
-    ('soc012','1', 'cla006','2019-01-04'),
-    ('soc012','2', 'cla006','2019-01-04'),
-    ('soc012','2', 'cla004','2019-04-14'),
-    ('soc012','4', 'cla007','2018-06-17'),
-    ('soc013','1', 'cla009','2018-06-17'),
-    ('soc013','2', 'cla008','2019-06-17');
+    ('soc001', '1', 'cla004', '2019-10-10'),
+    ('soc001', '1', 'cla001', '2018-10-10'),
+    ('soc001', '1', 'cla002', '2018-10-10'),
+    ('soc001', '1', 'cla003', '2018-10-10'),
+    ('soc001', '1', 'cla006', '2018-10-10'),
+    ('soc001', '2', 'cla005', '2019-09-10'),
+    ('soc002', '1', 'cla004', '2018-12-12'),
+    ('soc003', '2', 'cla007', '2019-11-01'),
+    ('soc003', '3', 'cla001', '2019-11-01'),
+    ('soc003', '3', 'cla008', '2019-11-01'),
+    ('soc004', '3', 'cla007', '2018-06-01'),
+    ('soc004', '1', 'cla002', '2018-10-21'),
+    ('soc004', '1', 'cla003', '2018-06-29'),
+    ('soc005', '2', 'cla004', '2017-07-15'),
+    ('soc005', '1', 'cla007', '2017-01-20'),
+    ('soc005', '2', 'cla002', '2019-01-02'),
+    ('soc006', '1', 'cla004', '2019-07-01'),
+    ('soc007', '3', 'cla005', '2019-02-07'),
+    ('soc007', '2', 'cla001', '2019-02-27'),
+    ('soc007', '1', 'cla003', '2018-09-06'),
+    ('soc008', '2', 'cla003', '2018-11-02'),
+    ('soc008', '1', 'cla004', '2019-02-15'),
+    ('soc009', '1', 'cla002', '2019-05-28'),
+    ('soc009', '2', 'cla009', '2019-05-07'),
+    ('soc010', '1', 'cla005', '2016-10-19'),
+    ('soc010', '2', 'cla007', '2018-08-27'),
+    ('soc011', '1', 'cla001', '2018-04-05'),
+    ('soc011', '1', 'cla007', '2018-08-24'),
+    ('soc011', '3', 'cla005', '2019-09-21'),
+    ('soc012', '1', 'cla006', '2019-01-04'),
+    ('soc012', '2', 'cla006', '2019-01-04'),
+    ('soc012', '2', 'cla004', '2019-04-14'),
+    ('soc012', '4', 'cla007', '2018-06-17'),
+    ('soc013', '1', 'cla009', '2018-06-17'),
+    ('soc013', '2', 'cla008', '2019-06-17');
 
 INSERT INTO 
   Paga_f(nro_socio, nro_orden, id_clase, fecha, monto)
@@ -714,104 +726,108 @@ VALUES
 INSERT INTO
     Cuota(id_cuota, monto_base, periodo, fecha_cuota)
 VALUES
-    ('cuo001',2874,'2018-10','2019-11-16'),
-    ('cuo002',3300,'2018-11','2019-12-08'),
-    ('cuo003',3893,'2018-12','2019-01-12'),
-    ('cuo004',3467,'2019-01','2019-02-14'),
-    ('cuo005',3467,'2019-02','2019-03-13'),
-    ('cuo006',3467,'2019-03','2019-04-08'),
-    ('cuo007',3217,'2019-04','2019-05-09'),
-    ('cuo008',3217,'2019-05','2019-06-20'),
-    ('cuo009',3217,'2019-06','2019-07-15'),
-    ('cuo010',3415,'2019-07','2019-08-11'),
-    ('cuo011',3217,'2019-08','2019-09-10'),
-    ('cuo012',3345,'2019-09','2019-10-14'),
-    ('cuo013',3345,'2019-10','2019-11-11');
+    ('cuo001', 2874, '2018-10', '2019-11-16'),
+    ('cuo002', 3300, '2018-11', '2019-12-08'),
+    ('cuo003', 3893, '2018-12', '2019-01-12'),
+    ('cuo004', 3467, '2019-01', '2019-02-14'),
+    ('cuo005', 3467, '2019-02', '2019-03-13'),
+    ('cuo006', 3467, '2019-03', '2019-04-08'),
+    ('cuo007', 3217, '2019-04', '2019-05-09'),
+    ('cuo008', 3217, '2019-05', '2019-06-20'),
+    ('cuo009', 3217, '2019-06', '2019-07-15'),
+    ('cuo010', 3415, '2019-07', '2019-08-11'),
+    ('cuo011', 3217, '2019-08', '2019-09-10'),
+    ('cuo012', 3345, '2019-09', '2019-10-14'),
+    ('cuo013', 3345, '2019-10', '2019-11-11');
 
 INSERT INTO
     Pago(id_cuota, nro_socio, monto_abonado, fecha_vencimiento, monto_pagar, fecha_pago)
 VALUES
-    ('cuo001', 'soc001', 7759.8,'2019-11-30',7759.8,'2019-11-20'),
-    ('cuo001', 'soc002', 2586.6,'2019-11-30',2586.6,'2019-11-17'),
-    ('cuo001', 'soc003', 6897.6,'2019-11-30',6897.6,'2019-11-22'),
-    ('cuo002', 'soc001', 8910,'2019-12-20',8910,'2019-12-09'),
-    ('cuo002', 'soc002', 2970,'2019-12-20',2970,'2019-12-19'),
-    ('cuo002', 'soc003', 7920,'2019-12-20',7920,'2019-12-15'),
-    ('cuo003', 'soc001', 10511.1,'2019-02-04',10511.1,'2019-01-18'),
-    ('cuo003', 'soc002', 3503.7,'2019-02-04',3503.7,'2019-01-20'),
-    ('cuo003', 'soc003', 9345.6,'2019-02-04',9345.6,'2019-01-13'),
-    ('cuo004', 'soc001', 9360.9,'2019-02-28',9360.9,'2019-02-18'),
-    ('cuo004', 'soc002', 3120.3,'2019-02-28',3120.3,'2019-02-20'),
-    ('cuo004', 'soc003', 8320.8,'2019-02-28',8320.8,'2019-02-27'),
-    ('cuo005', 'soc001', 9360.9,'2019-03-26',9360.9,'2019-03-23'),
-    ('cuo005', 'soc002', 3120.3,'2019-03-26',3120.3,'2019-03-20'),
-    ('cuo005', 'soc003', 8320.8,'2019-03-26',8320.8,'2019-03-15'),
-    ('cuo006', 'soc001', 9360.9,'2019-04-22',9360.9,'2019-04-10'),
-    ('cuo006', 'soc002', 3120.3,'2019-04-22',3120.3,'2019-04-10'),
-    ('cuo006', 'soc003', 8320.8,'2019-04-22',8320.8,'2019-04-15'),
-    ('cuo006', 'soc004', 13521.3,'2019-04-22',13521.3,'2019-04-20'),
-    ('cuo007', 'soc001', 8413,'2019-05-21',10133.55,'2019-05-10'), /*1720.55*/
-    ('cuo007', 'soc002', 3377.85,'2019-05-21',3377.85,'2019-05-15'),
-    ('cuo007', 'soc003', 10937.8,'2019-05-21',10937.8,'2019-05-19'),
-    ('cuo007', 'soc004', 15602.45,'2019-05-21',15602.45,'2019-05-15'),
-    ('cuo008', 'soc001', 10133.55,'2019-07-02',10133.55,'2019-06-23'),
-    ('cuo008', 'soc002', 3377.85,'2019-07-02',3377.85,'2019-06-24'),
-    ('cuo008', 'soc003', 10937.8,'2019-07-02',10937.8,'2019-06-23'),
-    ('cuo008', 'soc004', 10602,'2019-07-02',15602.45,'2019-06-25'),/*5000.45*/
-    ('cuo008', 'soc005', 12224.6,'2019-07-02',12224.6,'2019-06-30'),
-    ('cuo008', 'soc006', 6755.7,'2019-07-02',6755.7,'2019-06-01'),
-    ('cuo009', 'soc001', 10133.55,'2019-07-27',10133.55,'2019-07-16'),
-    ('cuo009', 'soc002', 3377.85,'2019-07-27',3377.85,'2019-07-16'),
-    ('cuo009', 'soc003', 10937.8,'2019-07-27',10937.8,'2019-07-16'),
-    ('cuo009', 'soc004', 15602.45,'2019-07-27',15602.45,'2019-07-20'),
-    ('cuo009', 'soc005', 12224.6,'2019-07-27',12224.6,'2019-07-24'),
-    ('cuo009', 'soc006', 6755.7,'2019-07-27',6755.7,'2019-07-27'),
-    ('cuo009', 'soc007', 9490.15,'2019-07-27',9490.15,'2019-07-18'),
-    ('cuo010', 'soc001',  12477.8,'2019-08-22',10757.25,'2019-08-12'),/*Paga deuda*/
-    ('cuo010', 'soc002',  3585.75,'2019-08-22',3585.75,'2019-08-13'),
-    ('cuo010', 'soc003',  11611,'2019-08-22',11611,'2019-08-13'),
-    ('cuo010', 'soc004', 16562.75,'2019-08-22',16562.75,'2019-08-13'),
-    ('cuo010', 'soc005', 10000,'2019-08-22',12977,'2019-08-14'),/*2977*/
-    ('cuo010', 'soc006', 7171.5,'2019-08-22',7171.5,'2019-08-18'),
-    ('cuo010', 'soc007', 10073.4,'2019-08-22',10073.4,'2019-08-12'),
-    ('cuo010', 'soc008', 9391.25,'2019-08-22',9391.25,'2019-08-20'),
-    ('cuo010', 'soc009', 5805.5,'2019-08-22',5805.5,'2019-08-14'),
-    ('cuo011', 'soc001',  10133.55,'2019-09-22',10133.55,'2019-09-22'),
-    ('cuo011', 'soc002',  3377.85,'2019-09-22',3377.85,'2019-09-21'),
-    ('cuo011', 'soc003',  10937.8,'2019-09-22',10937.8,'2019-09-13'),
-    ('cuo011', 'soc004', 20602.9,'2019-09-22',15602.45,'2019-09-20'),/*Paga deuda*/
-    ('cuo011', 'soc005', 15201.6,'2019-09-22',12224.6,'2019-09-11'),/*Paga deuda*/
-    ('cuo011', 'soc006', 6755.7,'2019-09-22',6755.7,'2019-09-13'),
-    ('cuo011', 'soc007', 9490.15,'2019-09-22', 9490.15,'2019-09-10'),
-    ('cuo011', 'soc008', 8846.75,'2019-09-22',8846.75,'2019-09-11'),
-    ('cuo011', 'soc009', 3218.7,'2019-09-22',3218.7,'2019-09-15'),
-    ('cuo011', 'soc010', 10133.55,'2019-09-22',10133.55,'2019-09-18'),
-    ('cuo012', 'soc001',  10336.05,'2019-10-26',10336.05,'2019-10-15'),
-    ('cuo012', 'soc002',  3445.35,'2019-10-26',3445.35,'2019-10-16'),
-    ('cuo012', 'soc003',  9366,'2019-10-26',9366,'2019-10-16'),
-    ('cuo012', 'soc004', 15019.05,'2019-10-26',15019.05,'2019-10-15'),
-    ('cuo012', 'soc005', 11573.7,'2019-10-26',11573.7,'2019-10-15'),
-    ('cuo012', 'soc006', 6890.7,'2019-10-26',6890.7,'2019-10-18'),
-    ('cuo012', 'soc007', 4000,'2019-10-26',9232.2,'2019-10-21'),/*5232.2*/
-    ('cuo012', 'soc008', 8128.35,'2019-10-26',8128.35,'2019-10-18'),
-    ('cuo012', 'soc009', 4683,'2019-10-26',4683,'2019-10-20'),
-    ('cuo012', 'soc010', 10336.05,'2019-10-26',10336.05,'2019-10-21'),
-    ('cuo012', 'soc011', 16122.9,'2019-10-26',16122.9,'2019-10-25'),
-    ('cuo012', 'soc012', 12811.35,'2019-10-26',12811.35,'2019-10-22'),
-    ('cuo012', 'soc013', 8128.35,'2019-10-26',8128.35,'2019-10-26'),
-    ('cuo013', 'soc001',  10336.05,'2019-11-22',10336.05,'2019-11-12'),
-    ('cuo013', 'soc002',  3445.35,'2019-11-22',3445.35,'2019-11-14'),
-    ('cuo013', 'soc003',  9366,'2019-11-22',9366,'2019-11-13'),
-    ('cuo013', 'soc004', 15019.05,'2019-11-22',15019.05,'2019-11-12'),
-    ('cuo013', 'soc005', 11573.7,'2019-11-22',11573.7,'2019-11-15'),
-    ('cuo013', 'soc006', 6890.7,'2019-11-22',6890.7,'2019-11-21'),
-    ('cuo013', 'soc007', 9232.2,'2019-11-22',9232.2,'2019-11-13'),
-    ('cuo013', 'soc008', 8128.35,'2019-11-22',8128.35,'2019-11-22'),
-    ('cuo013', 'soc009', 4683,'2019-11-22',4683,'2019-11-17'),
-    ('cuo013', 'soc010', 10336.05,'2019-11-22',10336.05,'2019-11-22'),
-    ('cuo013', 'soc011', 16122.9,'2019-11-22',16122.9,'2019-11-22'),
-    ('cuo013', 'soc012', 12811.35,'2019-11-22',12811.35,'2019-11-18'),
-    ('cuo013', 'soc013', 8128.35,'2019-11-22',8128.35,'2019-11-20');
+    ('cuo001', 'soc001', 7759.8, '2019-11-30', 7759.8, '2019-11-20'),
+    ('cuo001', 'soc002', 2586.6, '2019-11-30', 2586.6, '2019-11-17'),
+    ('cuo001', 'soc003', 6897.6, '2019-11-30', 6897.6, '2019-11-22'),
+    ('cuo002', 'soc001', 8910, '2019-12-20', 8910, '2019-12-09'),
+    ('cuo002', 'soc002', 2970, '2019-12-20', 2970, '2019-12-19'),
+    ('cuo002', 'soc003', 7920, '2019-12-20', 7920, '2019-12-15'),
+    ('cuo003', 'soc001', 10511.1, '2019-02-04', 10511.1, '2019-01-18'),
+    ('cuo003', 'soc002', 3503.7, '2019-02-04', 3503.7, '2019-01-20'),
+    ('cuo003', 'soc003', 9345.6, '2019-02-04', 9345.6, '2019-01-13'),
+    ('cuo004', 'soc001', 9360.9, '2019-02-28', 9360.9, '2019-02-18'),
+    ('cuo004', 'soc002', 3120.3, '2019-02-28', 3120.3, '2019-02-20'),
+    ('cuo004', 'soc003', 8320.8, '2019-02-28', 8320.8, '2019-02-27'),
+    ('cuo005', 'soc001', 9360.9, '2019-03-26', 9360.9, '2019-03-23'),
+    ('cuo005', 'soc002', 3120.3, '2019-03-26', 3120.3, '2019-03-20'),
+    ('cuo005', 'soc003', 8320.8, '2019-03-26', 8320.8, '2019-03-15'),
+    ('cuo006', 'soc001', 9360.9, '2019-04-22', 9360.9, '2019-04-10'),
+    ('cuo006', 'soc002', 3120.3, '2019-04-22', 3120.3, '2019-04-10'),
+    ('cuo006', 'soc003', 8320.8, '2019-04-22', 8320.8, '2019-04-15'),
+    ('cuo006', 'soc004', 13521.3, '2019-04-22',13521.3, '2019-04-20'),
+    ('cuo007', 'soc001', 8413, '2019-05-21', 10133.55, '2019-05-10'), /*1720.55*/
+    ('cuo007', 'soc002', 3377.85, '2019-05-21', 3377.85, '2019-05-15'),
+    ('cuo007', 'soc003', 10937.8, '2019-05-21', 10937.8, '2019-05-19'),
+    ('cuo007', 'soc004', 15602.45, '2019-05-21', 15602.45, '2019-05-15'),
+    ('cuo008', 'soc001', 10133.55, '2019-07-02', 10133.55, '2019-06-23'),
+    ('cuo008', 'soc002', 3377.85, '2019-07-02', 3377.85, '2019-06-24'),
+    ('cuo008', 'soc003', 10937.8, '2019-07-02', 10937.8, '2019-06-23'),
+    ('cuo008', 'soc004', 10602, '2019-07-02', 15602.45, '2019-06-25'),/*5000.45*/
+    ('cuo008', 'soc005', 12224.6, '2019-07-02', 12224.6, '2019-06-30'),
+    ('cuo008', 'soc006', 6755.7, '2019-07-02', 6755.7, '2019-06-01'),
+    ('cuo009', 'soc001', 10133.55, '2019-07-27', 10133.55, '2019-07-16'),
+    ('cuo009', 'soc002', 3377.85, '2019-07-27', 3377.85, '2019-07-16'),
+    ('cuo009', 'soc003', 10937.8, '2019-07-27', 10937.8, '2019-07-16'),
+    ('cuo009', 'soc004', 15602.45, '2019-07-27', 15602.45, '2019-07-20'),
+    ('cuo009', 'soc005', 12224.6, '2019-07-27', 12224.6, '2019-07-24'),
+    ('cuo009', 'soc006', 6755.7, '2019-07-27', 6755.7, '2019-07-27'),
+    ('cuo009', 'soc007', 9490.15, '2019-07-27', 9490.15, '2019-07-18'),
+    ('cuo010', 'soc001', 12477.8, '2019-08-22', 10757.25, '2019-08-12'),
+    ('cuo007', 'soc001', 1720.55, '2019-05-21', 10133.55, '2019-08-12'),/* deuda atrasada*/
+    ('cuo010', 'soc002', 3585.75, '2019-08-22', 3585.75, '2019-08-13'),
+    ('cuo010', 'soc003', 11611, '2019-08-22', 11611, '2019-08-13'),
+    ('cuo010', 'soc004', 16562.75, '2019-08-22', 16562.75, '2019-08-13'),
+    ('cuo010', 'soc005', 10000, '2019-08-22', 12977, '2019-08-14'),/*2977*/
+    ('cuo010', 'soc006', 7171.5, '2019-08-22', 7171.5, '2019-08-18'),
+    ('cuo010', 'soc007', 10073.4, '2019-08-22', 10073.4, '2019-08-12'),
+    ('cuo010', 'soc008', 9391.25, '2019-08-22', 9391.25, '2019-08-20'),
+    ('cuo010', 'soc009', 5805.5, '2019-08-22', 5805.5, '2019-08-14'),
+    ('cuo011', 'soc001', 10133.55, '2019-09-22', 10133.55, '2019-09-22'),
+    ('cuo011', 'soc002', 3377.85, '2019-09-22', 3377.85, '2019-09-21'),
+    ('cuo011', 'soc003', 10937.8, '2019-09-22', 10937.8, '2019-09-13'),
+    ('cuo011', 'soc004', 20602.9, '2019-09-22', 15602.45, '2019-09-20'),
+    ('cuo008', 'soc004', 5000.45, '2019-07-02', 15602.45, '2019-09-20'),/*Paga deuda*/
+    ('cuo011', 'soc005', 15201.6, '2019-09-22', 12224.6, '2019-09-11'),
+    ('cuo010', 'soc005', 2977, '2019-08-22', 12977, '2019-09-11'),/*Paga deuda*/
+    ('cuo011', 'soc006', 6755.7, '2019-09-22', 6755.7, '2019-09-13'),
+    ('cuo011', 'soc007', 9490.15, '2019-09-22', 9490.15, '2019-09-10'),
+    ('cuo011', 'soc008', 8846.75, '2019-09-22', 8846.75, '2019-09-11'),
+    ('cuo011', 'soc009', 3218.7, '2019-09-22', 3218.7, '2019-09-15'),
+    ('cuo011', 'soc010', 10133.55, '2019-09-22', 10133.55, '2019-09-18'),
+    ('cuo012', 'soc001', 10336.05, '2019-10-26', 10336.05, '2019-10-15'),
+    ('cuo012', 'soc002', 3445.35, '2019-10-26', 3445.35, '2019-10-16'),
+    ('cuo012', 'soc003', 9366, '2019-10-26', 9366, '2019-10-16'),
+    ('cuo012', 'soc004', 15019.05, '2019-10-26', 15019.05, '2019-10-15'),
+    ('cuo012', 'soc005', 11573.7, '2019-10-26', 11573.7, '2019-10-15'),
+    ('cuo012', 'soc006', 6890.7, '2019-10-26', 6890.7, '2019-10-18'),
+    ('cuo012', 'soc007', 4000, '2019-10-26', 9232.2, '2019-10-21'),/*5232.2*/
+    ('cuo012', 'soc008', 8128.35, '2019-10-26', 8128.35, '2019-10-18'),
+    ('cuo012', 'soc009', 4683, '2019-10-26', 4683, '2019-10-20'),
+    ('cuo012', 'soc010', 10336.05, '2019-10-26', 10336.05, '2019-10-21'),
+    ('cuo012', 'soc011', 16122.9, '2019-10-26', 16122.9, '2019-10-25'),
+    ('cuo012', 'soc012', 12811.35, '2019-10-26', 12811.35, '2019-10-22'),
+    ('cuo012', 'soc013', 8128.35, '2019-10-26', 8128.35, '2019-10-26'),
+    ('cuo013', 'soc001', 10336.05, '2019-11-22', 10336.05, '2019-11-12'),
+    ('cuo013', 'soc002', 3445.35, '2019-11-22', 3445.35, '2019-11-14'),
+    ('cuo013', 'soc003', 9366, '2019-11-22', 9366, '2019-11-13'),
+    ('cuo013', 'soc004', 15019.05, '2019-11-22', 15019.05, '2019-11-12'),
+    ('cuo013', 'soc005', 11573.7, '2019-11-22', 11573.7, '2019-11-15'),
+    ('cuo013', 'soc006', 6890.7, '2019-11-22', 6890.7, '2019-11-21'),
+    ('cuo013', 'soc007', 9232.2, '2019-11-22', 9232.2, '2019-11-13'),
+    ('cuo013', 'soc008', 6128.35, '2019-11-22', 8128.35, '2019-11-15'),/* deuda 2mil */
+    ('cuo013', 'soc008', 1000.00, '2019-11-22', 8128.35, '2019-11-20'), /* deuda mil */
+    ('cuo013', 'soc009', 4683, '2019-11-22', 4683, '2019-11-17'),
+    ('cuo013', 'soc010', 10336.05, '2019-11-22', 10336.05, '2019-11-22'),
+    ('cuo013', 'soc011', 16122.9, '2019-11-22', 16122.9, '2019-11-22'),
+    ('cuo013', 'soc012', 12811.35, '2019-11-22', 12811.35, '2019-12-25'), /* deuda 12811.35 */
+    ('cuo013', 'soc013', 8128.35, '2019-11-22', 8128.35, '2019-11-20');
 
 /*
  * La cantidad de socios por categoría que se hayan inscripto en todas las actividades 
@@ -823,44 +839,67 @@ CREATE PROCEDURE soc_act_gratuitas ()
         DECLARE anioAux int;
         #cambie aca por que el nombre de la variable era diferente a como se usaba y volvia a calcular 
         #algo innecesario, por eso ahora es entera (solo precisa el año)
-        SELECT YEAR(CURRENT_DATE()) INTO anioAux; 
+        SELECT YEAR(CURRENT_DATE())-1 INTO anioAux; 
         
-        SELECT id_categoria, SUM(cant) AS cantSocios
+        SELECT 
+            id_categoria, SUM(cant) AS cantSocios
         FROM
         (
             /* cant titutales por categoria */
-            SELECT t.id_categoria, COUNT(*) AS cant
-            FROM Titular t
+            SELECT 
+                t.id_categoria, COUNT(*) AS cant
+            FROM 
+                Titular t
             WHERE NOT EXISTS
             (
                 SELECT *
-                FROM Clase c, Actividad a
-                WHERE (a.id_categoria=t.id_categoria OR a.id_categoria=NULL) AND c.cod_actividad=a.cod_actividad AND
-                NOT EXISTS
-                (
-                    SELECT *
-                    FROM Se_Inscribe_t st
-                    WHERE st.nro_socio=t.nro_socio AND st.id_clase=c.id_clase AND YEAR(st.fecha_inscrip)=anioAux
-                )
+                FROM 
+                    Clase c, Actividad a
+                WHERE 
+                    (a.id_categoria = t.id_categoria OR a.id_categoria IS NULL) AND 
+                    c.cod_actividad = a.cod_actividad AND 
+                    a.arancelada IS FALSE AND
+                    NOT EXISTS
+                    (
+                        SELECT *
+                        FROM 
+                            Se_Inscribe_t st
+                        WHERE 
+                            st.nro_socio = t.nro_socio AND 
+                            st.id_clase = c.id_clase AND 
+                            YEAR(st.fecha_inscrip) = anioAux
+                    )
             )
-            GROUP BY id_categoria
+            GROUP BY 
+                id_categoria
 
             union all
 
             /* cant familiares por categoria */
-            SELECT f.id_categoria, COUNT(*) AS cant
-            FROM Familiar f
+            SELECT 
+                f.id_categoria, COUNT(*) AS cant
+            FROM 
+                Familiar f
             WHERE NOT EXISTS
             (
                 SELECT *
-                FROM Clase c, Actividad a
-                WHERE (a.id_categoria=f.id_categoria OR a.id_categoria=NULL) AND a.arancelada IS FALSE AND c.cod_actividad=a.cod_actividad AND
-                NOT EXISTS
-                (
-                    SELECT *
-                    FROM Se_Inscribe_f sf
-                    WHERE sf.nro_socio=f.nro_socio AND sf.nro_orden=f.nro_orden AND sf.id_clase=c.id_clase AND YEAR(sf.fecha_inscrip)=anioAux
-                )
+                FROM 
+                    Clase c, Actividad a
+                WHERE 
+                    (a.id_categoria = f.id_categoria OR a.id_categoria IS NULL) AND 
+                    c.cod_actividad = a.cod_actividad AND
+                    a.arancelada IS FALSE AND 
+                    NOT EXISTS
+                    (
+                        SELECT *
+                        FROM 
+                            Se_Inscribe_f sf
+                        WHERE 
+                            sf.nro_socio = f.nro_socio AND 
+                            sf.nro_orden = f.nro_orden AND 
+                            sf.id_clase = c.id_clase AND 
+                            YEAR(sf.fecha_inscrip) = anioAux
+                    )
             )
             GROUP BY id_categoria
         ) as sociosxcat #es necesario esto por que sino no compila
@@ -876,21 +915,33 @@ CREATE PROCEDURE soc_deudores ()
         DECLARE anioAux int;
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
-        SELECT 
-            t.*, SUM((p.monto_pagar - SUM(p.monto_abonado))), cant_Familiares(t.nro_socio) AS fam
-        FROM 
+        SELECT
+            t.nro_socio, t.nombre, t.apellido, calculaDeuda(p.monto_pagar,SUM(p.monto_abonado)) AS deuda, cant_Familiares(t.nro_socio) AS fam
+        FROM
             Titular t, Pago p, Cuota c
-        WHERE 
-            p.nro_socio=t.nro_socio AND 
-            p.id_cuota=c.id_cuota AND 
-            YEAR(c.fecha_cuota)=anioAux AND 
+        WHERE
+            p.nro_socio = t.nro_socio AND 
+            p.id_cuota = c.id_cuota AND 
+            YEAR(c.fecha_cuota) = anioAux AND 
             p.fecha_pago < p.fecha_vencimiento
-        GROUP BY 
-            t, c.id_cuota
-        HAVING 
-            SUM(p.monto_abonado)<p.monto_pagar;
+        GROUP BY
+            t.nro_socio, c.id_cuota, t.nombre, t.apellido, p.monto_pagar, p.monto_abonado
+        HAVING
+            SUM(p.monto_abonado) < p.monto_pagar;
     END//
-                                                                           
+
+CREATE FUNCTION calculaDeuda(montoPagar float, montoAbonado float)
+    RETURNS float
+    BEGIN
+        DECLARE rta float;
+        SELECT
+            SUM(montoPagar - montoAbonado)
+        INTO
+            rta;
+        RETURN rta;
+    END; //
+
+
 CREATE FUNCTION cant_Familiares (nroSoc varchar(15))
     RETURNS int
     BEGIN
@@ -902,8 +953,8 @@ CREATE FUNCTION cant_Familiares (nroSoc varchar(15))
         FROM 
             Titular t, Familiar f
         WHERE 
-            t.nro_socio=nroSoc AND 
-            t.nro_socio=f.nro_socio;
+            t.nro_socio = nroSoc AND 
+            t.nro_socio = f.nro_socio;
         RETURN cant;
     END; //
 delimiter ;
