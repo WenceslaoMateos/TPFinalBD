@@ -94,7 +94,7 @@ CREATE TABLE Arancelada(
 
 CREATE TABLE Cuota(
     id_cuota varchar(15) NOT NULL,
-    monto_base float unsigned,
+    monto_base float unsigned NOT NULL,
     periodo varchar(20) NOT NULL,
     fecha_cuota date NOT NULL,
     PRIMARY KEY(id_cuota)
@@ -755,8 +755,8 @@ VALUES
 INSERT INTO
     Cuota(id_cuota, monto_base, periodo, fecha_cuota)
 VALUES
-    ('cuo001', 2874, '2018-10', '2019-11-16'),
-    ('cuo002', 3300, '2018-11', '2019-12-08'),
+    ('cuo001', 2874, '2018-10', '2018-11-16'),
+    ('cuo002', 3300, '2018-11', '2018-12-08'),
     ('cuo003', 3893, '2018-12', '2019-01-12'),
     ('cuo004', 3467, '2019-01', '2019-02-14'),
     ('cuo005', 3467, '2019-02', '2019-03-13'),
