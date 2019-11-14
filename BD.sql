@@ -945,7 +945,7 @@ CREATE PROCEDURE soc_deudores ()
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
         SELECT
-            t.nro_socio, t.nombre, t.apellido, SUM(calculaDeuda(t.nro_socio, c.id_cuota, p.monto_pagar)) AS deuda, cant_Familiares(t.nro_socio) AS fam
+            t.nro_socio, t.nombre, t.apellido, SUM(calculaDeuda(t.nro_socio, c.id_cuota, p.monto_pagar)) AS deuda, cant_Familiares(t.nro_socio) AS cantFamiliares
         FROM
             Titular t, Pago p, Cuota c
         WHERE
