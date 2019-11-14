@@ -647,6 +647,7 @@ VALUES
 
 INSERT INTO
     Se_Inscribe_t(nro_socio, id_clase, fecha_inscrip)
+VALUES
     ('soc001', 'cla001', '2019-10-10'), 
     ('soc001', 'cla007', '2019-10-10'),
     ('soc001', 'cla008', '2019-10-10'),
@@ -719,7 +720,7 @@ VALUES
     ('soc012', '2', 'cla006', '2019-01-04'),
     ('soc012', '2', 'cla004', '2019-04-14'),
     ('soc012', '4', 'cla007', '2018-06-17'),
-    ('soc012', '3', 'cla008', '2019-06-17'),
+    #('soc012', '3', 'cla008', '2019-06-17'),
     ('soc013', '1', 'cla009', '2018-06-17');
     
 INSERT INTO 
@@ -929,7 +930,7 @@ CREATE PROCEDURE soc_deudores ()
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
         SELECT
-            t.nro_socio, t.nombre, t.apellido, calculaDeuda(p.monto_pagar,SUM(p.monto_abonado)) AS deuda, cant_Familiares(t.nro_socio) AS fam
+            t.nro_socio, t.nombre, t.apellido, SUM(calculaDeuda(t.nro_socio, c.id_cuota)) AS deuda, cant_Familiares(t.nro_socio) AS fam
         FROM
             Titular t, Pago p, Cuota c
         WHERE
@@ -938,19 +939,24 @@ CREATE PROCEDURE soc_deudores ()
             YEAR(c.fecha_cuota) = anioAux AND 
             p.fecha_pago < p.fecha_vencimiento
         GROUP BY
-            t.nro_socio, c.id_cuota, t.nombre, t.apellido, p.monto_pagar, p.monto_abonado
+            t.nro_socio, c.id_cuota, t.nombre, t.apellido, p.monto_pagar
         HAVING
             SUM(p.monto_abonado) < p.monto_pagar;
     END//
 
-CREATE FUNCTION calculaDeuda(montoPagar float, montoAbonado float)
+CREATE FUNCTION calculaDeuda(socio varchar(15), cuota varchar(15))
     RETURNS float
     BEGIN
         DECLARE rta float;
         SELECT
-            SUM(montoPagar - montoAbonado)
+            p.monto_pagar - SUM(p.monto_abonado)
         INTO
-            rta;
+            rta
+        FROM
+            Pago p
+        WHERE
+            p.id_cuota = cuota AND
+            p.nro_socio = socio;
         RETURN rta;
     END; //
 
