@@ -936,7 +936,7 @@ CREATE PROCEDURE soc_deudores ()
         SELECT YEAR(CURRENT_DATE()) INTO anioAux;
 
         SELECT
-            t.nro_socio, t.nombre, t.apellido, SUM(calculaDeuda(t.nro_socio, c.id_cuota)) AS deuda, cant_Familiares(t.nro_socio) AS fam
+            t.nro_socio, t.nombre, t.apellido, SUM(calculaDeuda(t.nro_socio, c.id_cuota, p.monto_pagar)) AS deuda, cant_Familiares(t.nro_socio) AS fam
         FROM
             Titular t, Pago p, Cuota c
         WHERE
@@ -950,19 +950,20 @@ CREATE PROCEDURE soc_deudores ()
             SUM(p.monto_abonado) < p.monto_pagar;
     END//
 
-CREATE FUNCTION calculaDeuda(socio varchar(15), cuota varchar(15))
+CREATE FUNCTION calculaDeuda(socio varchar(15), cuota varchar(15), montoPagar float)
     RETURNS float
     BEGIN
         DECLARE rta float;
         SELECT
-            p.monto_pagar - SUM(p.monto_abonado)
+            montoPagar - SUM(p.monto_abonado)
         INTO
             rta
         FROM
             Pago p
         WHERE
             p.id_cuota = cuota AND
-            p.nro_socio = socio;
+            p.nro_socio = socio AND
+            p.fecha_pago < p.fecha_vencimiento;
         RETURN rta;
     END; //
 
